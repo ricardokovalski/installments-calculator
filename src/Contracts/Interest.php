@@ -2,7 +2,16 @@
 
 namespace Moguzz\Contracts;
 
+/**
+ * Interface Interest
+ * @package Moguzz\Contracts
+ */
 interface Interest
 {
-    public function getValueInstallmentCalculated($totalPurchase, $installment);
+    /**
+     * @param $totalPurchase
+     * @param $numberInstallment
+     * @return mixed
+     */
+    public function getValueInstallmentCalculated($totalPurchase, $numberInstallment);
 }

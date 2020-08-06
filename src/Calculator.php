@@ -2,6 +2,7 @@
 
 namespace Moguzz;
 
+use InvalidArgumentException;
 use Moguzz\Contracts\Currency;
 use Moguzz\Contracts\Interest;
 
@@ -11,13 +12,17 @@ use Moguzz\Contracts\Interest;
  */
 class Calculator
 {
+    use FormattingTrait;
+
     private $interest;
 
     private $currency;
 
     private $totalPurchase;
 
-    private $numberInstallments;
+    private $numberMaxInstallments;
+
+    private $limitInstallments;
 
     private $limitValuePerInstallment;
 
@@ -32,8 +37,17 @@ class Calculator
     {
         $this->interest = $interest;
         $this->currency = $currency;
+        $this->setupSettings();
+    }
+
+    /**
+     * Making a configuration setup
+     */
+    private function setupSettings()
+    {
         $this->totalPurchase = 0.00;
-        $this->numberInstallments = 12;
+        $this->numberMaxInstallments = 12;
+        $this->limitInstallments = true;
         $this->limitValuePerInstallment = 5.00;
     }
 
@@ -44,6 +58,28 @@ class Calculator
     public function appendTotalPurchase($totalPurchase)
     {
         $this->totalPurchase += $totalPurchase;
+        return $this;
+    }
+
+    /**
+     * @param $number
+     * @return $this
+     */
+    public function appendNumberInstallments($number)
+    {
+        $this->verifyNumberInstallments($number);
+
+        $this->numberMaxInstallments = $number;
+        return $this;
+    }
+
+    /**
+     * @param $key
+     * @return $this
+     */
+    public function isLimitingInstallments($key)
+    {
+        $this->limitInstallments = $key;
         return $this;
     }
 
@@ -62,23 +98,17 @@ class Calculator
      */
     public function calculateInstallments()
     {
-        foreach (range(1, $this->numberInstallments) as $installment) {
+        foreach (range(1, $this->numberMaxInstallments) as $numberInstallment) {
 
-            $valueInstallmentCalculated = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $installment);
-            $installmentValue = $valueInstallmentCalculated / $installment;
-            $addedValue = $valueInstallmentCalculated - $this->totalPurchase;
+            $originalValueInstallment = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $numberInstallment);
+            $valueInstallmentCalculated = $originalValueInstallment / $numberInstallment;
+            $addedValue = $originalValueInstallment - $this->totalPurchase;
 
-            if ($installmentValue < $this->limitValuePerInstallment) {
-                continue;
+            if ($this->limitInstallments && $valueInstallmentCalculated < $this->limitValuePerInstallment) {
+                break;
             }
 
-            array_push($this->installments,
-                new Installment(
-                    $installmentValue,
-                    $installment,
-                    $addedValue
-                )
-            );
+            array_push($this->installments, new Installment($valueInstallmentCalculated, $numberInstallment, $addedValue));
         }
 
         return $this;
@@ -90,5 +120,19 @@ class Calculator
     public function getInstallments()
     {
         return $this->installments;
+    }
+
+    /**
+     * @param $number
+     */
+    private function verifyNumberInstallments($number)
+    {
+        if ($number < 1) {
+            throw new InvalidArgumentException('The minimum number of installments cannot be less than zero.');
+        }
+
+        if ($number > 12) {
+            throw new InvalidArgumentException('The maximum number of installments cannot be greater than twelve.');
+        }
     }
 }

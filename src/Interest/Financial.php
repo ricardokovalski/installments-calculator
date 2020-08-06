@@ -8,33 +8,28 @@ use Moguzz\Contracts\Interest;
  * Class Financial
  * @package Moguzz\Interest
  */
-final class Financial implements Interest
+final class Financial extends AbstractInterest implements Interest
 {
     /**
-     * @var $amount
+     * Compound constructor.
+     * @param $valueInterest
      */
-    private $amount;
-
-    /**
-     * Financial constructor.
-     * @param $amount
-     */
-    public function __construct($amount)
+    public function __construct($valueInterest)
     {
-        $this->amount = $amount;
+        parent::__construct($valueInterest);
     }
 
     /**
      * @param $totalPurchase
-     * @param $installment
-     * @return float|int
+     * @param $numberInstallment
+     * @return float|int|mixed
      */
-    public function getValueInstallmentCalculated($totalPurchase, $installment)
+    public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
-        if ($installment == 1) {
+        if ($numberInstallment == 1) {
             return $totalPurchase;
         }
 
-        return $totalPurchase * $this->amount / (1 - pow(1 + $this->amount, -$installment)) * $installment;
+        return $totalPurchase * $this->getValueInterest() / (1 - pow(1 + $this->getValueInterest(), -$numberInstallment)) * $numberInstallment;
     }
 }

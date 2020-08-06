@@ -9,30 +9,68 @@ namespace Moguzz;
 final class Installment
 {
     /**
-     * @var float $amount
+     * @var float $valueCalculated
      */
-    private $amount;
+    public $valueCalculated;
 
     /**
-     * @var integer $installment
+     * @var int $numberInstallment
      */
-    private $installment;
+    public $numberInstallment;
 
     /**
      * @var float $addedValue
      */
-    private $addedValue;
+    public $addedValue;
+
+    /**
+     * @var float $originalValue
+     */
+    public $originalValue;
 
     /**
      * Installment constructor.
-     * @param $amount
-     * @param $installment
+     * @param $valueCalculated
+     * @param $numberInstallment
      * @param $addedValue
      */
-    public function __construct($amount, $installment, $addedValue)
+    public function __construct($valueCalculated, $numberInstallment, $addedValue)
     {
-        $this->amount = $amount ?: 0.00;
-        $this->installment = $installment;
+        $this->valueCalculated = $valueCalculated;
+        $this->numberInstallment = $numberInstallment;
         $this->addedValue = $addedValue;
+        $this->originalValue = $this->valueCalculated * $this->numberInstallment;
+    }
+
+    /**
+     * @return float
+     */
+    public function getValueCalculated()
+    {
+        return $this->valueCalculated;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberInstallment()
+    {
+        return $this->numberInstallment;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAddedValue()
+    {
+        return $this->addedValue;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOriginalValue()
+    {
+        return $this->originalValue;
     }
 }
