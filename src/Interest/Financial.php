@@ -2,6 +2,7 @@
 
 namespace Moguzz\Interest;
 
+use InvalidArgumentException;
 use Moguzz\Contracts\Interest;
 
 /**
@@ -11,8 +12,8 @@ use Moguzz\Contracts\Interest;
 final class Financial extends AbstractInterest implements Interest
 {
     /**
-     * Compound constructor.
-     * @param $valueInterest
+     * Financial constructor.
+     * @param float $valueInterest
      */
     public function __construct($valueInterest)
     {
@@ -26,6 +27,10 @@ final class Financial extends AbstractInterest implements Interest
      */
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
+        if ($this->getValueInterest() == 0.00) {
+            throw new InvalidArgumentException('Interest value equal zero!');
+        }
+
         if ($numberInstallment == 1) {
             return $totalPurchase;
         }

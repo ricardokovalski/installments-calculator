@@ -19,7 +19,7 @@ abstract class AbstractInterest
      */
     public function __construct($valueInterest)
     {
-        $this->valueInterest = $valueInterest > 0 ? $valueInterest / 100 : 0;
+        $this->valueInterest = $valueInterest > 0.00 ? $valueInterest / 100 : 0.00;
     }
 
     /**
