@@ -28,7 +28,7 @@ final class Financial extends AbstractInterest implements Interest
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
         if ($this->getValueInterest() == 0.00) {
-            throw new InvalidArgumentException('Interest value equal zero!');
+            return $totalPurchase + $this->getValueInterest();
         }
 
         if ($numberInstallment == 1) {

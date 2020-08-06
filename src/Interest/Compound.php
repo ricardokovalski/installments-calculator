@@ -26,6 +26,10 @@ final class Compound extends AbstractInterest implements Interest
      */
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
+        if ($this->getValueInterest() == 0.00) {
+            return $totalPurchase + $this->getValueInterest();
+        }
+
         return $totalPurchase * pow((1 + $this->getValueInterest()), $numberInstallment - 1);
     }
 }

@@ -26,6 +26,10 @@ final class Simple extends AbstractInterest implements Interest
      */
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
-        return $totalPurchase + ($numberInstallment > 1 ? ($totalPurchase * $this->getValueInterest()) : 0.00);
+        if ($this->getValueInterest() == 0.00) {
+            return $totalPurchase + $this->getValueInterest();
+        }
+
+        return $totalPurchase * $this->getValueInterest();
     }
 }
