@@ -1,17 +1,16 @@
 <?php
 
-class CalculatorTest extends \PHPUnit_Framework_TestCase
+class CalculatorTest extends BaseTest
 {
-    private $currency;
     private $calculator;
 
     public function setUp()
     {
-        $this->currency = new \Moguzz\Currencies\Real();
+        parent::setUp();
 
         $this->calculator = new \Moguzz\Calculator(
             new \Moguzz\Interest\Financial(2.99),
-            $this->currency
+            $this->getCurrency()
         );
     }
 
@@ -98,7 +97,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
      * @param array $installments
      * @return array
      */
-    private function formattingInstallments(array $installments)
+    /*private function formattingInstallments(array $installments)
     {
         array_map(function (\Moguzz\Installment $installment) {
             $installment->valueCalculated = $this->currency->formatter($installment->getValueCalculated());
@@ -107,6 +106,6 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
         }, $installments);
 
         return $installments;
-    }
+    }*/
 
 }
