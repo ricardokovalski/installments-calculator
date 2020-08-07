@@ -13,11 +13,11 @@ final class Financial extends AbstractInterest implements Interest
 {
     /**
      * Financial constructor.
-     * @param float $valueInterest
+     * @param float $interestValue
      */
-    public function __construct($valueInterest)
+    public function __construct($interestValue)
     {
-        parent::__construct($valueInterest);
+        parent::__construct($interestValue);
     }
 
     /**
@@ -27,14 +27,14 @@ final class Financial extends AbstractInterest implements Interest
      */
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
-        if ($this->getValueInterest() == 0.00) {
-            return $totalPurchase + $this->getValueInterest();
+        if ($this->interestValueIsZeroed()) {
+            return $totalPurchase + $this->getInterestValue();
         }
 
         if ($numberInstallment == 1) {
             return $totalPurchase;
         }
 
-        return $totalPurchase * $this->getValueInterest() / (1 - pow(1 + $this->getValueInterest(), -$numberInstallment)) * $numberInstallment;
+        return $totalPurchase * $this->getInterestValue() / (1 - pow(1 + $this->getInterestValue(), -$numberInstallment)) * $numberInstallment;
     }
 }

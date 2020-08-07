@@ -11,22 +11,30 @@ abstract class AbstractInterest
     /**
      * @var float|int
      */
-    private $valueInterest;
+    private $interestValue;
 
     /**
      * AbstractInterest constructor.
-     * @param $valueInterest
+     * @param $interestValue
      */
-    public function __construct($valueInterest)
+    public function __construct($interestValue)
     {
-        $this->valueInterest = $valueInterest > 0.00 ? $valueInterest / 100 : 0.00;
+        $this->interestValue = $interestValue > 0.00 ? $interestValue / 100 : 0.00;
+    }
+
+    /**
+     * @return bool
+     */
+    final function interestValueIsZeroed()
+    {
+        return $this->interestValue == 0.00;
     }
 
     /**
      * @return float|int
      */
-    final function getValueInterest()
+    final function getInterestValue()
     {
-        return $this->valueInterest;
+        return $this->interestValue;
     }
 }

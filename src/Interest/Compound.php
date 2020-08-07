@@ -12,11 +12,11 @@ final class Compound extends AbstractInterest implements Interest
 {
     /**
      * Compound constructor.
-     * @param $valueInterest
+     * @param $interestValue
      */
-    public function __construct($valueInterest)
+    public function __construct($interestValue)
     {
-        parent::__construct($valueInterest);
+        parent::__construct($interestValue);
     }
 
     /**
@@ -26,10 +26,10 @@ final class Compound extends AbstractInterest implements Interest
      */
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {
-        if ($this->getValueInterest() == 0.00) {
-            return $totalPurchase + $this->getValueInterest();
+        if ($this->interestValueIsZeroed()) {
+            return $totalPurchase + $this->getInterestValue();
         }
 
-        return $totalPurchase * pow((1 + $this->getValueInterest()), $numberInstallment - 1);
+        return $totalPurchase * pow((1 + $this->getInterestValue()), $numberInstallment - 1);
     }
 }

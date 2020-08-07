@@ -24,7 +24,7 @@ class Calculator
 
     private $limitInstallments;
 
-    private $limitValuePerInstallment;
+    private $limitValueInstallment;
 
     private $installments = [];
 
@@ -48,7 +48,7 @@ class Calculator
         $this->totalPurchase = 0.00;
         $this->numberMaxInstallments = 12;
         $this->limitInstallments = true;
-        $this->limitValuePerInstallment = 5.00;
+        $this->limitValueInstallment = 5.00;
     }
 
     /**
@@ -89,7 +89,7 @@ class Calculator
      */
     public function appendLimitValueInstallment($limitValue)
     {
-        $this->limitValuePerInstallment = $limitValue;
+        $this->limitValueInstallment = $limitValue;
         return $this;
     }
 
@@ -104,7 +104,7 @@ class Calculator
             $valueInstallmentCalculated = $originalValueInstallment / $numberInstallment;
             $addedValue = $originalValueInstallment - $this->totalPurchase;
 
-            if ($this->limitInstallments && $valueInstallmentCalculated < $this->limitValuePerInstallment) {
+            if ($this->installmentValueIsLessThanLimitValue($valueInstallmentCalculated)) {
                 break;
             }
 
@@ -134,5 +134,14 @@ class Calculator
         if ($number > 12) {
             throw new InvalidArgumentException('The maximum number of installments cannot be greater than twelve.');
         }
+    }
+
+    /**
+     * @param $valueInstallmentCalculated
+     * @return bool
+     */
+    private function installmentValueIsLessThanLimitValue($valueInstallmentCalculated)
+    {
+        return $this->limitInstallments && $valueInstallmentCalculated < $this->limitValueInstallment;
     }
 }
