@@ -93,19 +93,4 @@ class CalculatorTest extends BaseTest
         );
     }
 
-    /**
-     * @param array $installments
-     * @return array
-     */
-    /*private function formattingInstallments(array $installments)
-    {
-        array_map(function (\Moguzz\Installment $installment) {
-            $installment->valueCalculated = $this->currency->formatter($installment->getValueCalculated());
-            $installment->addedValue = $this->currency->formatter($installment->getAddedValue());
-            $installment->originalValue = $this->currency->formatter($installment->getOriginalValue());
-        }, $installments);
-
-        return $installments;
-    }*/
-
 }
