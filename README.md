@@ -73,4 +73,4 @@ Juros Simples utilize a classe abaixo:
 use Moguzz\Interest\Simple;
 ```
 
-@@include[currencies.md](docs/currencies.md)
+[Tipos de Moeda](docs/currencies.md#Tipos de Moeda)
