@@ -2,6 +2,8 @@
 
 namespace Moguzz\Interest;
 
+use InvalidArgumentException;
+
 /**
  * Class AbstractInterest
  * @package Moguzz\Interest
@@ -19,6 +21,10 @@ abstract class AbstractInterest
      */
     public function __construct($interestValue)
     {
+        if (! is_numeric($interestValue)) {
+            throw new InvalidArgumentException('Interest value is numeric type.');
+        }
+
         $this->interestValue = $interestValue > 0.00 ? $interestValue / 100 : 0.00;
     }
 

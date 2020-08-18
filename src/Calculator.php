@@ -74,6 +74,23 @@ class Calculator
     }
 
     /**
+     * @param $number
+     * @return bool
+     */
+    private function verifyNumberInstallments($number)
+    {
+        if ($number < 1) {
+            throw new InvalidArgumentException('The minimum number of installments cannot be less than zero.');
+        }
+
+        if ($number > 12) {
+            throw new InvalidArgumentException('The maximum number of installments cannot be greater than twelve.');
+        }
+
+        return true;
+    }
+
+    /**
      * @param $key
      * @return $this
      */
@@ -115,28 +132,6 @@ class Calculator
     }
 
     /**
-     * @return array
-     */
-    public function getInstallments()
-    {
-        return $this->installments;
-    }
-
-    /**
-     * @param $number
-     */
-    private function verifyNumberInstallments($number)
-    {
-        if ($number < 1) {
-            throw new InvalidArgumentException('The minimum number of installments cannot be less than zero.');
-        }
-
-        if ($number > 12) {
-            throw new InvalidArgumentException('The maximum number of installments cannot be greater than twelve.');
-        }
-    }
-
-    /**
      * @param $valueInstallmentCalculated
      * @return bool
      */
@@ -144,4 +139,39 @@ class Calculator
     {
         return $this->limitInstallments && $valueInstallmentCalculated < $this->limitValueInstallment;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalPurchase()
+    {
+        return $this->totalPurchase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberMaxInstallments()
+    {
+        return $this->numberMaxInstallments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLimitValueInstallment()
+    {
+        return $this->limitValueInstallment;
+    }
+
+
+
+    /**
+     * @return array
+     */
+    public function getInstallments()
+    {
+        return $this->installments;
+    }
+
 }

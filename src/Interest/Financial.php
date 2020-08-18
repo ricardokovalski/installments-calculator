@@ -15,7 +15,7 @@ final class Financial extends AbstractInterest implements Interest
      * Financial constructor.
      * @param float $interestValue
      */
-    public function __construct($interestValue)
+    public function __construct($interestValue = 0.00)
     {
         parent::__construct($interestValue);
     }

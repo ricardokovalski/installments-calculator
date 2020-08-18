@@ -11,10 +11,10 @@ use Moguzz\Contracts\Interest;
 final class Simple extends AbstractInterest implements Interest
 {
     /**
-     * Compound constructor.
-     * @param $interestValue
+     * Simple constructor.
+     * @param float $interestValue
      */
-    public function __construct($interestValue)
+    public function __construct($interestValue = 0.00)
     {
         parent::__construct($interestValue);
     }

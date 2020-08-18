@@ -39,7 +39,7 @@ final class Installment
         $this->valueCalculated = $valueCalculated;
         $this->numberInstallment = $numberInstallment;
         $this->addedValue = $addedValue;
-        $this->originalValue = $this->valueCalculated * $this->numberInstallment;
+        $this->originalValue = $this->getValueCalculated() * $this->getNumberInstallment();
     }
 
     /**
