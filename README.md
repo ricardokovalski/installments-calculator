@@ -13,20 +13,21 @@ use Moguzz\Calculator;
 use Moguzz\Currencies\Real;
 use Moguzz\Interest\Financial;
 
-$instance = (new Calculator(new Financial(0.00), new Real()))
-    ->appendTotalPurchase(39.90)
-    ->calculateInstallments()
-    ->getInstallments();
+$calculator = new Calculator(new Financial(4.99), new Real());
+$calculator->appendTotalPurchase(250.90)
+    ->calculateInstallments();
+
+$installments = $calculator->getInstallments();
 ```
 
 ### Configurações
 
-Por padrão o Calculator seta algumas configurações default, segue elas:
+Por padrão o Calculator seta algumas configurações iniciais, tais como:
 
 * Valor da venda igual à 0.00;
-* Número máximo de parcelas igual a 12;
-* Valor mínimo parcelado igual à 5.00;
+* Número máximo de parcelas igual à 12;
 * Limitar o parcelamento igual à True;
+* Valor mínimo parcelado igual à 5.00;
 
 #### Adicionando o valor de venda
 ```php
@@ -40,7 +41,7 @@ Por padrão o Calculator seta algumas configurações default, segue elas:
 
 #### Não limitar o parcelamento
 ```php
-->isLimitingInstallments(false)
+->hasLimitingInstallments(false)
 ```
 
 #### Alterar o parcelamento mínimo

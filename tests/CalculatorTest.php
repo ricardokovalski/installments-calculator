@@ -61,7 +61,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     {
         $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
             ->appendTotalPurchase(150.00)
-            ->isLimitingInstallments(false)
+            ->hasLimitingInstallments(false)
             ->appendLimitValueInstallment(10.00)
             ->calculateInstallments();
 

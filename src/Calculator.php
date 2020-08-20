@@ -94,7 +94,7 @@ class Calculator
      * @param $key
      * @return $this
      */
-    public function isLimitingInstallments($key)
+    public function hasLimitingInstallments($key)
     {
         $this->limitInstallments = $key;
         return $this;
