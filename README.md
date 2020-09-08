@@ -17,7 +17,7 @@ $calculator = new Calculator(new Financial(4.99), new Real());
 $calculator->appendTotalPurchase(250.90)
     ->calculateInstallments();
 
-$installments = $calculator->getInstallments();
+$collectionInstallments = $calculator->getCollectionInstallments();
 ```
 
 ### Configurações
