@@ -54,7 +54,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
             ->appendLimitValueInstallment(10.00)
             ->calculateInstallments();
 
-        $this->assertCount(10, $calculator->getInstallments());
+        $this->assertCount(10, $calculator->getCollectionInstallments()->getIterator());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
@@ -65,7 +65,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
             ->appendLimitValueInstallment(10.00)
             ->calculateInstallments();
 
-        $this->assertCount(12, $calculator->getInstallments());
+        $this->assertCount(12, $calculator->getCollectionInstallments()->getIterator());
     }
 
     /**
@@ -108,7 +108,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $this->createInstallments(),
-            $calculator->getInstallments()
+            $calculator->getCollectionInstallments()->getIterator()
         );
     }
 
@@ -122,16 +122,16 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $this->formattingInstallments($this->createInstallments()),
-            $calculator->getInstallments()
+            $calculator->getCollectionInstallments()->getIterator()
         );
     }
 
     /**
-     * @return array
+     * @return \Moguzz\InstallmentCollectionIterator
      */
     private function createInstallments()
     {
-        return array(
+        $installments = array(
             new \Moguzz\Installment(450.00, 1, 0),
             new \Moguzz\Installment(235.14079732992, 2, 20.281594659835),
             new \Moguzz\Installment(159.05807777209, 3, 27.174233316284),
@@ -145,21 +145,32 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
             new \Moguzz\Installment(48.607917662541, 11, 84.687094287955),
             new \Moguzz\Installment(45.180956182769, 12, 92.171474193232),
         );
+
+        $installmentCollection = new \Moguzz\InstallmentCollection();
+
+        foreach ($installments as $installment) {
+            $installmentCollection->appendInstallment($installment);
+        }
+
+        return new \Moguzz\InstallmentCollectionIterator($installmentCollection);
     }
 
     /**
-     * @param array $installments
-     * @return array
+     * @param \Moguzz\InstallmentCollectionIterator $installmentCollectionIterator
+     * @return \Moguzz\InstallmentCollectionIterator
      */
-    private function formattingInstallments(array $installments)
+    private function formattingInstallments(\Moguzz\InstallmentCollectionIterator $installmentCollectionIterator)
     {
-        array_map(function (\Moguzz\Installment $installment) {
-            $installment->valueCalculated = $this->currency->formatter($installment->getValueCalculated());
-            $installment->addedValue = $this->currency->formatter($installment->getAddedValue());
-            $installment->originalValue = $this->currency->formatter($installment->getOriginalValue());
-        }, $installments);
+        iterator_apply($installmentCollectionIterator, function(\Iterator $iterator) {
+            $iterator->current()->valueCalculated = $this->currency->formatter($iterator->current()->getValueCalculated());
+            $iterator->current()->addedValue = $this->currency->formatter($iterator->current()->getAddedValue());
+            $iterator->current()->originalValue = $this->currency->formatter($iterator->current()->getOriginalValue());
+            return true;
+        }, array($installmentCollectionIterator));
 
-        return $installments;
+        $installmentCollectionIterator->rewind();
+
+        return $installmentCollectionIterator;
     }
 
 }

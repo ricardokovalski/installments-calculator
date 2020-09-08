@@ -9,11 +9,14 @@ trait FormattingTrait
      */
     public function formattingInstallments()
     {
-        array_map(function (Installment $installment) {
-            $installment->valueCalculated = $this->currency->formatter($installment->getValueCalculated());
-            $installment->addedValue = $this->currency->formatter($installment->getAddedValue());
-            $installment->originalValue = $this->currency->formatter($installment->getOriginalValue());
-        }, $this->installments);
+        $iterator = $this->installmentCollection->getIterator();
+
+        iterator_apply($iterator, function(\Iterator $iterator) {
+            $iterator->current()->valueCalculated = $this->currency->formatter($iterator->current()->getValueCalculated());
+            $iterator->current()->addedValue = $this->currency->formatter($iterator->current()->getAddedValue());
+            $iterator->current()->originalValue = $this->currency->formatter($iterator->current()->getOriginalValue());
+            return true;
+        }, array($iterator));
 
         return $this;
     }

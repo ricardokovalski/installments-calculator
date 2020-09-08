@@ -14,19 +14,40 @@ class Calculator
 {
     use FormattingTrait;
 
+    /**
+     * @var Interest $interest
+     */
     private $interest;
 
+    /**
+     * @var Currency $currency
+     */
     private $currency;
 
+    /**
+     * @var float $totalPurchase
+     */
     private $totalPurchase;
 
+    /**
+     * @var integer $numberMaxInstallments
+     */
     private $numberMaxInstallments;
 
+    /**
+     * @var boolean $limitInstallments
+     */
     private $limitInstallments;
 
+    /**
+     * @var float $limitValueInstallment
+     */
     private $limitValueInstallment;
 
-    private $installments = [];
+    /**
+     * @var InstallmentCollection
+     */
+    private $installmentCollection;
 
     /**
      * Calculator constructor.
@@ -37,6 +58,7 @@ class Calculator
     {
         $this->interest = $interest;
         $this->currency = $currency;
+        $this->installmentCollection = new InstallmentCollection();
         $this->setupSettings();
     }
 
@@ -125,7 +147,9 @@ class Calculator
                 break;
             }
 
-            array_push($this->installments, new Installment($valueInstallmentCalculated, $numberInstallment, $addedValue));
+            $this->installmentCollection->appendInstallment(
+                new Installment($valueInstallmentCalculated, $numberInstallment, $addedValue)
+            );
         }
 
         return $this;
@@ -164,14 +188,11 @@ class Calculator
         return $this->limitValueInstallment;
     }
 
-
-
     /**
-     * @return array
+     * @return mixed
      */
-    public function getInstallments()
+    public function getCollectionInstallments()
     {
-        return $this->installments;
+        return $this->installmentCollection;
     }
-
 }
