@@ -1,6 +1,6 @@
 {
-  "name": "ricardokovalski/installment-calculator",
-  "description": "Biblioteca para calcular parcelas.",
+  "name": "ricardokovalski/calculator-installment",
+  "description": "Biblioteca para calcular juros em parcelamentos.",
   "type": "library",
   "authors": [
     {
