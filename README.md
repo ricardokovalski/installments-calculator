@@ -1,6 +1,6 @@
 # ricardokovalski/installment-calculator
 
-[![Latest Stable Version](https://poser.pugx.org/ricardokovalski/installment-calculator/v/stable)](https://packagist.org/packages/ricardokovalski/holidays)
+[![Latest Stable Version](https://poser.pugx.org/ricardokovalski/calculator-installment/v/stable)](https://packagist.org/packages/ricardokovalski/holidays)
 [![Author](http://img.shields.io/badge/author-@ricardokovalski-blue.svg?style=flat-square)](https://github.com/ricardokovalski)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/thephpleague/glide-symfony/blob/master/LICENSE)
 
