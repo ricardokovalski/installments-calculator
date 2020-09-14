@@ -1,4 +1,4 @@
-# ricardokovalski/installment-calculator
+# ricardokovalski/calculator-installment
 
 [![Latest Stable Version](https://poser.pugx.org/ricardokovalski/calculator-installment/v/stable)](https://packagist.org/packages/ricardokovalski/holidays)
 [![Author](http://img.shields.io/badge/author-@ricardokovalski-blue.svg?style=flat-square)](https://github.com/ricardokovalski)
@@ -7,7 +7,7 @@
 ## Instalação
 
 ```
-composer require ricardokovalski/installment-calculator
+composer require ricardokovalski/calculator-installment
 ```
 
 ## Uso básico
