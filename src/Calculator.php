@@ -140,15 +140,17 @@ class Calculator
         foreach (range(1, $this->numberMaxInstallments) as $numberInstallment) {
 
             $originalValueInstallment = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $numberInstallment);
-            $valueInstallmentCalculated = $originalValueInstallment / $numberInstallment;
-            $addedValue = $originalValueInstallment - $this->totalPurchase;
 
-            if ($this->installmentValueIsLessThanLimitValue($valueInstallmentCalculated)) {
+            if ($this->installmentValueIsLessThanLimitValue($originalValueInstallment / $numberInstallment)) {
                 break;
             }
 
             $this->installmentCollection->appendInstallment(
-                new Installment($valueInstallmentCalculated, $numberInstallment, $addedValue)
+                new Installment(
+                    $originalValueInstallment / $numberInstallment,
+                    $numberInstallment,
+                    $originalValueInstallment - $this->totalPurchase
+                )
             );
         }
 
