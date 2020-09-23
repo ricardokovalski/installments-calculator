@@ -14,13 +14,15 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     public function testExpectedExceptionWhenExceedsMaximumNumberOfInstallments()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest, $this->currency))->appendNumberInstallments(13);
+        $template = (new \Moguzz\TemplateSetting())->setNumberMaxInstallments(13);
+        (new \Moguzz\Calculator($this->interest, $this->currency))->setTemplateSetting($template);
     }
 
     public function testExpectedExceptionWhenMinimumNumberInstallmentsIsLess()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest, $this->currency))->appendNumberInstallments(0);
+        $template = (new \Moguzz\TemplateSetting())->setNumberMaxInstallments(0);
+        (new \Moguzz\Calculator($this->interest, $this->currency))->setTemplateSetting($template);
     }
 
     public function testAssertEqualsAppendTotalPurchase()
@@ -33,25 +35,30 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsAppendNumberInstallments()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
-            ->appendNumberInstallments(6);
+        $template = (new \Moguzz\TemplateSetting())->setNumberMaxInstallments(6);
 
-        $this->assertEquals(6, $calculator->getNumberMaxInstallments());
+        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
+            ->setTemplateSetting($template);
+
+        $this->assertEquals(6, $calculator->template()->getNumberMaxInstallments());
     }
 
     public function testAssertEqualsAppendLimitValueInstallment()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
-            ->appendLimitValueInstallment(7.99);
+        $template = (new \Moguzz\TemplateSetting())->setLimitValueInstallment(7.99);
 
-        $this->assertEquals(7.99, $calculator->getLimitValueInstallment());
+        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
+            ->setTemplateSetting($template);
+
+        $this->assertEquals(7.99, $calculator->template()->getLimitValueInstallment());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculated()
     {
+        $template = (new \Moguzz\TemplateSetting())->setLimitValueInstallment(10.00);
         $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
             ->appendTotalPurchase(88.90)
-            ->appendLimitValueInstallment(10.00)
+            ->setTemplateSetting($template)
             ->calculateInstallments();
 
         $this->assertCount(10, $calculator->getCollectionInstallments()->getIterator());
@@ -59,10 +66,13 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
     {
+        $template = (new \Moguzz\TemplateSetting())
+            ->setLimitInstallments(false)
+            ->setLimitValueInstallment(10.00);
+
         $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
             ->appendTotalPurchase(150.00)
-            ->hasLimitingInstallments(false)
-            ->appendLimitValueInstallment(10.00)
+            ->setTemplateSetting($template)
             ->calculateInstallments();
 
         $this->assertCount(12, $calculator->getCollectionInstallments()->getIterator());
@@ -101,9 +111,10 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsInstallments()
     {
+        $template = (new \Moguzz\TemplateSetting())->setLimitValueInstallment(10.00);
         $calculator = (new Moguzz\Calculator($this->interest, $this->currency))
             ->appendTotalPurchase(450.00)
-            ->appendLimitValueInstallment(10.00)
+            ->setTemplateSetting($template)
             ->calculateInstallments();
 
         $this->assertEquals(
@@ -114,9 +125,10 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsInstallmentsFormatting()
     {
+        $template = (new \Moguzz\TemplateSetting())->setLimitValueInstallment(10.00);
         $calculator = (new Moguzz\Calculator($this->interest, $this->currency))
             ->appendTotalPurchase(450.00)
-            ->appendLimitValueInstallment(10.00)
+            ->setTemplateSetting($template)
             ->calculateInstallments()
             ->formattingInstallments();
 

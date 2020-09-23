@@ -2,7 +2,6 @@
 
 namespace Moguzz;
 
-use InvalidArgumentException;
 use Moguzz\Contracts\Currency;
 use Moguzz\Contracts\Interest;
 
@@ -30,19 +29,9 @@ class Calculator
     private $totalPurchase;
 
     /**
-     * @var integer $numberMaxInstallments
+     * @var TemplateSetting $template
      */
-    private $numberMaxInstallments;
-
-    /**
-     * @var boolean $limitInstallments
-     */
-    private $limitInstallments;
-
-    /**
-     * @var float $limitValueInstallment
-     */
-    private $limitValueInstallment;
+    private $template;
 
     /**
      * @var InstallmentCollection
@@ -58,19 +47,9 @@ class Calculator
     {
         $this->interest = $interest;
         $this->currency = $currency;
-        $this->installmentCollection = new InstallmentCollection();
-        $this->setupSettings();
-    }
-
-    /**
-     * Making a configuration setup
-     */
-    private function setupSettings()
-    {
         $this->totalPurchase = 0.00;
-        $this->numberMaxInstallments = 12;
-        $this->limitInstallments = true;
-        $this->limitValueInstallment = 5.00;
+        $this->template = new TemplateSetting();
+        $this->installmentCollection = new InstallmentCollection();
     }
 
     /**
@@ -84,51 +63,12 @@ class Calculator
     }
 
     /**
-     * @param $number
+     * @param TemplateSetting $template
      * @return $this
      */
-    public function appendNumberInstallments($number)
+    public function setTemplateSetting(TemplateSetting $template)
     {
-        $this->verifyNumberInstallments($number);
-
-        $this->numberMaxInstallments = $number;
-        return $this;
-    }
-
-    /**
-     * @param $number
-     * @return bool
-     */
-    private function verifyNumberInstallments($number)
-    {
-        if ($number < 1) {
-            throw new InvalidArgumentException('The minimum number of installments cannot be less than zero.');
-        }
-
-        if ($number > 12) {
-            throw new InvalidArgumentException('The maximum number of installments cannot be greater than twelve.');
-        }
-
-        return true;
-    }
-
-    /**
-     * @param $key
-     * @return $this
-     */
-    public function hasLimitingInstallments($key)
-    {
-        $this->limitInstallments = $key;
-        return $this;
-    }
-
-    /**
-     * @param $limitValue
-     * @return $this
-     */
-    public function appendLimitValueInstallment($limitValue)
-    {
-        $this->limitValueInstallment = $limitValue;
+        $this->template = $template;
         return $this;
     }
 
@@ -137,21 +77,20 @@ class Calculator
      */
     public function calculateInstallments()
     {
-        foreach (range(1, $this->numberMaxInstallments) as $numberInstallment) {
+        $factory = new FactoryInstallment();
+
+        foreach (range(1, $this->template()->getNumberMaxInstallments()) as $numberInstallment) {
 
             $originalValueInstallment = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $numberInstallment);
+            $valueCalculated = $originalValueInstallment / $numberInstallment;
 
-            if ($this->installmentValueIsLessThanLimitValue($originalValueInstallment / $numberInstallment)) {
+            if ($this->installmentValueIsLessThanLimitValue($valueCalculated)) {
                 break;
             }
 
-            $this->installmentCollection->appendInstallment(
-                new Installment(
-                    $originalValueInstallment / $numberInstallment,
-                    $numberInstallment,
-                    $originalValueInstallment - $this->totalPurchase
-                )
-            );
+            $addedValue = $originalValueInstallment - $this->totalPurchase;
+
+            $this->installmentCollection->appendInstallment($factory->create($valueCalculated, $numberInstallment, $addedValue));
         }
 
         return $this;
@@ -163,7 +102,8 @@ class Calculator
      */
     private function installmentValueIsLessThanLimitValue($valueInstallmentCalculated)
     {
-        return $this->limitInstallments && $valueInstallmentCalculated < $this->limitValueInstallment;
+        return $this->template()->isLimitInstallments() &&
+            $valueInstallmentCalculated < $this->template()->getLimitValueInstallment();
     }
 
     /**
@@ -175,19 +115,11 @@ class Calculator
     }
 
     /**
-     * @return mixed
+     * @return TemplateSetting
      */
-    public function getNumberMaxInstallments()
+    public function template()
     {
-        return $this->numberMaxInstallments;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLimitValueInstallment()
-    {
-        return $this->limitValueInstallment;
+        return $this->template;
     }
 
     /**

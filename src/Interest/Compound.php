@@ -22,7 +22,7 @@ final class Compound extends AbstractInterest implements Interest
     /**
      * @param $totalPurchase
      * @param $numberInstallment
-     * @return float|int
+     * @return float|int|mixed
      */
     public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
     {

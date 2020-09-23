@@ -37,10 +37,10 @@ abstract class AbstractInterest
     }
 
     /**
-     * @return float|int
+     * @return float
      */
     final function getInterestValue()
     {
-        return $this->interestValue;
+        return (double) $this->interestValue;
     }
 }
