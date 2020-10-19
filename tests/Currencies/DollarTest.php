@@ -1,5 +1,9 @@
 <?php
 
+use Moguzz\Currencies\Dollar;
+use Moguzz\Currencies\Dollar as DollarAlias;
+use Moguzz\Entities\Money;
+
 class DollarTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -11,7 +15,7 @@ class DollarTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $formattedValue,
-            (new \Moguzz\Currencies\Dollar())->formatter($amount)
+            $amount->formatter()
         );
     }
 
@@ -21,12 +25,12 @@ class DollarTest extends \PHPUnit_Framework_TestCase
     public function providerFormatter()
     {
         return [
-            ['$ 9.85', 9.85],
-            ['$ 62.74', 62.74],
-            ['$ 587.00', 587.00],
-            ['$ 4,250.25', 4250.25],
-            ['$ 98,159.10', 98159.10],
-            ['$ 999,900.70', 999900.70],
+            ['$ 9.85', new Money(9.85, new Dollar())],
+            ['$ 62.74', new Money(62.74, new Dollar())],
+            ['$ 587.00', new Money(587.00, new Dollar())],
+            ['$ 4,250.25', new Money(4250.25, new Dollar())],
+            ['$ 98,159.10', new Money(98159.10, new Dollar())],
+            ['$ 999,900.70', new Money(999900.70, new Dollar())],
         ];
     }
 }

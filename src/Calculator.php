@@ -4,6 +4,8 @@ namespace Moguzz;
 
 use Moguzz\Contracts\Currency;
 use Moguzz\Contracts\Interest;
+use Moguzz\Entities\Installment;
+use Moguzz\Entities\Money;
 
 /**
  * Class Calculator
@@ -41,24 +43,22 @@ class Calculator
     /**
      * Calculator constructor.
      * @param Interest $interest
-     * @param Currency $currency
      */
-    public function __construct(Interest $interest, Currency $currency)
+    public function __construct(Interest $interest)
     {
         $this->interest = $interest;
-        $this->currency = $currency;
-        $this->totalPurchase = 0.00;
+        $this->totalPurchase = (new Money(0.00))->getAmount();
         $this->template = new TemplateSetting();
         $this->installmentCollection = new InstallmentCollection();
     }
 
     /**
-     * @param $totalPurchase
+     * @param Money $totalPurchase
      * @return $this
      */
-    public function appendTotalPurchase($totalPurchase)
+    public function appendTotalPurchase(Money $totalPurchase)
     {
-        $this->totalPurchase += $totalPurchase;
+        $this->totalPurchase += $totalPurchase->getAmount();
         return $this;
     }
 
@@ -77,20 +77,21 @@ class Calculator
      */
     public function calculateInstallments()
     {
-        $factory = new FactoryInstallment();
-
         foreach (range(1, $this->template()->getNumberMaxInstallments()) as $numberInstallment) {
 
             $originalValueInstallment = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $numberInstallment);
-            $valueCalculated = $originalValueInstallment / $numberInstallment;
 
-            if ($this->installmentValueIsLessThanLimitValue($valueCalculated)) {
+            $valueCalculated = new Money($originalValueInstallment / $numberInstallment);
+
+            if ($this->installmentValueIsLessThanLimitValue($valueCalculated->getAmount())) {
                 break;
             }
 
-            $addedValue = $originalValueInstallment - $this->totalPurchase;
+            $addedValue = new Money($originalValueInstallment - $this->totalPurchase);
 
-            $this->installmentCollection->appendInstallment($factory->create($valueCalculated, $numberInstallment, $addedValue));
+            $this->installmentCollection->appendInstallment(
+                new Installment($valueCalculated, $numberInstallment, $addedValue)
+            );
         }
 
         return $this;
@@ -107,7 +108,7 @@ class Calculator
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getTotalPurchase()
     {

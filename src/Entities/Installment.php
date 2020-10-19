@@ -1,15 +1,16 @@
 <?php
 
-namespace Moguzz;
+namespace Moguzz\Entities;
 
 /**
  * Class Installment
- * @package Moguzz
+ *
+ * @package Moguzz\Entities
  */
 final class Installment
 {
     /**
-     * @var float $valueCalculated
+     * @var Money $valueCalculated
      */
     public $valueCalculated;
 
@@ -19,31 +20,32 @@ final class Installment
     public $numberInstallment;
 
     /**
-     * @var float $addedValue
+     * @var Money $addedValue
      */
     public $addedValue;
 
     /**
-     * @var float $originalValue
+     * @var Money $originalValue
      */
     public $originalValue;
 
     /**
      * Installment constructor.
-     * @param $valueCalculated
+     *
+     * @param Money $valueCalculated
      * @param $numberInstallment
-     * @param $addedValue
+     * @param Money $addedValue
      */
-    public function __construct($valueCalculated, $numberInstallment, $addedValue)
+    public function __construct(Money $valueCalculated, $numberInstallment, Money $addedValue)
     {
         $this->valueCalculated = $valueCalculated;
         $this->numberInstallment = $numberInstallment;
         $this->addedValue = $addedValue;
-        $this->originalValue = $this->getValueCalculated() * $this->getNumberInstallment();
+        $this->originalValue = new Money($this->getValueCalculated()->getAmount() * $this->getNumberInstallment());
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getValueCalculated()
     {
@@ -59,7 +61,7 @@ final class Installment
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getAddedValue()
     {
@@ -67,7 +69,7 @@ final class Installment
     }
 
     /**
-     * @return float
+     * @return Money
      */
     public function getOriginalValue()
     {

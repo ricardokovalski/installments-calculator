@@ -12,10 +12,13 @@ trait FormattingTrait
         $iterator = $this->installmentCollection->getIterator();
 
         iterator_apply($iterator, function(\Iterator $iterator) {
-            $iterator->current()->valueCalculated = $this->currency->formatter($iterator->current()->getValueCalculated());
-            $iterator->current()->addedValue = $this->currency->formatter($iterator->current()->getAddedValue());
-            $iterator->current()->originalValue = $this->currency->formatter($iterator->current()->getOriginalValue());
+
+            $iterator->current()->valueCalculated = $iterator->current()->getValueCalculated()->formatter();
+            $iterator->current()->addedValue = $iterator->current()->getAddedValue()->formatter();
+            $iterator->current()->originalValue = $iterator->current()->getOriginalValue()->formatter();
+
             return true;
+
         }, array($iterator));
 
         return $this;

@@ -1,5 +1,8 @@
 <?php
 
+use Moguzz\Entities\Installment;
+use Moguzz\Entities\Money;
+
 class CalculatorTest extends \PHPUnit_Framework_TestCase
 {
     private $interest;
@@ -16,26 +19,26 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     public function testExpectedExceptionWhenExceedsMaximumNumberOfInstallments()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest, $this->currency))->setTemplateSetting($this->template->setNumberMaxInstallments(13));
+        (new \Moguzz\Calculator($this->interest))->setTemplateSetting($this->template->setNumberMaxInstallments(13));
     }
 
     public function testExpectedExceptionWhenMinimumNumberInstallmentsIsLess()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest, $this->currency))->setTemplateSetting($this->template->setNumberMaxInstallments(0));
+        (new \Moguzz\Calculator($this->interest))->setTemplateSetting($this->template->setNumberMaxInstallments(0));
     }
 
     public function testAssertEqualsAppendTotalPurchase()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
-            ->appendTotalPurchase(158.80);
+        $calculator = (new \Moguzz\Calculator($this->interest))
+            ->appendTotalPurchase(new Money(158.80));
 
         $this->assertEquals(158.80, $calculator->getTotalPurchase());
     }
 
     public function testAssertEqualsAppendNumberInstallments()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
+        $calculator = (new \Moguzz\Calculator($this->interest))
             ->setTemplateSetting($this->template->setNumberMaxInstallments(6));
 
         $this->assertEquals(6, $calculator->template()->getNumberMaxInstallments());
@@ -43,17 +46,17 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsAppendLimitValueInstallment()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
-            ->setTemplateSetting($this->template->setLimitValueInstallment(7.99));
+        $calculator = (new \Moguzz\Calculator($this->interest))
+            ->setTemplateSetting($this->template->setLimitValueInstallment(new Money(7.99)));
 
         $this->assertEquals(7.99, $calculator->template()->getLimitValueInstallment());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculated()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
-            ->appendTotalPurchase(88.90)
-            ->setTemplateSetting($this->template->setLimitValueInstallment(10.00))
+        $calculator = (new \Moguzz\Calculator($this->interest))
+            ->appendTotalPurchase(new Money(88.90))
+            ->setTemplateSetting($this->template->setLimitValueInstallment(new Money(10.00)))
             ->calculateInstallments();
 
         $this->assertCount(10, $calculator->getCollectionInstallments()->getIterator());
@@ -61,9 +64,9 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest, $this->currency))
-            ->appendTotalPurchase(150.00)
-            ->setTemplateSetting($this->template->setLimitInstallments(false)->setLimitValueInstallment(10.00))
+        $calculator = (new \Moguzz\Calculator($this->interest))
+            ->appendTotalPurchase(new Money(150.00))
+            ->setTemplateSetting($this->template->setLimitInstallments(false)->setLimitValueInstallment(new Money(10.00)))
             ->calculateInstallments();
 
         $this->assertCount(12, $calculator->getCollectionInstallments()->getIterator());
@@ -71,12 +74,12 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerInstallmentsValueCalculated
-     * @param \Moguzz\Installment $valueCalculated
+     * @param Installment $valueCalculated
      * @param $installment
      */
-    public function testAssertEqualsValueCalculatedInstallments($valueCalculated, \Moguzz\Installment $installment)
+    public function testAssertEqualsValueCalculatedInstallments($valueCalculated, Installment $installment)
     {
-        $this->assertEquals($valueCalculated, $installment->getValueCalculated());
+        $this->assertEquals($valueCalculated, $installment->getValueCalculated()->getAmount());
     }
 
     /**
@@ -85,26 +88,26 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     public function providerInstallmentsValueCalculated()
     {
         return array(
-            array(450.00, new \Moguzz\Installment(450.00, 1, 0)),
-            array(235.14079732992, new \Moguzz\Installment(235.14079732992, 2, 20.281594659835)),
-            array(159.05807777209, new \Moguzz\Installment(159.05807777209, 3, 27.174233316284)),
-            array(121.03322182922, new \Moguzz\Installment(121.03322182922, 4, 34.132887316866)),
-            array(98.231503314593, new \Moguzz\Installment(98.231503314593, 5, 41.157516572966)),
-            array(83.041344930776, new \Moguzz\Installment(83.041344930776, 6, 48.248069584653)),
-            array(72.200640496078, new \Moguzz\Installment(72.200640496078, 7, 55.404483472543)),
-            array(64.078335502082, new \Moguzz\Installment(64.078335502082, 8, 62.626684016653)),
-            array(57.768287300247, new \Moguzz\Installment(57.768287300247, 9, 69.914585702227)),
-            array(52.726809177244, new \Moguzz\Installment(52.726809177244, 10, 77.268091772441)),
-            array(48.607917662541, new \Moguzz\Installment(48.607917662541, 11, 84.687094287955)),
-            array(45.180956182769, new \Moguzz\Installment(45.180956182769, 12, 92.171474193232)),
+            array(450.00, new Installment(new Money(450.00), 1, new Money(0))),
+            array(235.14079732992, new Installment(new Money(235.14079732992), 2, new Money(20.281594659835))),
+            array(159.05807777209, new Installment(new Money(159.05807777209), 3, new Money(27.174233316284))),
+            array(121.03322182922, new Installment(new Money(121.03322182922), 4, new Money(34.132887316866))),
+            array(98.231503314593, new Installment(new Money(98.231503314593), 5, new Money(41.157516572966))),
+            array(83.041344930776, new Installment(new Money(83.041344930776), 6, new Money(48.248069584653))),
+            array(72.200640496078, new Installment(new Money(72.200640496078), 7, new Money(55.404483472543))),
+            array(64.078335502082, new Installment(new Money(64.078335502082), 8, new Money(62.626684016653))),
+            array(57.768287300247, new Installment(new Money(57.768287300247), 9, new Money(69.914585702227))),
+            array(52.726809177244, new Installment(new Money(52.726809177244), 10, new Money(77.268091772441))),
+            array(48.607917662541, new Installment(new Money(48.607917662541), 11, new Money(84.687094287955))),
+            array(45.180956182769, new Installment(new Money(45.180956182769), 12, new Money(92.171474193232))),
         );
     }
 
     public function testAssertEqualsInstallments()
     {
-        $calculator = (new Moguzz\Calculator($this->interest, $this->currency))
-            ->appendTotalPurchase(450.00)
-            ->setTemplateSetting($this->template->setLimitValueInstallment(10.00))
+        $calculator = (new Moguzz\Calculator($this->interest))
+            ->appendTotalPurchase(new Money(450.00))
+            ->setTemplateSetting($this->template->setLimitValueInstallment(new Money(10.00)))
             ->calculateInstallments();
 
         $this->assertEquals(
@@ -115,9 +118,9 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsInstallmentsFormatting()
     {
-        $calculator = (new Moguzz\Calculator($this->interest, $this->currency))
-            ->appendTotalPurchase(450.00)
-            ->setTemplateSetting($this->template->setLimitValueInstallment(10.00))
+        $calculator = (new Moguzz\Calculator($this->interest))
+            ->appendTotalPurchase(new Money(450.00))
+            ->setTemplateSetting($this->template->setLimitValueInstallment(new Money(10.00)))
             ->calculateInstallments()
             ->formattingInstallments();
 
@@ -133,18 +136,18 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     private function createInstallments()
     {
         $installments = array(
-            new \Moguzz\Installment(450.00, 1, 0),
-            new \Moguzz\Installment(235.14079732992, 2, 20.281594659835),
-            new \Moguzz\Installment(159.05807777209, 3, 27.174233316284),
-            new \Moguzz\Installment(121.03322182922, 4, 34.132887316866),
-            new \Moguzz\Installment(98.231503314593, 5, 41.157516572966),
-            new \Moguzz\Installment(83.041344930776, 6, 48.248069584653),
-            new \Moguzz\Installment(72.200640496078, 7, 55.404483472543),
-            new \Moguzz\Installment(64.078335502082, 8, 62.626684016653),
-            new \Moguzz\Installment(57.768287300247, 9, 69.914585702227),
-            new \Moguzz\Installment(52.726809177244, 10, 77.268091772441),
-            new \Moguzz\Installment(48.607917662541, 11, 84.687094287955),
-            new \Moguzz\Installment(45.180956182769, 12, 92.171474193232),
+            new Installment(new Money(450.00), 1, new Money(0)),
+            new Installment(new Money(235.14079732992), 2, new Money(20.281594659835)),
+            new Installment(new Money(159.05807777209), 3, new Money(27.174233316284)),
+            new Installment(new Money(121.03322182922), 4, new Money(34.132887316866)),
+            new Installment(new Money(98.231503314593), 5, new Money(41.157516572966)),
+            new Installment(new Money(83.041344930776), 6, new Money(48.248069584653)),
+            new Installment(new Money(72.200640496078), 7, new Money(55.404483472543)),
+            new Installment(new Money(64.078335502082), 8, new Money(62.626684016653)),
+            new Installment(new Money(57.768287300247), 9, new Money(69.914585702227)),
+            new Installment(new Money(52.726809177244), 10, new Money(77.268091772441)),
+            new Installment(new Money(48.607917662541), 11, new Money(84.687094287955)),
+            new Installment(new Money(45.180956182769), 12, new Money(92.171474193232)),
         );
 
         $installmentCollection = new \Moguzz\InstallmentCollection();
@@ -163,15 +166,19 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     private function formattingInstallments(\Moguzz\InstallmentCollectionIterator $installmentCollectionIterator)
     {
         iterator_apply($installmentCollectionIterator, function(\Iterator $iterator) {
-            $iterator->current()->valueCalculated = $this->currency->formatter($iterator->current()->getValueCalculated());
-            $iterator->current()->addedValue = $this->currency->formatter($iterator->current()->getAddedValue());
-            $iterator->current()->originalValue = $this->currency->formatter($iterator->current()->getOriginalValue());
+
+            $iterator->current()->valueCalculated = $iterator->current()->getValueCalculated()->formatter();
+            $iterator->current()->addedValue = $iterator->current()->getAddedValue()->formatter();
+            $iterator->current()->originalValue = $iterator->current()->getOriginalValue()->formatter();
+
             return true;
+
         }, array($installmentCollectionIterator));
 
         $installmentCollectionIterator->rewind();
 
         return $installmentCollectionIterator;
+
     }
 
 }

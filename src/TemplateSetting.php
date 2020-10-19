@@ -3,6 +3,9 @@
 namespace Moguzz;
 
 use InvalidArgumentException;
+use Moguzz\Contracts\Currency;
+use Moguzz\Currencies\Real;
+use Moguzz\Entities\Money;
 
 /**
  * Class TemplateSetting
@@ -10,6 +13,11 @@ use InvalidArgumentException;
  */
 class TemplateSetting
 {
+    /**
+     * @var Currency $currency
+     */
+    private $currency;
+
     /**
      * @var integer $numberMaxInstallments
      */
@@ -30,9 +38,28 @@ class TemplateSetting
      */
     public function __construct()
     {
+        $this->currency = new Real();
         $this->numberMaxInstallments = 12;
         $this->limitInstallments = true;
-        $this->limitValueInstallment = 5.00;
+        $this->limitValueInstallment = (new Money(5.00, $this->currency))->getAmount();
+    }
+
+    /**
+     * @return Currency|Real
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param Currency $currency
+     * @return $this
+     */
+    public function setCurrency(Currency $currency)
+    {
+        $this->currency = $currency;
+        return $this;
     }
 
     /**
@@ -85,9 +112,9 @@ class TemplateSetting
      * @param $limitValueInstallment
      * @return $this
      */
-    public function setLimitValueInstallment($limitValueInstallment)
+    public function setLimitValueInstallment(Money $limitValueInstallment)
     {
-        $this->limitValueInstallment = $limitValueInstallment;
+        $this->limitValueInstallment = $limitValueInstallment->getAmount();
         return $this;
     }
 

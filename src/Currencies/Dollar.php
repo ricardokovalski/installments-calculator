@@ -42,12 +42,46 @@ final class Dollar implements Currency
     }
 
     /**
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDecimals()
+    {
+        return $this->decimals;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDecPoint()
+    {
+        return $this->decPoint;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThousandsSep()
+    {
+        return $this->thousandsSep;
+    }
+
+
+
+    /**
      * @param $amount
      * @return string
      */
-    public function formatter($amount)
+    /*public function formatter($amount)
     {
         $formattedValue = number_format($amount, $this->decimals);
         return sprintf("%s %s", $this->prefix, $formattedValue);
-    }
+    }*/
 }

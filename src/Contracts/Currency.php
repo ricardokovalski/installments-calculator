@@ -4,5 +4,5 @@ namespace Moguzz\Contracts;
 
 interface Currency
 {
-    public function formatter($amount);
+    //public function formatter($amount);
 }

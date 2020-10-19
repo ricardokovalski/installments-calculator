@@ -1,5 +1,7 @@
 <?php
 
+use Moguzz\Entities\Money;
+
 class RealTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -11,7 +13,7 @@ class RealTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $formattedValue,
-            (new \Moguzz\Currencies\Real())->formatter($amount)
+            $amount->formatter()
         );
     }
 
@@ -21,12 +23,12 @@ class RealTest extends \PHPUnit_Framework_TestCase
     public function providerFormatter()
     {
         return [
-            ['R$ 1,00', 1.00],
-            ['R$ 30,50', 30.50],
-            ['R$ 102,35', 102.35],
-            ['R$ 1.006,89', 1006.89],
-            ['R$ 25.046,06', 25046.06],
-            ['R$ 407.890,31', 407890.31],
+            ['R$ 1,00', new Money(1.00)],
+            ['R$ 30,50', new Money(30.50)],
+            ['R$ 102,35', new Money(102.35)],
+            ['R$ 1.006,89', new Money(1006.89)],
+            ['R$ 25.046,06', new Money(25046.06)],
+            ['R$ 407.890,31', new Money(407890.31)],
         ];
     }
 }
