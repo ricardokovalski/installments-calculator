@@ -72,16 +72,4 @@ final class Dollar implements Currency
     {
         return $this->thousandsSep;
     }
-
-
-
-    /**
-     * @param $amount
-     * @return string
-     */
-    /*public function formatter($amount)
-    {
-        $formattedValue = number_format($amount, $this->decimals);
-        return sprintf("%s %s", $this->prefix, $formattedValue);
-    }*/
 }

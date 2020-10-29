@@ -6,13 +6,11 @@ use Moguzz\Entities\Money;
 class CalculatorTest extends \PHPUnit_Framework_TestCase
 {
     private $interest;
-    private $currency;
     private $template;
 
     public function setUp()
     {
         $this->interest = new \Moguzz\Interest\Financial(2.99);
-        $this->currency = new \Moguzz\Currencies\Real();
         $this->template = new \Moguzz\TemplateSetting();
     }
 

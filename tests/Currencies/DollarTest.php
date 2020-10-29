@@ -1,7 +1,6 @@
 <?php
 
 use Moguzz\Currencies\Dollar;
-use Moguzz\Currencies\Dollar as DollarAlias;
 use Moguzz\Entities\Money;
 
 class DollarTest extends \PHPUnit_Framework_TestCase
@@ -11,7 +10,7 @@ class DollarTest extends \PHPUnit_Framework_TestCase
      * @param $formattedValue
      * @param $amount
      */
-    public function testAssertEqualFormatterCurrency($formattedValue, $amount)
+    public function testAssertEqualFormatterCurrency($formattedValue, Money $amount)
     {
         $this->assertEquals(
             $formattedValue,

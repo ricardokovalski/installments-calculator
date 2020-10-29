@@ -9,7 +9,7 @@ class RealTest extends \PHPUnit_Framework_TestCase
      * @param $formattedValue
      * @param $amount
      */
-    public function testAssertEqualFormatterCurrency($formattedValue, $amount)
+    public function testAssertEqualFormatterCurrency($formattedValue, Money $amount)
     {
         $this->assertEquals(
             $formattedValue,
