@@ -41,7 +41,7 @@ class TemplateSetting
         $this->currency = new Real();
         $this->numberMaxInstallments = 12;
         $this->limitInstallments = true;
-        $this->limitValueInstallment = (new Money(5.00, $this->currency))->getAmount();
+        $this->limitValueInstallment = 5.00;
     }
 
     /**
@@ -112,9 +112,9 @@ class TemplateSetting
      * @param $limitValueInstallment
      * @return $this
      */
-    public function setLimitValueInstallment(Money $limitValueInstallment)
+    public function setLimitValueInstallment($limitValueInstallment)
     {
-        $this->limitValueInstallment = $limitValueInstallment->getAmount();
+        $this->limitValueInstallment = $limitValueInstallment;
         return $this;
     }
 

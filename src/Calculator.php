@@ -2,28 +2,21 @@
 
 namespace Moguzz;
 
-use Moguzz\Contracts\Currency;
 use Moguzz\Contracts\Interest;
 use Moguzz\Entities\Installment;
 use Moguzz\Entities\Money;
 
 /**
  * Class Calculator
+ *
  * @package Moguzz
  */
 class Calculator
 {
-    use FormattingTrait;
-
     /**
      * @var Interest $interest
      */
     private $interest;
-
-    /**
-     * @var Currency $currency
-     */
-    private $currency;
 
     /**
      * @var float $totalPurchase
@@ -42,23 +35,24 @@ class Calculator
 
     /**
      * Calculator constructor.
+     *
      * @param Interest $interest
      */
     public function __construct(Interest $interest)
     {
         $this->interest = $interest;
-        $this->totalPurchase = (new Money(0.00))->getAmount();
+        $this->totalPurchase = 0.00;
         $this->template = new TemplateSetting();
         $this->installmentCollection = new InstallmentCollection();
     }
 
     /**
-     * @param Money $totalPurchase
+     * @param float $totalPurchase
      * @return $this
      */
-    public function appendTotalPurchase(Money $totalPurchase)
+    public function appendTotalPurchase($totalPurchase)
     {
-        $this->totalPurchase += $totalPurchase->getAmount();
+        $this->totalPurchase += $totalPurchase;
         return $this;
     }
 
@@ -81,17 +75,17 @@ class Calculator
 
             $originalValueInstallment = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $numberInstallment);
 
-            $valueCalculated = new Money($originalValueInstallment / $numberInstallment);
+            $valueCalculated = new Money($originalValueInstallment / $numberInstallment, $this->template()->getCurrency());
 
             if ($this->installmentValueIsLessThanLimitValue($valueCalculated->getAmount())) {
                 break;
             }
 
-            $addedValue = new Money($originalValueInstallment - $this->totalPurchase);
+            $addedValue = new Money($originalValueInstallment - $this->totalPurchase, $this->template()->getCurrency());
 
-            $this->installmentCollection->appendInstallment(
-                new Installment($valueCalculated, $numberInstallment, $addedValue)
-            );
+            $installment = new Installment($valueCalculated, $numberInstallment, $addedValue);
+
+            $this->installmentCollection->appendInstallment($installment);
         }
 
         return $this;

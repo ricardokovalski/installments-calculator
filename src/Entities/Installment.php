@@ -12,22 +12,22 @@ final class Installment
     /**
      * @var Money $valueCalculated
      */
-    public $valueCalculated;
+    private $valueCalculated;
 
     /**
      * @var int $numberInstallment
      */
-    public $numberInstallment;
+    private $numberInstallment;
 
     /**
      * @var Money $addedValue
      */
-    public $addedValue;
+    private $addedValue;
 
     /**
      * @var Money $originalValue
      */
-    public $originalValue;
+    private $originalValue;
 
     /**
      * Installment constructor.
@@ -41,7 +41,7 @@ final class Installment
         $this->valueCalculated = $valueCalculated;
         $this->numberInstallment = $numberInstallment;
         $this->addedValue = $addedValue;
-        $this->originalValue = new Money($this->getValueCalculated()->getAmount() * $this->getNumberInstallment());
+        $this->originalValue = $this->makeOriginalValue();
     }
 
     /**
@@ -74,5 +74,13 @@ final class Installment
     public function getOriginalValue()
     {
         return $this->originalValue;
+    }
+
+    /**
+     * @return Money
+     */
+    private function makeOriginalValue()
+    {
+        return new Money($this->getValueCalculated()->getAmount() * $this->getNumberInstallment(), $this->getValueCalculated()->getCurrency());
     }
 }

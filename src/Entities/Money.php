@@ -3,7 +3,6 @@
 namespace Moguzz\Entities;
 
 use Moguzz\Contracts\Currency;
-use Moguzz\Currencies\Real;
 
 /**
  * Class Money
@@ -26,12 +25,12 @@ final class Money
      * Money constructor.
      *
      * @param $amount
-     * @param Currency|null $currency
+     * @param Currency $currency
      */
-    public function __construct($amount, Currency $currency = null)
+    public function __construct($amount, Currency $currency)
     {
         $this->amount = $amount;
-        $this->currency = $currency ?: new Real();
+        $this->currency = $currency;
     }
 
     /**
