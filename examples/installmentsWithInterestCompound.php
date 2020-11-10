@@ -3,12 +3,10 @@
 require __DIR__ . '../vendor/autoload.php';
 
 use Moguzz\Calculator;
-use Moguzz\Currencies\Real;
 use Moguzz\Interest\Compound;
 
-$calculator = (new Calculator(new Compound(4.99), new Real()))
+$calculator = (new Calculator(new Compound(4.99)))
     ->appendTotalPurchase(474.99)
-    ->calculateInstallments()
-    ->formattingInstallments();
+    ->calculateInstallments();
 
 $collectionInstallments = $calculator->getCollectionInstallments();
