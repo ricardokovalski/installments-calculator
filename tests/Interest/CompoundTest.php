@@ -5,7 +5,7 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
     public function testExpectedExceptionWhenInterestNotIsNumericType()
     {
         $this->expectException(InvalidArgumentException::class);
-        new \Moguzz\Interest\Compound('XYZ');
+        new \Moguzz\Interest\Types\Compound('XYZ');
     }
 
     /**
@@ -19,7 +19,9 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Compound())->getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+            (new \Moguzz\Interest\Types\Compound())
+                ->appendTotalCapital($totalPurchase)
+                ->getValueCalculated($numberInstallment)
         );
     }
 
@@ -55,7 +57,9 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Compound(2.99))->getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+            (new \Moguzz\Interest\Types\Compound(2.99))
+                ->appendTotalCapital($totalPurchase)
+                ->getValueCalculated($numberInstallment)
         );
     }
 

@@ -5,7 +5,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     public function testExpectedExceptionWhenInterestNotIsNumericType()
     {
         $this->expectException(InvalidArgumentException::class);
-        new \Moguzz\Interest\Simple('XYZ');
+        new \Moguzz\Interest\Types\Simple('XYZ');
     }
 
     /**
@@ -19,7 +19,9 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Simple())->getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+            (new \Moguzz\Interest\Types\Simple())
+                ->appendTotalCapital($totalPurchase)
+                ->getValueCalculated($numberInstallment)
         );
     }
 
@@ -55,7 +57,9 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Simple(2.99))->getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+            (new \Moguzz\Interest\Types\Simple(2.99))
+                ->appendTotalCapital($totalPurchase)
+                ->getValueCalculated($numberInstallment)
         );
     }
 
@@ -65,7 +69,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     public function providerInstallmentsWhenInterestIsNonZero()
     {
         return [
-            [1, 894.56084099999998],
+            [1, 868.59000000000003],
             [2, 894.56084099999998],
             [3, 894.56084099999998],
             [4, 894.56084099999998],

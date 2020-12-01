@@ -5,7 +5,7 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
     public function testExpectedExceptionWhenInterestNotIsNumericType()
     {
         $this->expectException(InvalidArgumentException::class);
-        new \Moguzz\Interest\Financial('XYZ');
+        new \Moguzz\Interest\Types\Financial('XYZ');
     }
 
     /**
@@ -19,7 +19,9 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Financial())->getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+            (new \Moguzz\Interest\Types\Financial())
+                ->appendTotalCapital($totalPurchase)
+                ->getValueCalculated($numberInstallment)
         );
     }
 
@@ -55,7 +57,9 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Financial(2.99))->getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+            (new \Moguzz\Interest\Types\Financial(2.99))
+                ->appendTotalCapital($totalPurchase)
+                ->getValueCalculated($numberInstallment)
         );
     }
 

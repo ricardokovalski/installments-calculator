@@ -33,14 +33,14 @@ final class Installment
      * Installment constructor.
      *
      * @param Money $valueCalculated
-     * @param $numberInstallment
      * @param Money $addedValue
+     * @param $numberInstallment
      */
-    public function __construct(Money $valueCalculated, $numberInstallment, Money $addedValue)
+    public function __construct(Money $valueCalculated, Money $addedValue, $numberInstallment)
     {
         $this->valueCalculated = $valueCalculated;
-        $this->numberInstallment = $numberInstallment;
         $this->addedValue = $addedValue;
+        $this->numberInstallment = $numberInstallment;
         $this->originalValue = $this->makeOriginalValue();
     }
 

@@ -1,6 +1,5 @@
 <?php
 
-use Moguzz\Currencies\Dollar;
 use Moguzz\Currencies\Real;
 use Moguzz\Entities\Installment;
 use Moguzz\Entities\Money;
@@ -12,51 +11,59 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->interest = new \Moguzz\Interest\Financial(2.99);
+        $this->interest = new \Moguzz\Interest\Types\Financial(2.99);
         $this->template = new \Moguzz\TemplateSetting();
     }
 
     public function testExpectedExceptionWhenExceedsMaximumNumberOfInstallments()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest))->setTemplateSetting($this->template->setNumberMaxInstallments(13));
+        (new \Moguzz\Calculator())
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($this->template->setNumberMaxInstallments(13));
     }
 
     public function testExpectedExceptionWhenMinimumNumberInstallmentsIsLess()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest))->setTemplateSetting($this->template->setNumberMaxInstallments(0));
+        (new \Moguzz\Calculator())
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($this->template->setNumberMaxInstallments(0));
     }
 
     public function testAssertEqualsAppendTotalPurchase()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest))
-            ->appendTotalPurchase(158.80);
+        $calculator = (new \Moguzz\Calculator())
+            ->appendTotalPurchase(158.80)
+            ->applyInterest($this->interest);
 
         $this->assertEquals(158.80, $calculator->getTotalPurchase());
     }
 
     public function testAssertEqualsAppendNumberInstallments()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest))
-            ->setTemplateSetting($this->template->setNumberMaxInstallments(6));
+        $calculator = (new \Moguzz\Calculator())
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($this->template->setNumberMaxInstallments(6));
 
         $this->assertEquals(6, $calculator->template()->getNumberMaxInstallments());
     }
 
     public function testAssertEqualsAppendLimitValueInstallment()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest))
-            ->setTemplateSetting($this->template->setLimitValueInstallment(7.99));
+        $calculator = (new \Moguzz\Calculator())
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($this->template->setLimitValueInstallment(7.99));
 
         $this->assertEquals(7.99, $calculator->template()->getLimitValueInstallment());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculated()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest))
+        $calculator = (new \Moguzz\Calculator())
             ->appendTotalPurchase(88.90)
-            ->setTemplateSetting($this->template->setLimitValueInstallment(10.00))
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($this->template->setLimitValueInstallment(10.00))
             ->calculateInstallments();
 
         $this->assertCount(10, $calculator->getCollectionInstallments()->getIterator());
@@ -64,9 +71,10 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
     {
-        $calculator = (new \Moguzz\Calculator($this->interest))
+        $calculator = (new \Moguzz\Calculator())
             ->appendTotalPurchase(150.00)
-            ->setTemplateSetting($this->template->setLimitInstallments(false)->setLimitValueInstallment(10.00))
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($this->template->setLimitInstallments(false)->setLimitValueInstallment(10.00))
             ->calculateInstallments();
 
         $this->assertCount(12, $calculator->getCollectionInstallments()->getIterator());
@@ -74,19 +82,12 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsInstallments()
     {
-        $calculator = (new Moguzz\Calculator($this->interest))
-            ->appendTotalPurchase(450.00)
-            ->setTemplateSetting($this->template->setLimitValueInstallment(10.00))
-            ->calculateInstallments();
+        $template = $this->template->setLimitValueInstallment(10.00);
 
-        $this->assertEquals(
-            $this->createInstallments(),
-            $calculator->getCollectionInstallments()->getIterator()
-        );
-
-        $calculator = (new Moguzz\Calculator($this->interest))
+        $calculator = (new Moguzz\Calculator())
             ->appendTotalPurchase(450.00)
-            ->setTemplateSetting($this->template->setCurrency(new Dollar()))
+            ->applyInterest($this->interest)
+            ->loadTemplateSetting($template)
             ->calculateInstallments();
 
         $this->assertEquals(
@@ -101,18 +102,18 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     private function createInstallments()
     {
         $installments = array(
-            new Installment(new Money(450.00, $this->template->getCurrency()), 1, new Money(0, $this->template->getCurrency())),
-            new Installment(new Money(235.14079732992, $this->template->getCurrency()), 2, new Money(20.281594659835, $this->template->getCurrency())),
-            new Installment(new Money(159.05807777209, $this->template->getCurrency()), 3, new Money(27.174233316284, $this->template->getCurrency())),
-            new Installment(new Money(121.03322182922, $this->template->getCurrency()), 4, new Money(34.132887316866, $this->template->getCurrency())),
-            new Installment(new Money(98.231503314593, $this->template->getCurrency()), 5, new Money(41.157516572966, $this->template->getCurrency())),
-            new Installment(new Money(83.041344930776, $this->template->getCurrency()), 6, new Money(48.248069584653, $this->template->getCurrency())),
-            new Installment(new Money(72.200640496078, $this->template->getCurrency()), 7, new Money(55.404483472543, $this->template->getCurrency())),
-            new Installment(new Money(64.078335502082, $this->template->getCurrency()), 8, new Money(62.626684016653, $this->template->getCurrency())),
-            new Installment(new Money(57.768287300247, $this->template->getCurrency()), 9, new Money(69.914585702227, $this->template->getCurrency())),
-            new Installment(new Money(52.726809177244, $this->template->getCurrency()), 10, new Money(77.268091772441, $this->template->getCurrency())),
-            new Installment(new Money(48.607917662541, $this->template->getCurrency()), 11, new Money(84.687094287955, $this->template->getCurrency())),
-            new Installment(new Money(45.180956182769, $this->template->getCurrency()), 12, new Money(92.171474193232, $this->template->getCurrency())),
+            new Installment(new Money(450.00, $this->template->getCurrency()), new Money(0, $this->template->getCurrency()), 1),
+            new Installment(new Money(235.14079732992, $this->template->getCurrency()), new Money(20.281594659835, $this->template->getCurrency()), 2),
+            new Installment(new Money(159.05807777209, $this->template->getCurrency()), new Money(27.174233316284, $this->template->getCurrency()), 3),
+            new Installment(new Money(121.03322182922, $this->template->getCurrency()), new Money(34.132887316866, $this->template->getCurrency()), 4),
+            new Installment(new Money(98.231503314593, $this->template->getCurrency()), new Money(41.157516572966, $this->template->getCurrency()), 5),
+            new Installment(new Money(83.041344930776, $this->template->getCurrency()), new Money(48.248069584653, $this->template->getCurrency()), 6),
+            new Installment(new Money(72.200640496078, $this->template->getCurrency()), new Money(55.404483472543, $this->template->getCurrency()), 7),
+            new Installment(new Money(64.078335502082, $this->template->getCurrency()), new Money(62.626684016653, $this->template->getCurrency()), 8),
+            new Installment(new Money(57.768287300247, $this->template->getCurrency()), new Money(69.914585702227, $this->template->getCurrency()), 9),
+            new Installment(new Money(52.726809177244, $this->template->getCurrency()), new Money(77.268091772441, $this->template->getCurrency()), 10),
+            new Installment(new Money(48.607917662541, $this->template->getCurrency()), new Money(84.687094287955, $this->template->getCurrency()), 11),
+            new Installment(new Money(45.180956182769, $this->template->getCurrency()), new Money(92.171474193232, $this->template->getCurrency()), 12),
         );
 
         $installmentCollection = new \Moguzz\InstallmentCollection();
@@ -153,7 +154,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(0, 'R$ 0,00'),
                     array(450.00, 'R$ 450,00'),
                 ),
-                new Installment(new Money(450.00, new Real()), 1, new Money(0,  new Real()))
+                new Installment(new Money(450.00, new Real()), new Money(0,  new Real()), 1)
             ),
             array(
                 array(
@@ -161,7 +162,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(20.281594659835, 'R$ 20,28'),
                     array(470.28159465983998, 'R$ 470,28'),
                 ),
-                new Installment(new Money(235.14079732992, new Real()), 2, new Money(20.281594659835, new Real()))
+                new Installment(new Money(235.14079732992, new Real()), new Money(20.281594659835, new Real()), 2)
             ),
             array(
                 array(
@@ -169,7 +170,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(27.174233316284, 'R$ 27,17'),
                     array(477.17423331627003, 'R$ 477,17'),
                 ),
-                new Installment(new Money(159.05807777209, new Real()), 3, new Money(27.174233316284, new Real()))
+                new Installment(new Money(159.05807777209, new Real()), new Money(27.174233316284, new Real()), 3)
             ),
             array(
                 array(
@@ -177,7 +178,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(34.132887316866, 'R$ 34,13'),
                     array(484.13288731687999, 'R$ 484,13'),
                 ),
-                new Installment(new Money(121.03322182922, new Real()), 4, new Money(34.132887316866, new Real()))
+                new Installment(new Money(121.03322182922, new Real()), new Money(34.132887316866, new Real()), 4)
             ),
             array(
                 array(
@@ -185,7 +186,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(41.157516572966, 'R$ 41,16'),
                     array(491.157516573, 'R$ 491,16'),
                 ),
-                new Installment(new Money(98.231503314593, new Real()), 5, new Money(41.157516572966, new Real()))
+                new Installment(new Money(98.231503314593, new Real()), new Money(41.157516572966, new Real()), 5)
             ),
             array(
                 array(
@@ -193,7 +194,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(48.248069584653, 'R$ 48,25'),
                     array(498.24806958465604, 'R$ 498,25'),
                 ),
-                new Installment(new Money(83.041344930776, new Real()), 6, new Money(48.248069584653, new Real()))
+                new Installment(new Money(83.041344930776, new Real()), new Money(48.248069584653, new Real()), 6)
             ),
             array(
                 array(
@@ -201,7 +202,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(55.404483472543, 'R$ 55,40'),
                     array(505.40448347254596, 'R$ 505,40'),
                 ),
-                new Installment(new Money(72.200640496078, new Real()), 7, new Money(55.404483472543, new Real()))
+                new Installment(new Money(72.200640496078, new Real()), new Money(55.404483472543, new Real()), 7)
             ),
             array(
                 array(
@@ -209,7 +210,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(62.626684016653, 'R$ 62,63'),
                     array(512.62668401665599, 'R$ 512,63'),
                 ),
-                new Installment(new Money(64.078335502082, new Real()), 8, new Money(62.626684016653, new Real()))
+                new Installment(new Money(64.078335502082, new Real()), new Money(62.626684016653, new Real()), 8)
             ),
             array(
                 array(
@@ -217,7 +218,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(69.914585702227, 'R$ 69,91'),
                     array(519.91458570222301, 'R$ 519,91'),
                 ),
-                new Installment(new Money(57.768287300247, new Real()), 9, new Money(69.914585702227, new Real()))
+                new Installment(new Money(57.768287300247, new Real()), new Money(69.914585702227, new Real()), 9)
             ),
             array(
                 array(
@@ -225,7 +226,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(77.268091772441, 'R$ 77,27'),
                     array(527.26809177244002, 'R$ 527,27'),
                 ),
-                new Installment(new Money(52.726809177244, new Real()), 10, new Money(77.268091772441, new Real()))
+                new Installment(new Money(52.726809177244, new Real()), new Money(77.268091772441, new Real()), 10)
             ),
             array(
                 array(
@@ -233,7 +234,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(84.687094287955, 'R$ 84,69'),
                     array(534.687094288, 'R$ 534,69'),
                 ),
-                new Installment(new Money(48.607917662541, new Real()), 11, new Money(84.687094287955, new Real()))
+                new Installment(new Money(48.607917662541, new Real()), new Money(84.687094287955, new Real()), 11)
             ),
             array(
                 array(
@@ -241,7 +242,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
                     array(92.171474193232, 'R$ 92,17'),
                     array(542.17147419322805, 'R$ 542,17'),
                 ),
-                new Installment(new Money(45.180956182769, new Real()), 12, new Money(92.171474193232, new Real()))
+                new Installment(new Money(45.180956182769, new Real()), new Money(92.171474193232, new Real()), 12)
             ),
         );
     }

@@ -3,3 +3,4 @@ vendor/
 tests/build/
 composer.lock
 index.php
+.php_cs

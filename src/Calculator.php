@@ -14,11 +14,6 @@ use Moguzz\Entities\Money;
 class Calculator
 {
     /**
-     * @var Interest $interest
-     */
-    private $interest;
-
-    /**
      * @var float $totalPurchase
      */
     private $totalPurchase;
@@ -29,18 +24,20 @@ class Calculator
     private $template;
 
     /**
-     * @var InstallmentCollection
+     * @var Interest $interest
+     */
+    private $interest;
+
+    /**
+     * @var InstallmentCollection $installmentCollection
      */
     private $installmentCollection;
 
     /**
      * Calculator constructor.
-     *
-     * @param Interest $interest
      */
-    public function __construct(Interest $interest)
+    public function __construct()
     {
-        $this->interest = $interest;
         $this->totalPurchase = 0.00;
         $this->template = new TemplateSetting();
         $this->installmentCollection = new InstallmentCollection();
@@ -57,12 +54,32 @@ class Calculator
     }
 
     /**
+     * @param float $totalPurchase
+     * @return $this
+     */
+    public function resetTotalPurchase($totalPurchase = 0.00)
+    {
+        $this->totalPurchase = $totalPurchase;
+        return $this;
+    }
+
+    /**
      * @param TemplateSetting $template
      * @return $this
      */
-    public function setTemplateSetting(TemplateSetting $template)
+    public function loadTemplateSetting(TemplateSetting $template)
     {
         $this->template = $template;
+        return $this;
+    }
+
+    /**
+     * @param Interest $interest
+     * @return $this
+     */
+    public function applyInterest(Interest $interest)
+    {
+        $this->interest = $interest;
         return $this;
     }
 
@@ -71,19 +88,19 @@ class Calculator
      */
     public function calculateInstallments()
     {
+        $this->interest->appendTotalCapital($this->getTotalPurchase());
+
         foreach (range(1, $this->template()->getNumberMaxInstallments()) as $numberInstallment) {
 
-            $originalValueInstallment = $this->interest->getValueInstallmentCalculated($this->totalPurchase, $numberInstallment);
-
-            $valueCalculated = new Money($originalValueInstallment / $numberInstallment, $this->template()->getCurrency());
-
-            if ($this->installmentValueIsLessThanLimitValue($valueCalculated->getAmount())) {
+            if ($this->installmentValueIsLessThanLimitValue($this->interest->getValueCalculated($numberInstallment) / $numberInstallment)) {
                 break;
             }
 
-            $addedValue = new Money($originalValueInstallment - $this->totalPurchase, $this->template()->getCurrency());
-
-            $installment = new Installment($valueCalculated, $numberInstallment, $addedValue);
+            $installment = new Installment(
+                new Money($this->interest->getValueCalculated($numberInstallment) / $numberInstallment, $this->template()->getCurrency()),
+                new Money($this->interest->getValueCalculated($numberInstallment) - $this->totalPurchase, $this->template()->getCurrency()),
+                $numberInstallment
+            );
 
             $this->installmentCollection->appendInstallment($installment);
         }

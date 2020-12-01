@@ -1,17 +1,19 @@
 <?php
 
-namespace Moguzz\Interest;
+namespace Moguzz\Interest\Types;
 
 use Moguzz\Contracts\Interest;
 
 /**
  * Class Compound
- * @package Moguzz\Interest
+ *
+ * @package Moguzz\Interest\Types
  */
 final class Compound extends AbstractInterest implements Interest
 {
     /**
      * Compound constructor.
+     *
      * @param float $interestValue
      */
     public function __construct($interestValue = 0.00)
@@ -20,16 +22,15 @@ final class Compound extends AbstractInterest implements Interest
     }
 
     /**
-     * @param $totalPurchase
      * @param $numberInstallment
-     * @return float|int|mixed
+     * @return float|int
      */
-    public function getValueInstallmentCalculated($totalPurchase, $numberInstallment)
+    public function getValueCalculated($numberInstallment)
     {
         if ($this->interestValueIsZeroed()) {
-            return $totalPurchase + $this->getInterestValue();
+            return $this->getTotalCapital();
         }
 
-        return $totalPurchase * pow((1 + $this->getInterestValue()), $numberInstallment - 1);
+        return $this->getTotalCapital() * pow((1 + $this->getInterestRates()), $numberInstallment - 1);
     }
 }

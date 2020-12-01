@@ -5,7 +5,6 @@ namespace Moguzz;
 use InvalidArgumentException;
 use Moguzz\Contracts\Currency;
 use Moguzz\Currencies\Real;
-use Moguzz\Entities\Money;
 
 /**
  * Class TemplateSetting
