@@ -3,10 +3,11 @@
 require __DIR__ . '../../vendor/autoload.php';
 
 use Moguzz\Calculator;
-use Moguzz\Interest\Compound;
+use Moguzz\Interest\Types\Compound;
 
-$calculator = (new Calculator(new Compound(4.99)))
+$calculator = (new Calculator())
     ->appendTotalPurchase(474.99)
+    ->applyInterest(new Compound(4.99))
     ->calculateInstallments();
 
 $collectionInstallments = $calculator->getCollectionInstallments();
