@@ -4,7 +4,7 @@ use Moguzz\Currencies\Real;
 use Moguzz\Entities\Installment;
 use Moguzz\Entities\Money;
 
-class CalculatorTest extends \PHPUnit_Framework_TestCase
+class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
 {
     private $interest;
     private $template;
@@ -18,8 +18,7 @@ class CalculatorTest extends \PHPUnit_Framework_TestCase
     public function testExpectedExceptionWhenExceedsMaximumNumberOfInstallments()
     {
         $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator())
-            ->applyInterest($this->interest)
+        (new \Moguzz\Calculator($this->interest))
             ->loadTemplateSetting($this->template->setNumberMaxInstallments(13));
     }
 
