@@ -21,7 +21,7 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
             $valueInstallmentCalculated,
             (new \Moguzz\Interest\Types\Financial())
                 ->appendTotalCapital($totalPurchase)
-                ->getValueCalculated($numberInstallment)
+                ->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
@@ -59,7 +59,7 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
             $valueInstallmentCalculated,
             (new \Moguzz\Interest\Types\Financial(2.99))
                 ->appendTotalCapital($totalPurchase)
-                ->getValueCalculated($numberInstallment)
+                ->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 

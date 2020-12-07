@@ -21,7 +21,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             $valueInstallmentCalculated,
             (new \Moguzz\Interest\Types\Simple())
                 ->appendTotalCapital($totalPurchase)
-                ->getValueCalculated($numberInstallment)
+                ->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
@@ -59,7 +59,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             $valueInstallmentCalculated,
             (new \Moguzz\Interest\Types\Simple(2.99))
                 ->appendTotalCapital($totalPurchase)
-                ->getValueCalculated($numberInstallment)
+                ->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 

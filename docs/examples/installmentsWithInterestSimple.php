@@ -2,12 +2,13 @@
 
 require __DIR__ . '../../vendor/autoload.php';
 
-use Moguzz\Calculator;
+use Moguzz\CalculatorInstallments;
 use Moguzz\Interest\Types\Simple;
 
-$calculator = (new Calculator())
-    ->appendTotalPurchase(329.99)
-    ->applyInterest(new Simple(1.99))
-    ->calculateInstallments();
+$interest = new Simple(1.99);
+$interest->appendTotalCapital(329.99);
+
+$calculator = new CalculatorInstallments($interest);
+$calculator->calculateInstallments();
 
 $collectionInstallments = $calculator->getCollectionInstallments();

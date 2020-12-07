@@ -3,6 +3,8 @@
 use Moguzz\Currencies\Real;
 use Moguzz\Entities\Installment;
 use Moguzz\Entities\Money;
+use Moguzz\Exceptions\MaximumNumberInstallment;
+use Moguzz\Exceptions\MinimumNumberInstallment;
 
 class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,52 +19,50 @@ class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
 
     public function testExpectedExceptionWhenExceedsMaximumNumberOfInstallments()
     {
-        $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator($this->interest))
-            ->loadTemplateSetting($this->template->setNumberMaxInstallments(13));
+        $this->expectException(MaximumNumberInstallment::class);
+
+        $this->template->resetNumberMaxInstallments(13);
+
+        (new \Moguzz\CalculatorInstallments($this->interest))->applySetting($this->template);
     }
 
     public function testExpectedExceptionWhenMinimumNumberInstallmentsIsLess()
     {
-        $this->expectException(InvalidArgumentException::class);
-        (new \Moguzz\Calculator())
-            ->applyInterest($this->interest)
-            ->loadTemplateSetting($this->template->setNumberMaxInstallments(0));
-    }
+        $this->expectException(MinimumNumberInstallment::class);
 
-    public function testAssertEqualsAppendTotalPurchase()
-    {
-        $calculator = (new \Moguzz\Calculator())
-            ->appendTotalPurchase(158.80)
-            ->applyInterest($this->interest);
+        $this->template->resetNumberMaxInstallments(0);
 
-        $this->assertEquals(158.80, $calculator->getTotalPurchase());
+        (new \Moguzz\CalculatorInstallments($this->interest))->applySetting($this->template);
     }
 
     public function testAssertEqualsAppendNumberInstallments()
     {
-        $calculator = (new \Moguzz\Calculator())
-            ->applyInterest($this->interest)
-            ->loadTemplateSetting($this->template->setNumberMaxInstallments(6));
+        $this->template->resetNumberMaxInstallments(6);
 
-        $this->assertEquals(6, $calculator->template()->getNumberMaxInstallments());
+        //$calculator = (new \Moguzz\CalculatorInstallments($this->interest));
+
+        $this->assertEquals(6, $this->template->getNumberMaxInstallments());
     }
 
     public function testAssertEqualsAppendLimitValueInstallment()
     {
-        $calculator = (new \Moguzz\Calculator())
-            ->applyInterest($this->interest)
-            ->loadTemplateSetting($this->template->setLimitValueInstallment(7.99));
+        $this->template->resetLimitValueInstallment();
+        $this->template->appendLimitValueInstallment(7.99);
 
-        $this->assertEquals(7.99, $calculator->template()->getLimitValueInstallment());
+        //$calculator = (new \Moguzz\CalculatorInstallments($this->interest))->applySetting($this->template);
+
+        $this->assertEquals(7.99, $this->template->getLimitValueInstallment());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculated()
     {
-        $calculator = (new \Moguzz\Calculator())
-            ->appendTotalPurchase(88.90)
-            ->applyInterest($this->interest)
-            ->loadTemplateSetting($this->template->setLimitValueInstallment(10.00))
+        $this->interest->appendTotalCapital(88.90);
+
+        $this->template->resetLimitValueInstallment();
+        $this->template->appendLimitValueInstallment(10.00);
+
+        $calculator = (new \Moguzz\CalculatorInstallments($this->interest))
+            ->applySetting($this->template)
             ->calculateInstallments();
 
         $this->assertCount(10, $calculator->getCollectionInstallments()->getIterator());
@@ -70,10 +70,14 @@ class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
     {
-        $calculator = (new \Moguzz\Calculator())
-            ->appendTotalPurchase(150.00)
-            ->applyInterest($this->interest)
-            ->loadTemplateSetting($this->template->setLimitInstallments(false)->setLimitValueInstallment(10.00))
+        $this->interest->appendTotalCapital(150.00);
+
+        $this->template->resetLimitInstallments(false);
+        $this->template->resetLimitValueInstallment();
+        $this->template->appendLimitValueInstallment(10.00);
+
+        $calculator = (new \Moguzz\CalculatorInstallments($this->interest))
+            ->applySetting($this->template)
             ->calculateInstallments();
 
         $this->assertCount(12, $calculator->getCollectionInstallments()->getIterator());
@@ -81,12 +85,13 @@ class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
 
     public function testAssertEqualsInstallments()
     {
-        $template = $this->template->setLimitValueInstallment(10.00);
+        $this->interest->appendTotalCapital(450.00);
 
-        $calculator = (new Moguzz\Calculator())
-            ->appendTotalPurchase(450.00)
-            ->applyInterest($this->interest)
-            ->loadTemplateSetting($template)
+        $this->template->resetLimitValueInstallment();
+        $this->template->appendLimitValueInstallment(10.00);
+
+        $calculator = (new Moguzz\CalculatorInstallments($this->interest))
+            ->applySetting($this->template)
             ->calculateInstallments();
 
         $this->assertEquals(
@@ -101,18 +106,18 @@ class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
     private function createInstallments()
     {
         $installments = array(
-            new Installment(new Money(450.00, $this->template->getCurrency()), new Money(0, $this->template->getCurrency()), 1),
-            new Installment(new Money(235.14079732992, $this->template->getCurrency()), new Money(20.281594659835, $this->template->getCurrency()), 2),
-            new Installment(new Money(159.05807777209, $this->template->getCurrency()), new Money(27.174233316284, $this->template->getCurrency()), 3),
-            new Installment(new Money(121.03322182922, $this->template->getCurrency()), new Money(34.132887316866, $this->template->getCurrency()), 4),
-            new Installment(new Money(98.231503314593, $this->template->getCurrency()), new Money(41.157516572966, $this->template->getCurrency()), 5),
-            new Installment(new Money(83.041344930776, $this->template->getCurrency()), new Money(48.248069584653, $this->template->getCurrency()), 6),
-            new Installment(new Money(72.200640496078, $this->template->getCurrency()), new Money(55.404483472543, $this->template->getCurrency()), 7),
-            new Installment(new Money(64.078335502082, $this->template->getCurrency()), new Money(62.626684016653, $this->template->getCurrency()), 8),
-            new Installment(new Money(57.768287300247, $this->template->getCurrency()), new Money(69.914585702227, $this->template->getCurrency()), 9),
-            new Installment(new Money(52.726809177244, $this->template->getCurrency()), new Money(77.268091772441, $this->template->getCurrency()), 10),
-            new Installment(new Money(48.607917662541, $this->template->getCurrency()), new Money(84.687094287955, $this->template->getCurrency()), 11),
-            new Installment(new Money(45.180956182769, $this->template->getCurrency()), new Money(92.171474193232, $this->template->getCurrency()), 12),
+            new Installment(new Money(450.00, $this->template->currency()), new Money(0, $this->template->currency()), 1),
+            new Installment(new Money(235.14079732992, $this->template->currency()), new Money(20.281594659835, $this->template->currency()), 2),
+            new Installment(new Money(159.05807777209, $this->template->currency()), new Money(27.174233316284, $this->template->currency()), 3),
+            new Installment(new Money(121.03322182922, $this->template->currency()), new Money(34.132887316866, $this->template->currency()), 4),
+            new Installment(new Money(98.231503314593, $this->template->currency()), new Money(41.157516572966, $this->template->currency()), 5),
+            new Installment(new Money(83.041344930776, $this->template->currency()), new Money(48.248069584653, $this->template->currency()), 6),
+            new Installment(new Money(72.200640496078, $this->template->currency()), new Money(55.404483472543, $this->template->currency()), 7),
+            new Installment(new Money(64.078335502082, $this->template->currency()), new Money(62.626684016653, $this->template->currency()), 8),
+            new Installment(new Money(57.768287300247, $this->template->currency()), new Money(69.914585702227, $this->template->currency()), 9),
+            new Installment(new Money(52.726809177244, $this->template->currency()), new Money(77.268091772441, $this->template->currency()), 10),
+            new Installment(new Money(48.607917662541, $this->template->currency()), new Money(84.687094287955, $this->template->currency()), 11),
+            new Installment(new Money(45.180956182769, $this->template->currency()), new Money(92.171474193232, $this->template->currency()), 12),
         );
 
         $installmentCollection = new \Moguzz\InstallmentCollection();

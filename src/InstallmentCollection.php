@@ -9,7 +9,7 @@ use Moguzz\Entities\Installment;
  *
  * @package Moguzz
  */
-class InstallmentCollection implements \Countable, \IteratorAggregate
+final class InstallmentCollection implements \Countable, \IteratorAggregate
 {
     /**
      * @var array $installments
@@ -22,7 +22,7 @@ class InstallmentCollection implements \Countable, \IteratorAggregate
      */
     public function getInstallment($installment)
     {
-        if ((int) $installment <= $this->count()) {
+        if ($installment <= $this->count()) {
             return $this->installments[$installment];
         }
 

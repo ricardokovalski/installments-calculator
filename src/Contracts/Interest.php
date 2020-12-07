@@ -9,7 +9,7 @@ namespace Moguzz\Contracts;
  */
 interface Interest
 {
-    public function getValueCalculated($numberInstallment);
+    public function getValueCalculatedByInstallment($numberInstallment);
 
     public function appendInterestValue($interestValue);
 

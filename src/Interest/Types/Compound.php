@@ -25,7 +25,7 @@ final class Compound extends AbstractInterest implements Interest
      * @param $numberInstallment
      * @return float|int
      */
-    public function getValueCalculated($numberInstallment)
+    public function getValueCalculatedByInstallment($numberInstallment)
     {
         if ($this->interestValueIsZeroed()) {
             return $this->getTotalCapital();

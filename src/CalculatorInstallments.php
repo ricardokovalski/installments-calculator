@@ -2,27 +2,28 @@
 
 namespace Moguzz;
 
+use Moguzz\Contracts\Calculator as CalculatorContract;
 use Moguzz\Contracts\Interest;
 use Moguzz\Contracts\Template;
 use Moguzz\Entities\Installment;
 use Moguzz\Entities\Money;
 
 /**
- * Class Calculator
+ * Class CalculatorInstallments
  *
  * @package Moguzz
  */
-final class CalculatorInstallments
+final class CalculatorInstallments implements CalculatorContract
 {
-    /**
-     * @var TemplateSetting $template
-     */
-    private $template;
-
     /**
      * @var Interest $interest
      */
     private $interest;
+
+    /**
+     * @var Template $template
+     */
+    private $template;
 
     /**
      * @var InstallmentCollection $installmentCollection
@@ -30,11 +31,15 @@ final class CalculatorInstallments
     private $installmentCollection;
 
     /**
-     * Calculator constructor.
+     * CalculatorInstallments constructor.
+     *
+     * @param Interest $interest
+     * @param Template|null $template
      */
-    public function __construct()
+    public function __construct(Interest $interest, Template $template = null)
     {
-        $this->template = new TemplateSetting();
+        $this->interest = $interest;
+        $this->template = $template ?: new TemplateSetting();
         $this->installmentCollection = new InstallmentCollection();
     }
 
@@ -63,7 +68,7 @@ final class CalculatorInstallments
      */
     public function calculateInstallments()
     {
-        foreach (range(1, $this->template()->getNumberMaxInstallments()) as $numberInstallment) {
+        foreach (range(1, $this->template->getNumberMaxInstallments()) as $numberInstallment) {
 
             if ($this->installmentValueIsLessThanLimitValue($this->getValueCalculated($numberInstallment))) {
                 break;
@@ -73,14 +78,6 @@ final class CalculatorInstallments
         }
 
         return $this;
-    }
-
-    /**
-     * @return TemplateSetting
-     */
-    public function template()
-    {
-        return $this->template;
     }
 
     /**
@@ -97,8 +94,8 @@ final class CalculatorInstallments
      */
     private function installmentValueIsLessThanLimitValue($valueInstallmentCalculated)
     {
-        return $this->template()->installmentIsLimited() &&
-            $valueInstallmentCalculated < $this->template()->getLimitValueInstallment();
+        return $this->template->installmentIsLimited() &&
+            $valueInstallmentCalculated < $this->template->getLimitValueInstallment();
     }
 
     /**
@@ -108,8 +105,8 @@ final class CalculatorInstallments
     private function createInstallment($numberInstallment)
     {
         return new Installment(
-            new Money($this->getValueCalculated($numberInstallment), $this->template()->currency()),
-            new Money($this->interest->getValueCalculatedByInstallment($numberInstallment) - $this->interest->getTotalCapital(), $this->template()->currency()),
+            new Money($this->getValueCalculated($numberInstallment), $this->template->currency()),
+            new Money($this->interest->getValueCalculatedByInstallment($numberInstallment) - $this->interest->getTotalCapital(), $this->template->currency()),
             $numberInstallment
         );
     }

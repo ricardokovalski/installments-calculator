@@ -17,71 +17,85 @@ composer require ricardokovalski/calculator-installment
 Para obter uma coleção de parcelas, basta seguir o código abaixo.
 
 ```php
-use Moguzz\Calculator;
-use Moguzz\Interest\Financial;
+use Moguzz\CalculatorInstallments;
+use Moguzz\Interest\Types\Financial;
 
-$calculator = new Calculator(new Financial(4.99));
-$calculator->appendTotalPurchase(250.90)
-    ->calculateInstallments();
+$interest = new Financial(4.99);
+$interest->appendTotalCapital(250.90);
+
+$calculator = new CalculatorInstallments($interest);
+$calculator->calculateInstallments();
 
 $collectionInstallments = $calculator->getCollectionInstallments();
 ```
 
 ### Configurações
 
-Por padrão o Calculator inicializa o valor de venda em 0.00, além também de setar um template com algumas configurações iniciais, tais como:
+Por padrão o Calculator inicializa com um template com algumas configurações iniciais, tais como:
 
-* Moeda igual à Real;
-* Número máximo de parcelas igual à 12;
-* Limitar o parcelamento igual à True;
-* Valor mínimo parcelado igual à 5.00;
-
-O valor de venda pode ser alterado acessando o método abaixo da class Calculator. 
-
-#### Adicionando o valor de venda
-```php
-->appendTotalPurchase(475.99)
-``` 
+```
+* Moeda                     - Real;
+* Limitar o parcelamento    - True;
+* Valor mínimo parcelado    - 5.00;
+* Número máximo de parcelas - 12;
+```
 
 Você pode alterar as configurações do template através de alguns métodos.
 
-#### Alterar número de parcelas
+#### Alterar a Moeda
 ```php
-$template = (new TemplateSetting())->setNumberMaxInstallments(6);
+use Moguzz\TemplateSetting;
+use Moguzz\Currencies\Dollar;
+
+$template = new TemplateSetting();
+$template->resetCurrency(new Dollar());
 ```
 
-#### Não limitar o parcelamento
+#### enricoNão limitar o parcelamento
 ```php
-$template = (new TemplateSetting())->setLimitInstallments(false);
+use Moguzz\TemplateSetting;
+
+$template = new TemplateSetting();
+$template->resetLimitInstallments(false);
+```
+
+#### Alterar número de parcelas
+```php
+use Moguzz\TemplateSetting;
+
+$template = new TemplateSetting();
+$template->resetNumberMaxInstallments(6);
 ```
 
 #### Alterar o parcelamento mínimo
 ```php
-$template = (new TemplateSetting())->setLimitValueInstallment(10.00);
-```
+use Moguzz\TemplateSetting;
 
-#### Alterar a Moeda
-```php
-$template = (new TemplateSetting())->setCurrency(new Dollar());
+$template = new TemplateSetting();
+$template->resetLimitValueInstallment();
+$template->appendLimitValueInstallment(10.00);
 ```
 
 Uma vez que o template tenha alguma configuração alterada, basta fazer a injeção do Template modificado à classe do Calculator.
 
 ```php
-use Moguzz\Calculator;
+use Moguzz\CalculatorInstallments;
 use Moguzz\TemplateSetting;
 use Moguzz\Currencies\Dollar;
-use Moguzz\Interest\Financial;
+use Moguzz\Interest\Types\Financial;
 
-$template = (new TemplateSetting())
-    ->setCurrency(new Dollar())
-    ->setLimitValueInstallment(10.00)
-    ->setLimitInstallments(false)
-    ->setNumberMaxInstallments(6);
+$interest = new Financial(4.99);
+$interest->appendTotalCapital(250.90);
 
-$calculator = new Calculator(new Financial(4.99));
-$calculator->appendTotalPurchase(250.90)
-    ->setTemplateSetting($template)
+$template = new TemplateSetting();
+$template->resetCurrency(new Dollar());
+$template->resetLimitValueInstallment();
+$template->appendLimitValueInstallment(10.00);
+$template->resetLimitInstallments(false);
+$template->resetNumberMaxInstallments(6);
+
+$calculator = new CalculatorInstallments($interest);
+$calculator->applySetting($template)
     ->calculateInstallments();
 
 $collectionInstallments = $calculator->getCollectionInstallments();
@@ -92,11 +106,19 @@ $collectionInstallments = $calculator->getCollectionInstallments();
 Para formatar a parcela de acordo com a moeda que está sendo utilizada, basta acessar o método formatter ao acessar um atributo de Installment, veja o exemplo: 
 
 ```php
-use Moguzz\Calculator;
-use Moguzz\Interest\Financial;
+use Moguzz\CalculatorInstallments;
+use Moguzz\TemplateSetting;
+use Moguzz\Interest\Types\Financial;
 
-$calculator = new Calculator(new Financial(4.99));
-$calculator->appendTotalPurchase(250.90)
+$interest = new Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$template = new TemplateSetting();
+$template->resetLimitValueInstallment();
+$template->appendLimitValueInstallment(10.00);
+
+$calculator = new CalculatorInstallments($interest);
+$calculator->applySetting($template)
     ->calculateInstallments();
 
 $collectionInstallments = $calculator->getCollectionInstallments();
@@ -108,34 +130,23 @@ foreach ($collectionInstallments as $installment) {
 
 O Objeto Installment possui quatro propriedades:
 
-* $valueCalculated -> Valor calculado da parcela
-* $numberInstallment -> Número da parcela
-* $addedValue -> Valor em juros acrescentado à parcela
-* $originalValue -> Valor original da parcela
+```
+$valueCalculated   -> Valor calculado da parcela
+$numberInstallment -> Número da parcela
+$addedValue        -> Valor em juros acrescentado à parcela
+$originalValue     -> Valor original da parcela
+```
 
 ### Tipos de Juros
 
-Juros de Financiamento utilize a classe abaixo:
 ```php
-use Moguzz\Interest\Financial;
-```
-
-Juros Compostos utilize a classe abaixo:
-```php
-use Moguzz\Interest\Compound;
-```
-
-Juros Simples utilize a classe abaixo:
-```php
-use Moguzz\Interest\Simple;
+use Moguzz\Interest\Types\Compound;  // Composto
+use Moguzz\Interest\Types\Financial; // Financiamento
+use Moguzz\Interest\Types\Simple;    // Simples
 ```
 ### Tipos de Moeda
 
-Moeda Real utilize a classe abaixo:
-```php
-use Moguzz\Currencies\Real;
-```
-
-Moeda Dollar utilize a classe abaixo:
 ```php
 use Moguzz\Currencies\Dollar;
+use Moguzz\Currencies\Real;
+```

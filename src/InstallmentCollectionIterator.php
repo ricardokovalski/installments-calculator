@@ -6,7 +6,7 @@ namespace Moguzz;
  * Class InstallmentsIterator
  * @package Moguzz
  */
-class InstallmentCollectionIterator implements \Iterator
+final class InstallmentCollectionIterator implements \Iterator
 {
     /**
      * @var InstallmentCollection

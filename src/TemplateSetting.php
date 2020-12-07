@@ -2,30 +2,35 @@
 
 namespace Moguzz;
 
-use InvalidArgumentException;
 use Moguzz\Contracts\Currency;
+use Moguzz\Contracts\Template;
 use Moguzz\Currencies\Real;
+use Moguzz\Exceptions\MaximumNumberInstallment;
+use Moguzz\Exceptions\MinimumNumberInstallment;
 
 /**
  * Class TemplateSetting
  * @package Moguzz
  */
-class TemplateSetting
+final class TemplateSetting implements Template
 {
+    const NUMBER_MAX_INSTALLMENT = 12;
+    const LIMIT_VALUE_INSTALLMENT = 5.00;
+
     /**
      * @var Currency $currency
      */
     private $currency;
 
     /**
-     * @var integer $numberMaxInstallments
-     */
-    private $numberMaxInstallments;
-
-    /**
      * @var boolean $limitInstallments
      */
     private $limitInstallments;
+
+    /**
+     * @var integer $numberMaxInstallments
+     */
+    private $numberMaxInstallments;
 
     /**
      * @var float $limitValueInstallment
@@ -38,27 +43,36 @@ class TemplateSetting
     public function __construct()
     {
         $this->currency = new Real();
-        $this->numberMaxInstallments = 12;
         $this->limitInstallments = true;
-        $this->limitValueInstallment = 5.00;
+        $this->numberMaxInstallments = self::NUMBER_MAX_INSTALLMENT;
+        $this->limitValueInstallment = self::LIMIT_VALUE_INSTALLMENT;
     }
 
     /**
      * @return Currency|Real
      */
-    public function getCurrency()
+    public function currency()
     {
         return $this->currency;
     }
 
     /**
      * @param Currency $currency
-     * @return $this
      */
-    public function setCurrency(Currency $currency)
+    public function resetCurrency(Currency $currency)
     {
         $this->currency = $currency;
-        return $this;
+    }
+
+    /**
+     * @param $numberMaxInstallments
+     * @return $this
+     */
+    public function resetNumberMaxInstallments($numberMaxInstallments = 1)
+    {
+        $this->verifyNumberInstallments($numberMaxInstallments);
+
+        $this->numberMaxInstallments = $numberMaxInstallments;
     }
 
     /**
@@ -70,33 +84,35 @@ class TemplateSetting
     }
 
     /**
-     * @param $numberMaxInstallments
-     * @return $this
-     */
-    public function setNumberMaxInstallments($numberMaxInstallments)
-    {
-        $this->verifyNumberInstallments($numberMaxInstallments);
-
-        $this->numberMaxInstallments = $numberMaxInstallments;
-        return $this;
-    }
-
-    /**
      * @return bool
      */
-    public function isLimitInstallments()
+    public function installmentIsLimited()
     {
-        return $this->limitInstallments;
+        return (bool) $this->limitInstallments;
     }
 
     /**
-     * @param $limitInstallments
-     * @return $this
+     * @param bool $limitInstallments
      */
-    public function setLimitInstallments($limitInstallments)
+    public function resetLimitInstallments($limitInstallments = true)
     {
         $this->limitInstallments = $limitInstallments;
-        return $this;
+    }
+
+    /**
+     * @param $limitValueInstallment
+     */
+    public function resetLimitValueInstallment($limitValueInstallment = 0)
+    {
+        $this->limitValueInstallment = $limitValueInstallment;
+    }
+
+    /**
+     * @param $limitValueInstallment
+     */
+    public function appendLimitValueInstallment($limitValueInstallment = 1)
+    {
+        $this->limitValueInstallment += $limitValueInstallment;
     }
 
     /**
@@ -108,30 +124,19 @@ class TemplateSetting
     }
 
     /**
-     * @param $limitValueInstallment
-     * @return $this
-     */
-    public function setLimitValueInstallment($limitValueInstallment)
-    {
-        $this->limitValueInstallment = $limitValueInstallment;
-        return $this;
-    }
-
-    /**
      * @param $number
      * @return bool
      */
     private function verifyNumberInstallments($number)
     {
         if ($number < 1) {
-            throw new InvalidArgumentException('The minimum number of installments cannot be less than zero.');
+            throw new MinimumNumberInstallment();
         }
 
         if ($number > 12) {
-            throw new InvalidArgumentException('The maximum number of installments cannot be greater than twelve.');
+            throw new MaximumNumberInstallment();
         }
 
         return true;
     }
-
 }

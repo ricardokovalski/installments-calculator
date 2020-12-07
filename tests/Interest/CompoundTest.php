@@ -21,7 +21,7 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
             $valueInstallmentCalculated,
             (new \Moguzz\Interest\Types\Compound())
                 ->appendTotalCapital($totalPurchase)
-                ->getValueCalculated($numberInstallment)
+                ->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
@@ -59,7 +59,7 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
             $valueInstallmentCalculated,
             (new \Moguzz\Interest\Types\Compound(2.99))
                 ->appendTotalCapital($totalPurchase)
-                ->getValueCalculated($numberInstallment)
+                ->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
