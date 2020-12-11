@@ -3,10 +3,9 @@
 use Moguzz\Currencies\Real;
 use Moguzz\Entities\Installment;
 use Moguzz\Entities\Money;
-use Moguzz\Exceptions\MaximumNumberInstallment;
-use Moguzz\Exceptions\MinimumNumberInstallment;
+use PHPUnit\Framework\TestCase;
 
-class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
+class CalculatorInstallmentsTest extends TestCase
 {
     private $interest;
     private $template;
@@ -15,43 +14,6 @@ class CalculatorInstallmentsTest extends \PHPUnit_Framework_TestCase
     {
         $this->interest = new \Moguzz\Interest\Types\Financial(2.99);
         $this->template = new \Moguzz\TemplateSetting();
-    }
-
-    public function testExpectedExceptionWhenExceedsMaximumNumberOfInstallments()
-    {
-        $this->expectException(MaximumNumberInstallment::class);
-
-        $this->template->resetNumberMaxInstallments(13);
-
-        (new \Moguzz\CalculatorInstallments($this->interest))->applySetting($this->template);
-    }
-
-    public function testExpectedExceptionWhenMinimumNumberInstallmentsIsLess()
-    {
-        $this->expectException(MinimumNumberInstallment::class);
-
-        $this->template->resetNumberMaxInstallments(0);
-
-        (new \Moguzz\CalculatorInstallments($this->interest))->applySetting($this->template);
-    }
-
-    public function testAssertEqualsAppendNumberInstallments()
-    {
-        $this->template->resetNumberMaxInstallments(6);
-
-        //$calculator = (new \Moguzz\CalculatorInstallments($this->interest));
-
-        $this->assertEquals(6, $this->template->getNumberMaxInstallments());
-    }
-
-    public function testAssertEqualsAppendLimitValueInstallment()
-    {
-        $this->template->resetLimitValueInstallment();
-        $this->template->appendLimitValueInstallment(7.99);
-
-        //$calculator = (new \Moguzz\CalculatorInstallments($this->interest))->applySetting($this->template);
-
-        $this->assertEquals(7.99, $this->template->getLimitValueInstallment());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculated()

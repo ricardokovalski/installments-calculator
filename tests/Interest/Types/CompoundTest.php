@@ -1,11 +1,72 @@
 <?php
 
-class CompoundTest extends \PHPUnit_Framework_TestCase
+use Moguzz\Interest\Types\Compound;
+use PHPUnit\Framework\TestCase;
+
+class CompoundTest extends TestCase
 {
     public function testExpectedExceptionWhenInterestNotIsNumericType()
     {
         $this->expectException(InvalidArgumentException::class);
-        new \Moguzz\Interest\Types\Compound('XYZ');
+        new Compound('nUm3r0');
+    }
+
+    public function testExpectedExceptionWhenAppendInterestValueNotIsNumericType()
+    {
+        $interest = new Compound(2.20);
+
+        $this->assertEquals(2.20, $interest->getInterestValue());
+        $this->assertEquals(0.0220, $interest->getInterestRates());
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $interest->appendInterestValue(65000);
+    }
+
+    public function testAssertEqualsInterestValue()
+    {
+        $interest = new Compound(1.95);
+
+        $this->assertEquals(1.95, $interest->getInterestValue());
+
+        $interest->appendInterestValue(0.65);
+
+        $this->assertEquals(2.60, $interest->getInterestValue());
+    }
+
+    public function testResetInterestValue()
+    {
+        $interest = new Compound(4.38);
+
+        $interest->resetInterestValue();
+
+        $this->assertEquals(0.00, $interest->getInterestValue());
+
+        $interest->appendInterestValue(0.65);
+
+        $this->assertEquals(0.65, $interest->getInterestValue());
+
+        $interest->resetInterestValue(1.85);
+
+        $this->assertEquals(1.85, $interest->getInterestValue());
+    }
+
+    public function testResetTotalCapital()
+    {
+        $interest = new Compound(2.55);
+        $interest->appendTotalCapital(550.25);
+
+        $interest->resetTotalCapital();
+
+        $this->assertEquals(0.00, $interest->getTotalCapital());
+
+        $interest->appendTotalCapital(250.25);
+
+        $this->assertEquals(250.25, $interest->getTotalCapital());
+
+        $interest->resetTotalCapital(100.85);
+
+        $this->assertEquals(100.85, $interest->getTotalCapital());
     }
 
     /**
@@ -15,13 +76,12 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssertEqualValueInstallmentWhenInterestIsZero($numberInstallment, $valueInstallmentCalculated)
     {
-        $totalPurchase = 485.65;
+        $interest = new Compound();
+        $interest->appendTotalCapital(485.65);
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Types\Compound())
-                ->appendTotalCapital($totalPurchase)
-                ->getValueCalculatedByInstallment($numberInstallment)
+            $interest->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
@@ -53,13 +113,12 @@ class CompoundTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssertEqualValueInstallmentWhenInterestIsNonZero($numberInstallment, $valueInstallmentCalculated)
     {
-        $totalPurchase = 575.79;
+        $interest = new Compound(2.99);
+        $interest->appendTotalCapital(575.79);
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Types\Compound(2.99))
-                ->appendTotalCapital($totalPurchase)
-                ->getValueCalculatedByInstallment($numberInstallment)
+            $interest->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 

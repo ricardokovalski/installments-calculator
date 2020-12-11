@@ -1,11 +1,72 @@
 <?php
 
-class FinancialTest extends \PHPUnit_Framework_TestCase
+use Moguzz\Interest\Types\Financial;
+use PHPUnit\Framework\TestCase;
+
+class FinancialTest extends TestCase
 {
     public function testExpectedExceptionWhenInterestNotIsNumericType()
     {
         $this->expectException(InvalidArgumentException::class);
-        new \Moguzz\Interest\Types\Financial('XYZ');
+        new Financial('nUm3r0');
+    }
+
+    public function testExpectedExceptionWhenAppendInterestValueNotIsNumericType()
+    {
+        $interest = new Financial(2.20);
+
+        $this->assertEquals(2.20, $interest->getInterestValue());
+        $this->assertEquals(0.0220, $interest->getInterestRates());
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $interest->appendInterestValue(65000);
+    }
+
+    public function testAssertEqualsInterestValue()
+    {
+        $interest = new Financial(1.95);
+
+        $this->assertEquals(1.95, $interest->getInterestValue());
+
+        $interest->appendInterestValue(0.65);
+
+        $this->assertEquals(2.60, $interest->getInterestValue());
+    }
+
+    public function testResetInterestValue()
+    {
+        $interest = new Financial(4.38);
+
+        $interest->resetInterestValue();
+
+        $this->assertEquals(0.00, $interest->getInterestValue());
+
+        $interest->appendInterestValue(0.65);
+
+        $this->assertEquals(0.65, $interest->getInterestValue());
+
+        $interest->resetInterestValue(1.85);
+
+        $this->assertEquals(1.85, $interest->getInterestValue());
+    }
+
+    public function testResetTotalCapital()
+    {
+        $interest = new Financial(2.55);
+        $interest->appendTotalCapital(550.25);
+
+        $interest->resetTotalCapital();
+
+        $this->assertEquals(0.00, $interest->getTotalCapital());
+
+        $interest->appendTotalCapital(250.25);
+
+        $this->assertEquals(250.25, $interest->getTotalCapital());
+
+        $interest->resetTotalCapital(100.85);
+
+        $this->assertEquals(100.85, $interest->getTotalCapital());
     }
 
     /**
@@ -15,13 +76,12 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssertEqualValueInstallmentWhenInterestIsZero($numberInstallment, $valueInstallmentCalculated)
     {
-        $totalPurchase = 357.66;
+        $interest = new Financial();
+        $interest->appendTotalCapital(357.66);
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Types\Financial())
-                ->appendTotalCapital($totalPurchase)
-                ->getValueCalculatedByInstallment($numberInstallment)
+            $interest->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
@@ -53,13 +113,12 @@ class FinancialTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssertEqualValueInstallmentWhenInterestIsNonZero($numberInstallment, $valueInstallmentCalculated)
     {
-        $totalPurchase = 158.97;
+        $interest = new Financial(2.99);
+        $interest->appendTotalCapital(158.97);
 
         $this->assertEquals(
             $valueInstallmentCalculated,
-            (new \Moguzz\Interest\Types\Financial(2.99))
-                ->appendTotalCapital($totalPurchase)
-                ->getValueCalculatedByInstallment($numberInstallment)
+            $interest->getValueCalculatedByInstallment($numberInstallment)
         );
     }
 
