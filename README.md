@@ -1,13 +1,13 @@
-# ricardokovalski/calculator-installment
+# ricardokovalski/installments-calculator
 
-[![Latest Stable Version](https://poser.pugx.org/ricardokovalski/calculator-installment/v/stable)](https://packagist.org/packages/ricardokovalski/calculator-installments)
+[![Latest Stable Version](https://poser.pugx.org/ricardokovalski/calculator-installment/v/stable)](https://packagist.org/packages/ricardokovalski/installments-calculator)
 [![Author](http://img.shields.io/badge/author-@ricardokovalski-blue.svg?style=flat-square)](https://github.com/ricardokovalski)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ricardokovalski/calculator-installments/blob/master/LICENSE)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ricardokovalski/installments-calculator/blob/master/LICENSE)
 
 ## Instalação
 
 ```
-composer require ricardokovalski/calculator-installment
+composer require ricardokovalski/installments-calculator
 ```
 
 ## Uso básico
@@ -17,16 +17,16 @@ composer require ricardokovalski/calculator-installment
 Para obter uma coleção de parcelas, basta seguir o código abaixo.
 
 ```php
-use Moguzz\CalculatorInstallments;
-use Moguzz\Interest\Types\Financial;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 
 $interest = new Financial(4.99);
 $interest->appendTotalCapital(250.90);
 
-$calculator = new CalculatorInstallments($interest);
-$calculator->calculateInstallments();
+$calculator = new InstallmentCalculation($interest);
+$calculator->calculate();
 
-$collectionInstallments = $calculator->getCollectionInstallments();
+$collectionInstallments = $calculator->getCollection();
 ```
 
 ### Configurações
@@ -44,16 +44,16 @@ Você pode alterar as configurações do template através de alguns métodos.
 
 #### Alterar a Moeda
 ```php
-use Moguzz\TemplateSetting;
-use Moguzz\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
 
 $template = new TemplateSetting();
 $template->resetCurrency(new Dollar());
 ```
 
-#### enricoNão limitar o parcelamento
+#### Não limitar o parcelamento
 ```php
-use Moguzz\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 
 $template = new TemplateSetting();
 $template->resetLimitInstallments(false);
@@ -61,7 +61,7 @@ $template->resetLimitInstallments(false);
 
 #### Alterar número de parcelas
 ```php
-use Moguzz\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 
 $template = new TemplateSetting();
 $template->resetNumberMaxInstallments(6);
@@ -69,7 +69,7 @@ $template->resetNumberMaxInstallments(6);
 
 #### Alterar o parcelamento mínimo
 ```php
-use Moguzz\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 
 $template = new TemplateSetting();
 $template->resetLimitValueInstallment();
@@ -79,10 +79,10 @@ $template->appendLimitValueInstallment(10.00);
 Uma vez que o template tenha alguma configuração alterada, basta fazer a injeção do Template modificado à classe do Calculator.
 
 ```php
-use Moguzz\CalculatorInstallments;
-use Moguzz\TemplateSetting;
-use Moguzz\Currencies\Dollar;
-use Moguzz\Interest\Types\Financial;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 
 $interest = new Financial(4.99);
 $interest->appendTotalCapital(250.90);
@@ -94,11 +94,11 @@ $template->appendLimitValueInstallment(10.00);
 $template->resetLimitInstallments(false);
 $template->resetNumberMaxInstallments(6);
 
-$calculator = new CalculatorInstallments($interest);
+$calculator = new InstallmentCalculation($interest);
 $calculator->applySetting($template)
-    ->calculateInstallments();
+    ->calculate();
 
-$collectionInstallments = $calculator->getCollectionInstallments();
+$collectionInstallments = $calculator->getCollection();
 ```
 
 ### Formatando as parcelas
@@ -106,9 +106,9 @@ $collectionInstallments = $calculator->getCollectionInstallments();
 Para formatar a parcela de acordo com a moeda que está sendo utilizada, basta acessar o método formatter ao acessar um atributo de Installment, veja o exemplo: 
 
 ```php
-use Moguzz\CalculatorInstallments;
-use Moguzz\TemplateSetting;
-use Moguzz\Interest\Types\Financial;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 
 $interest = new Financial(2.99);
 $interest->appendTotalCapital(343.90);
@@ -117,11 +117,11 @@ $template = new TemplateSetting();
 $template->resetLimitValueInstallment();
 $template->appendLimitValueInstallment(10.00);
 
-$calculator = new CalculatorInstallments($interest);
+$calculator = new InstallmentCalculation($interest);
 $calculator->applySetting($template)
-    ->calculateInstallments();
+    ->calculate();
 
-$collectionInstallments = $calculator->getCollectionInstallments();
+$collectionInstallments = $calculator->getCollection();
 
 foreach ($collectionInstallments as $installment) {
     echo $installment->getValueCalculated()->formatter();
@@ -140,13 +140,13 @@ $originalValue     -> Valor original da parcela
 ### Tipos de Juros
 
 ```php
-use Moguzz\Interest\Types\Compound;  // Composto
-use Moguzz\Interest\Types\Financial; // Financiamento
-use Moguzz\Interest\Types\Simple;    // Simples
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Compound;  // Composto
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial; // Financiamento
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Simple;    // Simples
 ```
 ### Tipos de Moeda
 
 ```php
-use Moguzz\Currencies\Dollar;
-use Moguzz\Currencies\Real;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
 ```
