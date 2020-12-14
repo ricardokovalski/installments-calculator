@@ -6,6 +6,7 @@ use Moguzz\Contracts\Currency;
 
 /**
  * Class Real
+ *
  * @package Moguzz\Currencies
  */
 final class Real implements Currency
@@ -31,7 +32,8 @@ final class Real implements Currency
     private $thousandsSep;
 
     /**
-     * Dollar constructor.
+     * Real constructor.
+     *
      * @param int $decimals
      */
     public function __construct($decimals = 2)

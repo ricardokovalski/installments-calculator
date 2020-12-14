@@ -1,9 +1,10 @@
 <?php
 
 use Moguzz\Currencies\Real;
-use Moguzz\Entities\Money;
+use Moguzz\Money;
+use PHPUnit\Framework\TestCase;
 
-class RealTest extends \PHPUnit_Framework_TestCase
+class RealTest extends TestCase
 {
     /**
      * @dataProvider providerFormatter

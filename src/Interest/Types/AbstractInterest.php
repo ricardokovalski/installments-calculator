@@ -2,7 +2,7 @@
 
 namespace Moguzz\Interest\Types;
 
-use InvalidArgumentException;
+use Moguzz\Exceptions\InterestValueException;
 use Moguzz\Contracts\Interest;
 
 /**
@@ -35,7 +35,7 @@ abstract class AbstractInterest implements Interest
     public function __construct($interestValue)
     {
         if (! is_float($interestValue)) {
-            throw new InvalidArgumentException('Interest rates is float type.');
+            throw new InterestValueException();
         }
 
         $this->interestValue = $interestValue;
@@ -50,7 +50,7 @@ abstract class AbstractInterest implements Interest
     public function appendInterestValue($interestValue)
     {
         if (! is_float($interestValue)) {
-            throw new InvalidArgumentException('Interest rates is float type.');
+            throw new InterestValueException();
         }
 
         $this->interestValue += $interestValue;

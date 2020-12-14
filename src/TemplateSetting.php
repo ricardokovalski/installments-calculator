@@ -5,8 +5,8 @@ namespace Moguzz;
 use Moguzz\Contracts\Currency;
 use Moguzz\Contracts\Template;
 use Moguzz\Currencies\Real;
-use Moguzz\Exceptions\MaximumNumberInstallment;
-use Moguzz\Exceptions\MinimumNumberInstallment;
+use Moguzz\Exceptions\MaximumNumberInstallmentException;
+use Moguzz\Exceptions\MinimumNumberInstallmentException;
 
 /**
  * Class TemplateSetting
@@ -130,11 +130,11 @@ final class TemplateSetting implements Template
     private function verifyNumberInstallments($number)
     {
         if ($number < 1) {
-            throw new MinimumNumberInstallment();
+            throw new MinimumNumberInstallmentException();
         }
 
         if ($number > 12) {
-            throw new MaximumNumberInstallment();
+            throw new MaximumNumberInstallmentException();
         }
 
         return true;

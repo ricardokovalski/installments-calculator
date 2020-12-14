@@ -4,6 +4,7 @@ namespace Moguzz;
 
 /**
  * Class InstallmentsIterator
+ *
  * @package Moguzz
  */
 final class InstallmentCollectionIterator implements \Iterator
@@ -20,6 +21,7 @@ final class InstallmentCollectionIterator implements \Iterator
 
     /**
      * InstallmentCollectionIterator constructor.
+     *
      * @param InstallmentCollection $installmentCollection
      */
     public function __construct(InstallmentCollection $installmentCollection)

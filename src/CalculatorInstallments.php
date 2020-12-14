@@ -5,8 +5,6 @@ namespace Moguzz;
 use Moguzz\Contracts\Calculator as CalculatorContract;
 use Moguzz\Contracts\Interest;
 use Moguzz\Contracts\Template;
-use Moguzz\Entities\Installment;
-use Moguzz\Entities\Money;
 
 /**
  * Class CalculatorInstallments
@@ -66,7 +64,7 @@ final class CalculatorInstallments implements CalculatorContract
     /**
      * @return $this
      */
-    public function calculateInstallments()
+    public function calculate()
     {
         foreach (range(1, $this->template->getNumberMaxInstallments()) as $numberInstallment) {
 
@@ -83,7 +81,7 @@ final class CalculatorInstallments implements CalculatorContract
     /**
      * @return InstallmentCollection
      */
-    public function getCollectionInstallments()
+    public function getCollection()
     {
         return $this->installmentCollection;
     }

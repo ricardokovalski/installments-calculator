@@ -1,8 +1,12 @@
 <?php
 
+use Moguzz\CalculatorInstallments;
 use Moguzz\Currencies\Real;
-use Moguzz\Entities\Installment;
-use Moguzz\Entities\Money;
+use Moguzz\Installment;
+use Moguzz\InstallmentCollectionIterator;
+use Moguzz\Interest\Types\Financial;
+use Moguzz\Money;
+use Moguzz\TemplateSetting;
 use PHPUnit\Framework\TestCase;
 
 class CalculatorInstallmentsTest extends TestCase
@@ -12,8 +16,8 @@ class CalculatorInstallmentsTest extends TestCase
 
     public function setUp()
     {
-        $this->interest = new \Moguzz\Interest\Types\Financial(2.99);
-        $this->template = new \Moguzz\TemplateSetting();
+        $this->interest = new Financial(2.99);
+        $this->template = new TemplateSetting();
     }
 
     public function testAssertEqualsNumberInstallmentsCalculated()
@@ -23,11 +27,11 @@ class CalculatorInstallmentsTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new \Moguzz\CalculatorInstallments($this->interest))
+        $calculator = (new CalculatorInstallments($this->interest))
             ->applySetting($this->template)
-            ->calculateInstallments();
+            ->calculate();
 
-        $this->assertCount(10, $calculator->getCollectionInstallments()->getIterator());
+        $this->assertCount(10, $calculator->getCollection()->getIterator());
     }
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
@@ -38,11 +42,11 @@ class CalculatorInstallmentsTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new \Moguzz\CalculatorInstallments($this->interest))
+        $calculator = (new CalculatorInstallments($this->interest))
             ->applySetting($this->template)
-            ->calculateInstallments();
+            ->calculate();
 
-        $this->assertCount(12, $calculator->getCollectionInstallments()->getIterator());
+        $this->assertCount(12, $calculator->getCollection()->getIterator());
     }
 
     public function testAssertEqualsInstallments()
@@ -52,13 +56,13 @@ class CalculatorInstallmentsTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new Moguzz\CalculatorInstallments($this->interest))
+        $calculator = (new CalculatorInstallments($this->interest))
             ->applySetting($this->template)
-            ->calculateInstallments();
+            ->calculate();
 
         $this->assertEquals(
             $this->createInstallments(),
-            $calculator->getCollectionInstallments()->getIterator()
+            $calculator->getCollection()->getIterator()
         );
     }
 
@@ -88,7 +92,7 @@ class CalculatorInstallmentsTest extends TestCase
             $installmentCollection->appendInstallment($installment);
         }
 
-        return new \Moguzz\InstallmentCollectionIterator($installmentCollection);
+        return new InstallmentCollectionIterator($installmentCollection);
     }
 
     /**

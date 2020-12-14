@@ -3,8 +3,8 @@
 namespace Moguzz\Tests;
 
 use Moguzz\Currencies\Dollar;
-use Moguzz\Exceptions\MaximumNumberInstallment;
-use Moguzz\Exceptions\MinimumNumberInstallment;
+use Moguzz\Exceptions\MaximumNumberInstallmentException;
+use Moguzz\Exceptions\MinimumNumberInstallmentException;
 use Moguzz\TemplateSetting;
 use PHPUnit\Framework\TestCase;
 
@@ -19,14 +19,14 @@ class TemplateSettingTest extends TestCase
 
     public function testExpectedExceptionMaximumNumberInstallment()
     {
-        $this->expectException(MaximumNumberInstallment::class);
+        $this->expectException(MaximumNumberInstallmentException::class);
 
         $this->template->resetNumberMaxInstallments(13);
     }
 
     public function testExpectedExceptionMinimumNumberInstallment()
     {
-        $this->expectException(MinimumNumberInstallment::class);
+        $this->expectException(MinimumNumberInstallmentException::class);
 
         $this->template->resetNumberMaxInstallments(0);
     }

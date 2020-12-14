@@ -4,7 +4,7 @@ namespace Moguzz\Exceptions;
 
 use InvalidArgumentException;
 
-final class MaximumNumberInstallment extends InvalidArgumentException
+final class MaximumNumberInstallmentException extends InvalidArgumentException
 {
     public function __construct()
     {

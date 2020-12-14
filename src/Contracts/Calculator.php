@@ -13,7 +13,7 @@ interface Calculator
 
     public function applyInterest(Interest $interest);
 
-    public function calculateInstallments();
+    public function calculate();
 
-    public function getCollectionInstallments();
+    public function getCollection();
 }

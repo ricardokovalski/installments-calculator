@@ -1,11 +1,11 @@
 <?php
 
-namespace Moguzz\Entities;
+namespace Moguzz;
 
 /**
  * Class Installment
  *
- * @package Moguzz\Entities
+ * @package Moguzz
  */
 final class Installment
 {

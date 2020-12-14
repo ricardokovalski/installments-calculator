@@ -1,5 +1,6 @@
 <?php
 
+use Moguzz\Exceptions\InterestValueException;
 use Moguzz\Interest\Types\Simple;
 use PHPUnit\Framework\TestCase;
 
@@ -7,7 +8,7 @@ class SimpleTest extends TestCase
 {
     public function testExpectedExceptionWhenInterestNotIsNumericType()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InterestValueException::class);
         new Simple('nUm3r0*');
     }
 
@@ -18,7 +19,7 @@ class SimpleTest extends TestCase
         $this->assertEquals(2.20, $interest->getInterestValue());
         $this->assertEquals(0.0220, $interest->getInterestRates());
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(InterestValueException::class);
 
         $interest->appendInterestValue(65000);
     }

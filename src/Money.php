@@ -1,13 +1,13 @@
 <?php
 
-namespace Moguzz\Entities;
+namespace Moguzz;
 
 use Moguzz\Contracts\Currency;
 
 /**
  * Class Money
  *
- * @package Moguzz\Entities
+ * @package Moguzz
  */
 final class Money
 {

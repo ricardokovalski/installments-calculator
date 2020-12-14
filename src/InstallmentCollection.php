@@ -2,8 +2,6 @@
 
 namespace Moguzz;
 
-use Moguzz\Entities\Installment;
-
 /**
  * Class InstallmentCollection
  *
