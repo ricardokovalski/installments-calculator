@@ -1,13 +1,13 @@
 <?php
 
-namespace Moguzz;
+namespace RicardoKovalski\InstallmentsCalculator;
 
-use Moguzz\Contracts\Currency;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Currency;
 
 /**
  * Class Money
  *
- * @package Moguzz
+ * @package RicardoKovalski\InstallmentsCalculator
  */
 final class Money
 {

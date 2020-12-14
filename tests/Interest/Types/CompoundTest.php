@@ -1,7 +1,7 @@
 <?php
 
-use Moguzz\Exceptions\InterestValueException;
-use Moguzz\Interest\Types\Compound;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\InterestValueException;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Compound;
 use PHPUnit\Framework\TestCase;
 
 class CompoundTest extends TestCase

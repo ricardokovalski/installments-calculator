@@ -1,13 +1,13 @@
 <?php
 
-namespace Moguzz\Currencies;
+namespace RicardoKovalski\InstallmentsCalculator\Currencies;
 
-use Moguzz\Contracts\Currency;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Currency;
 
 /**
  * Class Dollar
  *
- * @package Moguzz\Currencies
+ * @package RicardoKovalski\InstallmentsCalculator\Currencies
  */
 final class Dollar implements Currency
 {

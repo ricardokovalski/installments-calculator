@@ -1,13 +1,13 @@
 <?php
 
-namespace Moguzz\Interest\Types;
+namespace RicardoKovalski\InstallmentsCalculator\Interest\Types;
 
-use Moguzz\Contracts\Interest;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Interest;
 
 /**
  * Class Financial
  *
- * @package Moguzz\Interest\Types
+ * @package RicardoKovalski\InstallmentsCalculator\Interest\Types
  */
 final class Financial extends AbstractInterest implements Interest
 {

@@ -1,7 +1,7 @@
 <?php
 
-use Moguzz\Currencies\Real;
-use Moguzz\Money;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
+use RicardoKovalski\InstallmentsCalculator\Money;
 use PHPUnit\Framework\TestCase;
 
 class RealTest extends TestCase

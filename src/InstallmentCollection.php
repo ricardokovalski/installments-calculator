@@ -1,11 +1,11 @@
 <?php
 
-namespace Moguzz;
+namespace RicardoKovalski\InstallmentsCalculator;
 
 /**
  * Class InstallmentCollection
  *
- * @package Moguzz
+ * @package RicardoKovalski\InstallmentsCalculator
  */
 final class InstallmentCollection implements \Countable, \IteratorAggregate
 {

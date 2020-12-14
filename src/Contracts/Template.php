@@ -1,6 +1,6 @@
 <?php
 
-namespace Moguzz\Contracts;
+namespace RicardoKovalski\InstallmentsCalculator\Contracts;
 
 /**
  * Interface Template

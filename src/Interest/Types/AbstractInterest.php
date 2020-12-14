@@ -1,14 +1,14 @@
 <?php
 
-namespace Moguzz\Interest\Types;
+namespace RicardoKovalski\InstallmentsCalculator\Interest\Types;
 
-use Moguzz\Exceptions\InterestValueException;
-use Moguzz\Contracts\Interest;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Interest;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\InterestValueException;
 
 /**
  * Class AbstractInterest
  *
- * @package Moguzz\Interest\Types
+ * @package RicardoKovalski\InstallmentsCalculator\Interest\Types
  */
 abstract class AbstractInterest implements Interest
 {

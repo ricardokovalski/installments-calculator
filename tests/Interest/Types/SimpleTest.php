@@ -1,7 +1,7 @@
 <?php
 
-use Moguzz\Exceptions\InterestValueException;
-use Moguzz\Interest\Types\Simple;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\InterestValueException;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Simple;
 use PHPUnit\Framework\TestCase;
 
 class SimpleTest extends TestCase

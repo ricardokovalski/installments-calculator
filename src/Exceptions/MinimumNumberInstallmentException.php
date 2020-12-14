@@ -1,6 +1,6 @@
 <?php
 
-namespace Moguzz\Exceptions;
+namespace RicardoKovalski\InstallmentsCalculator\Exceptions;
 
 use InvalidArgumentException;
 

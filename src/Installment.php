@@ -1,11 +1,11 @@
 <?php
 
-namespace Moguzz;
+namespace RicardoKovalski\InstallmentsCalculator;
 
 /**
  * Class Installment
  *
- * @package Moguzz
+ * @package RicardoKovalski\InstallmentsCalculator
  */
 final class Installment
 {

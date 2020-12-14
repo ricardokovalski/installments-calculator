@@ -1,7 +1,7 @@
 <?php
 
-use Moguzz\Currencies\Dollar;
-use Moguzz\Money;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Money;
 use PHPUnit\Framework\TestCase;
 
 class DollarTest extends TestCase

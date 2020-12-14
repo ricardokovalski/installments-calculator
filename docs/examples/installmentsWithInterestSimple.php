@@ -9,6 +9,6 @@ $interest = new Simple(1.99);
 $interest->appendTotalCapital(329.99);
 
 $calculator = new CalculatorInstallments($interest);
-$calculator->calculateInstallments();
+$calculator->calculate();
 
-$collectionInstallments = $calculator->getCollectionInstallments();
+$collectionInstallments = $calculator->getCollection();

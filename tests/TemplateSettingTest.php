@@ -1,11 +1,9 @@
 <?php
 
-namespace Moguzz\Tests;
-
-use Moguzz\Currencies\Dollar;
-use Moguzz\Exceptions\MaximumNumberInstallmentException;
-use Moguzz\Exceptions\MinimumNumberInstallmentException;
-use Moguzz\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 use PHPUnit\Framework\TestCase;
 
 class TemplateSettingTest extends TestCase

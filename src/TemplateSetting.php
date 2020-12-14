@@ -1,16 +1,17 @@
 <?php
 
-namespace Moguzz;
+namespace RicardoKovalski\InstallmentsCalculator;
 
-use Moguzz\Contracts\Currency;
-use Moguzz\Contracts\Template;
-use Moguzz\Currencies\Real;
-use Moguzz\Exceptions\MaximumNumberInstallmentException;
-use Moguzz\Exceptions\MinimumNumberInstallmentException;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Currency;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
+use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
 
 /**
  * Class TemplateSetting
- * @package Moguzz
+ *
+ * @package RicardoKovalski\InstallmentsCalculator
  */
 final class TemplateSetting implements Template
 {

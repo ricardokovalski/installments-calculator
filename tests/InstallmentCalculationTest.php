@@ -1,15 +1,16 @@
 <?php
 
-use Moguzz\CalculatorInstallments;
-use Moguzz\Currencies\Real;
-use Moguzz\Installment;
-use Moguzz\InstallmentCollectionIterator;
-use Moguzz\Interest\Types\Financial;
-use Moguzz\Money;
-use Moguzz\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
+use RicardoKovalski\InstallmentsCalculator\Installment;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCollection;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCollectionIterator;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
+use RicardoKovalski\InstallmentsCalculator\Money;
+use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 use PHPUnit\Framework\TestCase;
 
-class CalculatorInstallmentsTest extends TestCase
+class InstallmentCalculationTest extends TestCase
 {
     private $interest;
     private $template;
@@ -27,7 +28,7 @@ class CalculatorInstallmentsTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new CalculatorInstallments($this->interest))
+        $calculator = (new InstallmentCalculation($this->interest))
             ->applySetting($this->template)
             ->calculate();
 
@@ -42,7 +43,7 @@ class CalculatorInstallmentsTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new CalculatorInstallments($this->interest))
+        $calculator = (new InstallmentCalculation($this->interest))
             ->applySetting($this->template)
             ->calculate();
 
@@ -56,7 +57,7 @@ class CalculatorInstallmentsTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new CalculatorInstallments($this->interest))
+        $calculator = (new InstallmentCalculation($this->interest))
             ->applySetting($this->template)
             ->calculate();
 
@@ -67,7 +68,7 @@ class CalculatorInstallmentsTest extends TestCase
     }
 
     /**
-     * @return \Moguzz\InstallmentCollectionIterator
+     * @return InstallmentCollectionIterator
      */
     private function createInstallments()
     {
@@ -86,7 +87,7 @@ class CalculatorInstallmentsTest extends TestCase
             new Installment(new Money(45.180956182769, $this->template->currency()), new Money(92.171474193232, $this->template->currency()), 12),
         );
 
-        $installmentCollection = new \Moguzz\InstallmentCollection();
+        $installmentCollection = new InstallmentCollection();
 
         foreach ($installments as $installment) {
             $installmentCollection->appendInstallment($installment);

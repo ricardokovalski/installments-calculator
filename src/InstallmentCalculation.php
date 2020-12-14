@@ -1,17 +1,17 @@
 <?php
 
-namespace Moguzz;
+namespace RicardoKovalski\InstallmentsCalculator;
 
-use Moguzz\Contracts\Calculator as CalculatorContract;
-use Moguzz\Contracts\Interest;
-use Moguzz\Contracts\Template;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Calculator as CalculatorContract;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Interest;
+use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
 
 /**
- * Class CalculatorInstallments
+ * Class InstallmentCalculation
  *
- * @package Moguzz
+ * @package RicardoKovalski\InstallmentsCalculator
  */
-final class CalculatorInstallments implements CalculatorContract
+final class InstallmentCalculation implements CalculatorContract
 {
     /**
      * @var Interest $interest

@@ -1,5 +1,5 @@
 {
-  "name": "ricardokovalski/calculator-installment",
+  "name": "ricardokovalski/installments-calculator",
   "description": "Biblioteca para calcular juros em parcelamentos.",
   "type": "library",
   "authors": [
@@ -12,6 +12,7 @@
   "license": "MIT",
   "keywords": [
     "calculator",
+    "installment",
     "installments",
     "interest"
   ],
@@ -29,12 +30,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Moguzz\\": "src/"
+      "RicardoKovalski\\InstallmentsCalculator\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Moguzz\\Tests\\": "tests/"
+      "RicardoKovalski\\InstallmentsCalculator\\Tests\\": "tests/"
     }
   }
 }
