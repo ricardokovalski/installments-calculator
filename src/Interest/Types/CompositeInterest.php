@@ -6,11 +6,11 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\Interest;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\InterestValueException;
 
 /**
- * Class AbstractInterest
+ * Class CompositeInterest
  *
  * @package RicardoKovalski\InstallmentsCalculator\Interest\Types
  */
-abstract class AbstractInterest implements Interest
+abstract class CompositeInterest implements Interest
 {
     /**
      * @var float $interestValue
@@ -28,7 +28,7 @@ abstract class AbstractInterest implements Interest
     private $totalCapital;
 
     /**
-     * AbstractInterest constructor.
+     * CompositeInterest constructor.
      *
      * @param $interestValue
      */

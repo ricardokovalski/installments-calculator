@@ -9,7 +9,7 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\Interest;
  *
  * @package RicardoKovalski\InstallmentsCalculator\Interest\Types
  */
-final class Financial extends AbstractInterest implements Interest
+final class Financial extends CompositeInterest implements Interest
 {
     /**
      * Financial constructor.

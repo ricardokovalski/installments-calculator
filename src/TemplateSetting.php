@@ -4,7 +4,7 @@ namespace RicardoKovalski\InstallmentsCalculator;
 
 use RicardoKovalski\InstallmentsCalculator\Contracts\Currency;
 use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Real;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
 

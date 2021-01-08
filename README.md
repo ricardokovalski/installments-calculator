@@ -1,6 +1,6 @@
 # ricardokovalski/installments-calculator
 
-[![Latest Stable Version](https://poser.pugx.org/ricardokovalski/calculator-installment/v/stable)](https://packagist.org/packages/ricardokovalski/installments-calculator)
+[![Latest Stable Version](https://poser.pugx.org/ricardokovalski/installments-calculator/v/stable)](https://packagist.org/packages/ricardokovalski/installments-calculator)
 [![Author](http://img.shields.io/badge/author-@ricardokovalski-blue.svg?style=flat-square)](https://github.com/ricardokovalski)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ricardokovalski/installments-calculator/blob/master/LICENSE)
 
@@ -45,7 +45,7 @@ Você pode alterar as configurações do template através de alguns métodos.
 #### Alterar a Moeda
 ```php
 use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
 
 $template = new TemplateSetting();
 $template->resetCurrency(new Dollar());
@@ -81,7 +81,7 @@ Uma vez que o template tenha alguma configuração alterada, basta fazer a inje�
 ```php
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
 use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
 use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 
 $interest = new Financial(4.99);
@@ -147,6 +147,6 @@ use RicardoKovalski\InstallmentsCalculator\Interest\Types\Simple;    // Simples
 ### Tipos de Moeda
 
 ```php
-use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Real;
 ```
