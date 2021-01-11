@@ -1,10 +1,10 @@
 <?php
 
-use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
+use PHPUnit\Framework\TestCase;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
 use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-use PHPUnit\Framework\TestCase;
 
 class TemplateSettingTest extends TestCase
 {
@@ -72,5 +72,4 @@ class TemplateSettingTest extends TestCase
 
         $this->assertFalse($this->template->installmentIsLimited());
     }
-
 }

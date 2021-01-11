@@ -26,7 +26,7 @@ final class Real extends CompositeCurrency implements Currency
      */
     public function prefix()
     {
-        return "R$";
+        return 'R$';
     }
 
     /**
@@ -34,7 +34,7 @@ final class Real extends CompositeCurrency implements Currency
      */
     public function decPoint()
     {
-        return ",";
+        return ',';
     }
 
     /**
@@ -42,6 +42,6 @@ final class Real extends CompositeCurrency implements Currency
      */
     public function thousandsSep()
     {
-        return ".";
+        return '.';
     }
 }

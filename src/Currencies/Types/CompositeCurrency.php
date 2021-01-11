@@ -7,11 +7,6 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\Currency;
 abstract class CompositeCurrency implements Currency
 {
     /**
-     * @var string $prefix
-     */
-    private $prefix = "$";
-
-    /**
      * @var int $decimals
      */
     private $decimals;

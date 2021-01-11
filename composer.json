@@ -10,12 +10,7 @@
     }
   ],
   "license": "MIT",
-  "keywords": [
-    "calculator",
-    "installment",
-    "installments",
-    "interest"
-  ],
+  "keywords": ["calculations", "calculator", "installment", "installments", "installments-calculator", "interest", "interest-calculator", "interest-rates"],
   "require": {
     "php": ">=5.6",
     "ext-json": "*"

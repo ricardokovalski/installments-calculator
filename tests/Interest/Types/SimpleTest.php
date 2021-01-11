@@ -1,8 +1,8 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\InterestValueException;
 use RicardoKovalski\InstallmentsCalculator\Interest\Types\Simple;
-use PHPUnit\Framework\TestCase;
 
 class SimpleTest extends TestCase
 {
@@ -143,5 +143,4 @@ class SimpleTest extends TestCase
             [12, 894.56084099999998],
         ];
     }
-
 }

@@ -67,7 +67,6 @@ final class InstallmentCalculation implements CalculatorContract
     public function calculate()
     {
         foreach (range(1, $this->template->getNumberMaxInstallments()) as $numberInstallment) {
-
             if ($this->installmentValueIsLessThanLimitValue($this->getValueCalculated($numberInstallment))) {
                 break;
             }

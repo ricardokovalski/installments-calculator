@@ -61,6 +61,6 @@ final class Money
             $this->getCurrency()->getThousandsSep()
         );
 
-        return sprintf("%s %s", $this->getCurrency()->getPrefix(), $formattedValue);
+        return sprintf('%s %s', $this->getCurrency()->getPrefix(), $formattedValue);
     }
 }

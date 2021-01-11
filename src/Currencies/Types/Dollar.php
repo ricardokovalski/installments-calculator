@@ -26,7 +26,7 @@ final class Dollar extends CompositeCurrency implements Currency
      */
     public function prefix()
     {
-        return "$";
+        return '$';
     }
 
     /**
@@ -34,7 +34,7 @@ final class Dollar extends CompositeCurrency implements Currency
      */
     public function decPoint()
     {
-        return ".";
+        return '.';
     }
 
     /**
@@ -42,6 +42,6 @@ final class Dollar extends CompositeCurrency implements Currency
      */
     public function thousandsSep()
     {
-        return ",";
+        return ',';
     }
 }

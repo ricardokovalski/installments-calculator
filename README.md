@@ -1,4 +1,4 @@
-# ricardokovalski/installments-calculator
+# Installments Calculator
 
 [![Latest Stable Version](https://poser.pugx.org/ricardokovalski/installments-calculator/v/stable)](https://packagist.org/packages/ricardokovalski/installments-calculator)
 [![Author](http://img.shields.io/badge/author-@ricardokovalski-blue.svg?style=flat-square)](https://github.com/ricardokovalski)

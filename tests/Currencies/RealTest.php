@@ -1,8 +1,8 @@
 <?php
 
-use RicardoKovalski\InstallmentsCalculator\Currencies\Real;
-use RicardoKovalski\InstallmentsCalculator\Money;
 use PHPUnit\Framework\TestCase;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Real;
+use RicardoKovalski\InstallmentsCalculator\Money;
 
 class RealTest extends TestCase
 {

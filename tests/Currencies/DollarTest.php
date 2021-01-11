@@ -1,8 +1,8 @@
 <?php
 
-use RicardoKovalski\InstallmentsCalculator\Currencies\Dollar;
-use RicardoKovalski\InstallmentsCalculator\Money;
 use PHPUnit\Framework\TestCase;
+use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Money;
 
 class DollarTest extends TestCase
 {

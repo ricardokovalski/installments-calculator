@@ -1,8 +1,8 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\InterestValueException;
 use RicardoKovalski\InstallmentsCalculator\Interest\Types\Compound;
-use PHPUnit\Framework\TestCase;
 
 class CompoundTest extends TestCase
 {
@@ -143,5 +143,4 @@ class CompoundTest extends TestCase
             [12, 796.17723853227676],
         ];
     }
-
 }
