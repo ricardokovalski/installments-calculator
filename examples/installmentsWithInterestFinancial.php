@@ -1,12 +1,12 @@
 <?php
 
-require __DIR__ . '../../vendor/autoload.php';
+require __DIR__ . '../vendor/autoload.php';
 
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Compound;
+use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 
-$interest = new Compound(4.99);
-$interest->appendTotalCapital(474.99);
+$interest = new Financial(2.99);
+$interest->appendTotalCapital(39.90);
 
 $calculator = new InstallmentCalculation($interest);
 $calculator->calculate();
