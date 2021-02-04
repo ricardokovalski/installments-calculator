@@ -2,8 +2,8 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
+use RicardoKovalski\InstallmentsCalculator\Contracts\Adapter;
 use RicardoKovalski\InstallmentsCalculator\Contracts\Calculator as CalculatorContract;
-use RicardoKovalski\InstallmentsCalculator\Contracts\Interest;
 use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
 
 /**
@@ -14,9 +14,9 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
 final class InstallmentCalculation implements CalculatorContract
 {
     /**
-     * @var Interest $interest
+     * @var Adapter $interestAdapter
      */
-    private $interest;
+    private $interestAdapter;
 
     /**
      * @var Template $template
@@ -31,12 +31,12 @@ final class InstallmentCalculation implements CalculatorContract
     /**
      * CalculatorInstallments constructor.
      *
-     * @param Interest $interest
+     * @param Adapter $interestAdapter
      * @param Template|null $template
      */
-    public function __construct(Interest $interest, Template $template = null)
+    public function __construct(Adapter $interestAdapter, Template $template = null)
     {
-        $this->interest = $interest;
+        $this->interestAdapter = $interestAdapter;
         $this->template = $template ?: new TemplateSetting();
         $this->installmentCollection = new InstallmentCollection();
     }
@@ -52,12 +52,12 @@ final class InstallmentCalculation implements CalculatorContract
     }
 
     /**
-     * @param Interest $interest
+     * @param Adapter $interestAdapter
      * @return $this
      */
-    public function applyInterest(Interest $interest)
+    public function applyInterest(Adapter $interestAdapter)
     {
-        $this->interest = $interest;
+        $this->interestAdapter = $interestAdapter;
         return $this;
     }
 
@@ -103,7 +103,7 @@ final class InstallmentCalculation implements CalculatorContract
     {
         return new Installment(
             new Money($this->getValueCalculated($numberInstallment), $this->template->currency()),
-            new Money($this->interest->getValueCalculatedByInstallment($numberInstallment) - $this->interest->getTotalCapital(), $this->template->currency()),
+            new Money($this->interestAdapter->getValueCalculatedByInstallment($numberInstallment) - $this->interestAdapter->getTotalCapital(), $this->template->currency()),
             $numberInstallment
         );
     }
@@ -114,6 +114,6 @@ final class InstallmentCalculation implements CalculatorContract
      */
     private function getValueCalculated($numberInstallment)
     {
-        return $this->interest->getValueCalculatedByInstallment($numberInstallment) / $numberInstallment;
+        return $this->interestAdapter->getValueCalculatedByInstallment($numberInstallment) / $numberInstallment;
     }
 }

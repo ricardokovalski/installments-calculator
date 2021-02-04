@@ -1,14 +1,16 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestAdapter;
 use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Real;
 use RicardoKovalski\InstallmentsCalculator\Installment;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCollection;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCollectionIterator;
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
+//use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 use RicardoKovalski\InstallmentsCalculator\Money;
 use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
+use RicardoKovalski\InterestCalculation\Types\Financial;
 
 class InstallmentCalculationTest extends TestCase
 {
@@ -28,7 +30,7 @@ class InstallmentCalculationTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new InstallmentCalculation($this->interest))
+        $calculator = (new InstallmentCalculation(new InterestAdapter($this->interest)))
             ->applySetting($this->template)
             ->calculate();
 
@@ -43,7 +45,7 @@ class InstallmentCalculationTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new InstallmentCalculation($this->interest))
+        $calculator = (new InstallmentCalculation(new InterestAdapter($this->interest)))
             ->applySetting($this->template)
             ->calculate();
 
@@ -57,7 +59,7 @@ class InstallmentCalculationTest extends TestCase
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new InstallmentCalculation($this->interest))
+        $calculator = (new InstallmentCalculation(new InterestAdapter($this->interest)))
             ->applySetting($this->template)
             ->calculate();
 

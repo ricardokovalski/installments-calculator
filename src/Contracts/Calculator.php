@@ -5,13 +5,13 @@ namespace RicardoKovalski\InstallmentsCalculator\Contracts;
 /**
  * Interface Calculator
  *
- * @package Moguzz\Contracts
+ * @package RicardoKovalski\InstallmentsCalculator\Contracts
  */
 interface Calculator
 {
     public function applySetting(Template $template);
 
-    public function applyInterest(Interest $interest);
+    public function applyInterest(Adapter $interestAdapter);
 
     public function calculate();
 
