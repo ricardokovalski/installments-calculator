@@ -9,10 +9,6 @@ namespace RicardoKovalski\InstallmentsCalculator\Contracts;
  */
 interface Template
 {
-    public function currency();
-
-    public function resetCurrency(Currency $currency);
-
     public function resetNumberMaxInstallments($numberMaxInstallments = 1);
 
     public function getNumberMaxInstallments();

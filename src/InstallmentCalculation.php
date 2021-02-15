@@ -14,14 +14,14 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
 final class InstallmentCalculation implements CalculatorContract
 {
     /**
-     * @var Adapter $interestAdapter
+     * @var Adapter $interest
      */
-    private $interestAdapter;
+    private $interest;
 
     /**
      * @var Template $template
      */
-    private $template;
+    private $settings;
 
     /**
      * @var InstallmentCollection $installmentCollection
@@ -31,23 +31,22 @@ final class InstallmentCalculation implements CalculatorContract
     /**
      * CalculatorInstallments constructor.
      *
-     * @param Adapter $interestAdapter
-     * @param Template|null $template
+     * @param Adapter $interest
      */
-    public function __construct(Adapter $interestAdapter, Template $template = null)
+    public function __construct(Adapter $interest)
     {
-        $this->interestAdapter = $interestAdapter;
-        $this->template = $template ?: new TemplateSetting();
+        $this->interest = $interest;
+        $this->settings = new InstallmentCalculationConfig();
         $this->installmentCollection = new InstallmentCollection();
     }
 
     /**
-     * @param Template $template
+     * @param Template $settings
      * @return $this
      */
-    public function applySetting(Template $template)
+    public function resetTemplateConfig(Template $settings)
     {
-        $this->template = $template;
+        $this->settings = $settings;
         return $this;
     }
 
@@ -55,9 +54,9 @@ final class InstallmentCalculation implements CalculatorContract
      * @param Adapter $interestAdapter
      * @return $this
      */
-    public function applyInterest(Adapter $interestAdapter)
+    public function resetAdapterInterest(Adapter $interestAdapter)
     {
-        $this->interestAdapter = $interestAdapter;
+        $this->interest = $interestAdapter;
         return $this;
     }
 
@@ -66,23 +65,20 @@ final class InstallmentCalculation implements CalculatorContract
      */
     public function calculate()
     {
-        foreach (range(1, $this->template->getNumberMaxInstallments()) as $numberInstallment) {
-            if ($this->installmentValueIsLessThanLimitValue($this->getValueCalculated($numberInstallment))) {
+        foreach (range(1, $this->settings->getNumberMaxInstallments()) as $installmentNumber) {
+
+            $installmentValue = $this->interest->getInterestByInstallmentNumber($installmentNumber) / $installmentNumber;
+
+            if ($this->installmentValueIsLessThanLimitValue($installmentValue)) {
                 break;
             }
 
-            $this->installmentCollection->appendInstallment($this->createInstallment($numberInstallment));
+            $installment = new CreateInstallment($this->interest->getInterestByInstallmentNumber($installmentNumber), $this->interest->getTotalCapital(), $installmentNumber);
+
+            $this->installmentCollection->appendInstallment($installment->getInstallment());
         }
 
         return $this;
-    }
-
-    /**
-     * @return InstallmentCollection
-     */
-    public function getCollection()
-    {
-        return $this->installmentCollection;
     }
 
     /**
@@ -91,29 +87,14 @@ final class InstallmentCalculation implements CalculatorContract
      */
     private function installmentValueIsLessThanLimitValue($valueInstallmentCalculated)
     {
-        return $this->template->installmentIsLimited() &&
-            $valueInstallmentCalculated < $this->template->getLimitValueInstallment();
+        return $this->settings->installmentIsLimited() && $valueInstallmentCalculated < $this->settings->getLimitValueInstallment();
     }
 
     /**
-     * @param $numberInstallment
-     * @return Installment
+     * @return InstallmentCollection
      */
-    private function createInstallment($numberInstallment)
+    public function getCollection()
     {
-        return new Installment(
-            new Money($this->getValueCalculated($numberInstallment), $this->template->currency()),
-            new Money($this->interestAdapter->getValueCalculatedByInstallment($numberInstallment) - $this->interestAdapter->getTotalCapital(), $this->template->currency()),
-            $numberInstallment
-        );
-    }
-
-    /**
-     * @param $numberInstallment
-     * @return float|int
-     */
-    private function getValueCalculated($numberInstallment)
-    {
-        return $this->interestAdapter->getValueCalculatedByInstallment($numberInstallment) / $numberInstallment;
+        return $this->installmentCollection;
     }
 }

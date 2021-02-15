@@ -2,9 +2,7 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
-use RicardoKovalski\InstallmentsCalculator\Contracts\Currency;
 use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Real;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
 
@@ -13,15 +11,10 @@ use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentEx
  *
  * @package RicardoKovalski\InstallmentsCalculator
  */
-final class TemplateSetting implements Template
+final class InstallmentCalculationConfig implements Template
 {
-    const NUMBER_MAX_INSTALLMENT = 12;
     const LIMIT_VALUE_INSTALLMENT = 5.00;
-
-    /**
-     * @var Currency $currency
-     */
-    private $currency;
+    const NUMBER_MAX_INSTALLMENT = 12;
 
     /**
      * @var boolean $limitInstallments
@@ -29,40 +22,23 @@ final class TemplateSetting implements Template
     private $limitInstallments;
 
     /**
-     * @var integer $numberMaxInstallments
-     */
-    private $numberMaxInstallments;
-
-    /**
      * @var float $limitValueInstallment
      */
     private $limitValueInstallment;
+
+    /**
+     * @var integer $numberMaxInstallments
+     */
+    private $numberMaxInstallments;
 
     /**
      * TemplateSetting constructor.
      */
     public function __construct()
     {
-        $this->currency = new Real();
         $this->limitInstallments = true;
-        $this->numberMaxInstallments = self::NUMBER_MAX_INSTALLMENT;
         $this->limitValueInstallment = self::LIMIT_VALUE_INSTALLMENT;
-    }
-
-    /**
-     * @return Currency|Real
-     */
-    public function currency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @param Currency $currency
-     */
-    public function resetCurrency(Currency $currency)
-    {
-        $this->currency = $currency;
+        $this->numberMaxInstallments = self::NUMBER_MAX_INSTALLMENT;
     }
 
     /**

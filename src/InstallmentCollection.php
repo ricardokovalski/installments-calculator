@@ -27,11 +27,21 @@ final class InstallmentCollection implements \Countable, \IteratorAggregate
         return null;
     }
 
-    /**
+    /*
      * @param Installment $installment
      * @return $this
      */
-    public function appendInstallment(Installment $installment)
+    /*public function appendInstallment(Installment $installment)
+    {
+        array_push($this->installments, $installment);
+        return $this;
+    }*/
+
+    /**
+     * @param InstallmentNew $installment
+     * @return $this
+     */
+    public function appendInstallment(InstallmentNew $installment)
     {
         array_push($this->installments, $installment);
         return $this;

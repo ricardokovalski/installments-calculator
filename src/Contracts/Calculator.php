@@ -9,9 +9,9 @@ namespace RicardoKovalski\InstallmentsCalculator\Contracts;
  */
 interface Calculator
 {
-    public function applySetting(Template $template);
+    public function resetTemplateConfig(Template $template);
 
-    public function applyInterest(Adapter $interestAdapter);
+    public function resetAdapterInterest(Adapter $interestAdapter);
 
     public function calculate();
 

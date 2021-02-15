@@ -9,5 +9,7 @@ namespace RicardoKovalski\InstallmentsCalculator\Contracts;
  */
 interface Adapter
 {
-    public function getValueCalculatedByInstallment($numberInstallment);
+    //public function getValueCalculatedByInstallment($numberInstallment);
+
+    public function getInterestByInstallmentNumber($installmentNumber);
 }
