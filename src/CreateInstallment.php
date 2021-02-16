@@ -15,7 +15,7 @@ final class CreateInstallment
         $this->interestValue = $interestValue;
         $this->total = $total;
 
-        $this->installment = new InstallmentNew($this->getInterestValue(), $this->getInterestValue() - $this->getTotal(), $installmentNumber);
+        $this->installment = new Installment($this->getInterestValue(), $this->getInterestValue() - $this->getTotal(), $installmentNumber);
     }
 
     public function getInterestValue()
