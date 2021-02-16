@@ -2,7 +2,7 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
-final class InstallmentNew
+final class Installment
 {
     /**
      * @var float $valueCalculated
