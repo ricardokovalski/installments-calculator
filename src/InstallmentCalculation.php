@@ -2,26 +2,25 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
-use RicardoKovalski\InstallmentsCalculator\Contracts\Adapter;
-use RicardoKovalski\InstallmentsCalculator\Contracts\Calculator as CalculatorContract;
-use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
+use RicardoKovalski\InstallmentsCalculator\Contracts\InterestAdapter;
+use RicardoKovalski\InstallmentsCalculator\Contracts\CalculationConfig;
 
 /**
  * Class InstallmentCalculation
  *
  * @package RicardoKovalski\InstallmentsCalculator
  */
-final class InstallmentCalculation implements CalculatorContract
+final class InstallmentCalculation
 {
     /**
-     * @var Adapter $interest
+     * @var InterestAdapter $interest
      */
     private $interest;
 
     /**
-     * @var Template $template
+     * @var CalculationConfig $calculationConfig
      */
-    private $settings;
+    private $calculationConfig;
 
     /**
      * @var InstallmentCollection $installmentCollection
@@ -31,30 +30,30 @@ final class InstallmentCalculation implements CalculatorContract
     /**
      * CalculatorInstallments constructor.
      *
-     * @param Adapter $interest
+     * @param InterestAdapter $interest
      */
-    public function __construct(Adapter $interest)
+    public function __construct(InterestAdapter $interest)
     {
         $this->interest = $interest;
-        $this->settings = new InstallmentCalculationConfig();
+        $this->calculationConfig = new InstallmentCalculationConfig();
         $this->installmentCollection = new InstallmentCollection();
     }
 
     /**
-     * @param Template $settings
+     * @param CalculationConfig $calculationConfig
      * @return $this
      */
-    public function resetTemplateConfig(Template $settings)
+    public function resetCalculationConfig(CalculationConfig $calculationConfig)
     {
-        $this->settings = $settings;
+        $this->calculationConfig = $calculationConfig;
         return $this;
     }
 
     /**
-     * @param Adapter $interestAdapter
+     * @param InterestAdapter $interestAdapter
      * @return $this
      */
-    public function resetAdapterInterest(Adapter $interestAdapter)
+    public function resetAdapterInterest(InterestAdapter $interestAdapter)
     {
         $this->interest = $interestAdapter;
         return $this;
@@ -65,7 +64,7 @@ final class InstallmentCalculation implements CalculatorContract
      */
     public function calculate()
     {
-        foreach (range(1, $this->settings->getNumberMaxInstallments()) as $installmentNumber) {
+        foreach (range(1, $this->calculationConfig->getNumberMaxInstallments()) as $installmentNumber) {
 
             $installmentValue = $this->interest->getInterestByInstallmentNumber($installmentNumber) / $installmentNumber;
 
@@ -87,7 +86,7 @@ final class InstallmentCalculation implements CalculatorContract
      */
     private function installmentValueIsLessThanLimitValue($valueInstallmentCalculated)
     {
-        return $this->settings->installmentIsLimited() && $valueInstallmentCalculated < $this->settings->getLimitValueInstallment();
+        return $this->calculationConfig->installmentIsLimited() && $valueInstallmentCalculated < $this->calculationConfig->getLimitValueInstallment();
     }
 
     /**

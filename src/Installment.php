@@ -2,6 +2,11 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
+/**
+ * Class Installment
+ *
+ * @package RicardoKovalski\InstallmentsCalculator
+ */
 final class Installment
 {
     /**

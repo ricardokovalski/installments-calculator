@@ -7,9 +7,11 @@ namespace RicardoKovalski\InstallmentsCalculator\Contracts;
  *
  * @package RicardoKovalski\InstallmentsCalculator\Contracts
  */
-interface Adapter
+interface InterestAdapter
 {
-    //public function getValueCalculatedByInstallment($numberInstallment);
-
+    /**
+     * @param $installmentNumber
+     * @return mixed
+     */
     public function getInterestByInstallmentNumber($installmentNumber);
 }

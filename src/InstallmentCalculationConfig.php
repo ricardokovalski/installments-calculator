@@ -2,16 +2,16 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
-use RicardoKovalski\InstallmentsCalculator\Contracts\Template;
+use RicardoKovalski\InstallmentsCalculator\Contracts\CalculationConfig;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
 
 /**
- * Class TemplateSetting
+ * Class InstallmentCalculationConfig
  *
  * @package RicardoKovalski\InstallmentsCalculator
  */
-final class InstallmentCalculationConfig implements Template
+final class InstallmentCalculationConfig implements CalculationConfig
 {
     const LIMIT_VALUE_INSTALLMENT = 5.00;
     const NUMBER_MAX_INSTALLMENT = 12;
@@ -50,6 +50,8 @@ final class InstallmentCalculationConfig implements Template
         $this->verifyNumberInstallments($numberMaxInstallments);
 
         $this->numberMaxInstallments = $numberMaxInstallments;
+
+        return $this;
     }
 
     /**
@@ -70,18 +72,25 @@ final class InstallmentCalculationConfig implements Template
 
     /**
      * @param bool $limitInstallments
+     * @return $this|mixed
+     *
      */
     public function resetLimitInstallments($limitInstallments = true)
     {
         $this->limitInstallments = $limitInstallments;
+
+        return $this;
     }
 
     /**
-     * @param $limitValueInstallment
+     * @param int $limitValueInstallment
+     * @return $this|mixed
      */
     public function resetLimitValueInstallment($limitValueInstallment = 0)
     {
         $this->limitValueInstallment = $limitValueInstallment;
+
+        return $this;
     }
 
     /**

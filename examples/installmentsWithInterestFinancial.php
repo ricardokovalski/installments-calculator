@@ -2,13 +2,13 @@
 
 require __DIR__ . '../vendor/autoload.php';
 
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
 
-$interest = new Financial(2.99);
+$interest = InterestCalculation::Financial(2.99);
 $interest->appendTotalCapital(39.90);
 
-$calculator = new InstallmentCalculation($interest);
-$calculator->calculate();
+$installmentCalculation = new InstallmentCalculation($interest);
+$installmentCalculation->calculate();
 
-$collectionInstallments = $calculator->getCollection();
+$collection = $installmentCalculation->getCollection();

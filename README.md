@@ -17,16 +17,21 @@ composer require ricardokovalski/installments-calculator
 Para obter uma coleção de parcelas, basta seguir o código abaixo.
 
 ```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
 
-$interest = new Financial(4.99);
+$interest = InterestCalculation::Financial(4.99);
 $interest->appendTotalCapital(250.90);
 
-$calculator = new InstallmentCalculation($interest);
-$calculator->calculate();
+$installmentCalculationConfig = new InstallmentCalculationConfig();
+$installmentCalculationConfig->resetLimitValueInstallment(10.00);
 
-$collectionInstallments = $calculator->getCollection();
+$installmentCalculation = new InstallmentCalculation($interest);
+$installmentCalculation->resetCalculationConfig($installmentCalculationConfig);
+$installmentCalculation->calculate();
+
+$collection = $installmentCalculation->getCollection();
 ```
 
 ### Configurações
@@ -34,7 +39,6 @@ $collectionInstallments = $calculator->getCollection();
 Por padrão o Calculator inicializa com um template com algumas configurações iniciais, tais como:
 
 ```
-* Moeda                     - Real;
 * Limitar o parcelamento    - True;
 * Valor mínimo parcelado    - 5.00;
 * Número máximo de parcelas - 12;
@@ -42,111 +46,30 @@ Por padrão o Calculator inicializa com um template com algumas configurações 
 
 Você pode alterar as configurações do template através de alguns métodos.
 
-#### Alterar a Moeda
-```php
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
-
-$template = new TemplateSetting();
-$template->resetCurrency(new Dollar());
-```
-
 #### Não limitar o parcelamento
-```php
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 
-$template = new TemplateSetting();
-$template->resetLimitInstallments(false);
+```php
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$installmentCalculationConfig = new InstallmentCalculationConfig();
+$installmentCalculationConfig->resetLimitInstallments(false);
 ```
 
 #### Alterar número de parcelas
-```php
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
 
-$template = new TemplateSetting();
-$template->resetNumberMaxInstallments(6);
+```php
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$installmentCalculationConfig = new InstallmentCalculationConfig();
+$installmentCalculationConfig->resetNumberMaxInstallments(6);
 ```
 
 #### Alterar o parcelamento mínimo
-```php
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-
-$template = new TemplateSetting();
-$template->resetLimitValueInstallment();
-$template->appendLimitValueInstallment(10.00);
-```
-
-Uma vez que o template tenha alguma configuração alterada, basta fazer a injeção do Template modificado à classe do Calculator.
 
 ```php
-use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
 
-$interest = new Financial(4.99);
-$interest->appendTotalCapital(250.90);
-
-$template = new TemplateSetting();
-$template->resetCurrency(new Dollar());
-$template->resetLimitValueInstallment();
-$template->appendLimitValueInstallment(10.00);
-$template->resetLimitInstallments(false);
-$template->resetNumberMaxInstallments(6);
-
-$calculator = new InstallmentCalculation($interest);
-$calculator->applySetting($template)
-    ->calculate();
-
-$collectionInstallments = $calculator->getCollection();
-```
-
-### Formatando as parcelas
-
-Para formatar a parcela de acordo com a moeda que está sendo utilizada, basta acessar o método formatter ao acessar um atributo de Installment, veja o exemplo: 
-
-```php
-use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial;
-
-$interest = new Financial(2.99);
-$interest->appendTotalCapital(343.90);
-
-$template = new TemplateSetting();
-$template->resetLimitValueInstallment();
-$template->appendLimitValueInstallment(10.00);
-
-$calculator = new InstallmentCalculation($interest);
-$calculator->applySetting($template)
-    ->calculate();
-
-$collectionInstallments = $calculator->getCollection();
-
-foreach ($collectionInstallments as $installment) {
-    echo $installment->getValueCalculated()->formatter();
-}
-```
-
-O Objeto Installment possui quatro propriedades:
-
-```
-$valueCalculated   -> Valor calculado da parcela
-$numberInstallment -> Número da parcela
-$addedValue        -> Valor em juros acrescentado à parcela
-$originalValue     -> Valor original da parcela
-```
-
-### Tipos de Juros
-
-```php
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Compound;  // Composto
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Financial; // Financiamento
-use RicardoKovalski\InstallmentsCalculator\Interest\Types\Simple;    // Simples
-```
-### Tipos de Moeda
-
-```php
-use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Real;
+$installmentCalculationConfig = new InstallmentCalculationConfig();
+$installmentCalculationConfig->resetLimitValueInstallment();
+$installmentCalculationConfig->appendLimitValueInstallment(10.00);
 ```
