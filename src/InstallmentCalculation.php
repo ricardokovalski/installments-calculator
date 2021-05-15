@@ -2,7 +2,6 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
-use RicardoKovalski\InstallmentsCalculator\Contracts\InterestAdapter;
 use RicardoKovalski\InstallmentsCalculator\Contracts\CalculationConfig;
 
 /**
@@ -12,11 +11,6 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\CalculationConfig;
  */
 final class InstallmentCalculation
 {
-    /**
-     * @var InterestAdapter $interest
-     */
-    private $interest;
-
     /**
      * @var CalculationConfig $calculationConfig
      */
@@ -29,34 +23,11 @@ final class InstallmentCalculation
 
     /**
      * CalculatorInstallments constructor.
-     *
-     * @param InterestAdapter $interest
      */
-    public function __construct(InterestAdapter $interest)
+    public function __construct(CalculationConfig $installmentCalculationConfig)
     {
-        $this->interest = $interest;
-        $this->calculationConfig = new InstallmentCalculationConfig();
+        $this->calculationConfig = $installmentCalculationConfig;
         $this->installmentCollection = new InstallmentCollection();
-    }
-
-    /**
-     * @param CalculationConfig $calculationConfig
-     * @return $this
-     */
-    public function resetCalculationConfig(CalculationConfig $calculationConfig)
-    {
-        $this->calculationConfig = $calculationConfig;
-        return $this;
-    }
-
-    /**
-     * @param InterestAdapter $interestAdapter
-     * @return $this
-     */
-    public function resetAdapterInterest(InterestAdapter $interestAdapter)
-    {
-        $this->interest = $interestAdapter;
-        return $this;
     }
 
     /**
@@ -64,20 +35,33 @@ final class InstallmentCalculation
      */
     public function calculate()
     {
-        foreach (range(1, $this->calculationConfig->getNumberMaxInstallments()) as $installmentNumber) {
+        if ($this->installmentCollection->count() > 1) {
+            $this->installmentCollection->resetInstallments();
+        }
 
-            $installmentValue = $this->interest->getInterestByInstallmentNumber($installmentNumber) / $installmentNumber;
+        $interest = $this->calculationConfig->getInterest();
+
+        foreach (range(1, $this->calculationConfig->getNumberMaxInstallments()) as $installmentNumber) {
+            $installmentValue = $interest->getInterestByInstallmentNumber($installmentNumber) / $installmentNumber;
 
             if ($this->installmentValueIsLessThanLimitValue($installmentValue)) {
                 break;
             }
 
-            $installment = new CreateInstallment($this->interest->getInterestByInstallmentNumber($installmentNumber), $this->interest->getTotalCapital(), $installmentNumber);
-
-            $this->installmentCollection->appendInstallment($installment->getInstallment());
+            $this->installmentCollection->appendInstallment(
+                new Installment($installmentValue, $this->getAddedValueByInstallmentNumber($installmentNumber), $installmentNumber)
+            );
         }
 
         return $this;
+    }
+
+    /**
+     * @return InstallmentCollection
+     */
+    public function getCollection()
+    {
+        return $this->installmentCollection;
     }
 
     /**
@@ -90,10 +74,12 @@ final class InstallmentCalculation
     }
 
     /**
-     * @return InstallmentCollection
+     * @param $installmentNumber
+     * @return mixed
      */
-    public function getCollection()
+    private function getAddedValueByInstallmentNumber($installmentNumber)
     {
-        return $this->installmentCollection;
+        $interest = $this->calculationConfig->getInterest();
+        return $interest->getInterestByInstallmentNumber($installmentNumber) - $interest->getTotalCapital();
     }
 }

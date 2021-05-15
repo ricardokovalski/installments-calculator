@@ -1,18 +1,21 @@
 <?php
 
+namespace RicardoKovalski\InstallmentsCalculator\Tests;
+
 use PHPUnit\Framework\TestCase;
-use RicardoKovalski\InstallmentsCalculator\Currencies\Types\Dollar;
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\Contracts\InterestAdapter;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MaximumNumberInstallmentException;
 use RicardoKovalski\InstallmentsCalculator\Exceptions\MinimumNumberInstallmentException;
-use RicardoKovalski\InstallmentsCalculator\TemplateSetting;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
 
-class TemplateSettingTest extends TestCase
+class InstallmentCalculationConfigTest extends TestCase
 {
     private $template;
 
     public function setUp()
     {
-        $this->template = new TemplateSetting();
+        $this->template = new InstallmentCalculationConfig(InterestCalculation::Financial(2.99));
     }
 
     public function testExpectedExceptionMaximumNumberInstallment()
@@ -27,6 +30,15 @@ class TemplateSettingTest extends TestCase
         $this->expectException(MinimumNumberInstallmentException::class);
 
         $this->template->resetNumberMaxInstallments(0);
+    }
+
+    public function testAssertEqualsResetInterest()
+    {
+        $this->assertInstanceOf(InterestAdapter::class, $this->template->getInterest());
+
+        $this->template->resetInterest(InterestCalculation::Simple(2.99));
+
+        $this->assertInstanceOf(InterestAdapter::class, $this->template->getInterest());
     }
 
     public function testAssertEqualsResetNumberMaxInstallmentsToSix()
@@ -55,13 +67,6 @@ class TemplateSettingTest extends TestCase
         $this->template->appendLimitValueInstallment(2.99);
 
         $this->assertEquals(10.98, $this->template->getLimitValueInstallment());
-    }
-
-    public function testAssertInstanceOfResetCurrency()
-    {
-        $this->template->resetCurrency(new Dollar());
-
-        $this->assertInstanceOf(Dollar::class, $this->template->currency());
     }
 
     public function testAssertEqualsIsLimitInstallment()

@@ -3,12 +3,23 @@
 namespace RicardoKovalski\InstallmentsCalculator\Contracts;
 
 /**
- * Interface Template
+ * Interface CalculationConfig
  *
- * @package Moguzz\Contracts
+ * @package RicardoKovalski\InstallmentsCalculator\Contracts
  */
 interface CalculationConfig
 {
+    /**
+     * @param InterestAdapter $interest
+     * @return mixed
+     */
+    public function resetInterest(InterestAdapter $interest);
+
+    /**
+     * @return InterestAdapter
+     */
+    public function getInterest();
+
     /**
      * @param int $numberMaxInstallments
      * @return mixed

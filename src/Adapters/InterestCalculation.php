@@ -2,19 +2,21 @@
 
 namespace RicardoKovalski\InstallmentsCalculator\Adapters;
 
-use RicardoKovalski\InstallmentsCalculator\Contracts\Adapter;
-use RicardoKovalski\InstallmentsCalculator\InterestFactory;
+use RicardoKovalski\InstallmentsCalculator\Contracts\InterestAdapter;
+//use RicardoKovalski\InstallmentsCalculator\InterestFactory;
 use RicardoKovalski\InterestCalculation\Contracts\Interest;
 
 /**
- * Class InterestAdapter
+ * Class InterestCalculation
+ *
+ * @method static InterestCalculation Financial(float $interestValue)
+ * @method static InterestCalculation Compound(float $interestValue)
+ * @method static InterestCalculation Simple(float $interestValue)
  *
  * @package RicardoKovalski\InstallmentsCalculator\Adapters
  */
-final class InterestAdapter implements Adapter
+final class InterestCalculation implements InterestAdapter
 {
-    use InterestFactory;
-
     /**
      * @var Interest $interest
      */
@@ -30,40 +32,65 @@ final class InterestAdapter implements Adapter
         $this->interest = $interest;
     }
 
-    /*public function appendInterestValue($interestValue)
+    /**
+     * @param $interestValue
+     * @return $this
+     */
+    public function appendInterestValue($interestValue)
     {
         $this->interest->appendInterestValue($interestValue);
         return $this;
-    }*/
+    }
 
+    /**
+     * @param $totalCapital
+     * @return $this
+     */
     public function appendTotalCapital($totalCapital)
     {
         $this->interest->appendTotalCapital($totalCapital);
         return $this;
     }
 
+    /**
+     * @param $totalCapital
+     * @return $this
+     */
     public function resetTotalCapital($totalCapital)
     {
         $this->interest->resetTotalCapital($totalCapital);
         return $this;
     }
 
-    /*public function resetInterestValue($interestValue)
+    /**
+     * @param $interestValue
+     * @return $this
+     */
+    public function resetInterestValue($interestValue)
     {
         $this->interest->resetInterestValue($interestValue);
         return $this;
-    }*/
+    }
 
-    /*public function getInterestValue()
+    /**
+     * @return mixed
+     */
+    public function getInterestValue()
     {
         return $this->interest->getInterestValue();
-    }*/
+    }
 
-    /*public function getInterestRates()
+    /**
+     * @return mixed
+     */
+    public function getInterestRates()
     {
         return $this->interest->getInterestRates();
-    }*/
+    }
 
+    /**
+     * @return mixed
+     */
     public function getTotalCapital()
     {
         return $this->interest->getTotalCapital();
@@ -76,5 +103,17 @@ final class InterestAdapter implements Adapter
     public function getInterestByInstallmentNumber($installmentNumber)
     {
         return $this->interest->getValueCalculatedByInstallment($installmentNumber);
+    }
+
+    /**
+     * @param $method
+     * @param $arguments
+     * @return InterestCalculation
+     */
+    public static function __callStatic($method, $arguments)
+    {
+        $concreteClassInterest = "RicardoKovalski\\InterestCalculation\\Types\\{$method}";
+
+        return new InterestCalculation(new $concreteClassInterest(current($arguments)?:0.00));
     }
 }
