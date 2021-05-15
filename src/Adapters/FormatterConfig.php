@@ -13,7 +13,7 @@ use RicardoKovalski\InstallmentsCalculator\Contracts\FormatterConfigAdapter;
  * @method static FormatterConfig BRL(string $locale)
  * @method static FormatterConfig USD(string $locale)
  */
-class FormatterConfig implements FormatterConfigAdapter
+final class FormatterConfig implements FormatterConfigAdapter
 {
     /**
      * @var BaseFormatterConfig $adapter

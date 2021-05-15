@@ -3,7 +3,6 @@
 namespace RicardoKovalski\InstallmentsCalculator\Adapters;
 
 use RicardoKovalski\InstallmentsCalculator\Contracts\InterestAdapter;
-//use RicardoKovalski\InstallmentsCalculator\InterestFactory;
 use RicardoKovalski\InterestCalculation\Contracts\Interest;
 
 /**
