@@ -10,9 +10,9 @@ namespace RicardoKovalski\InstallmentsCalculator;
 final class Installment
 {
     /**
-     * @var float $valueCalculated
+     * @var float $valueInstallment
      */
-    private $valueCalculated;
+    private $valueInstallment;
 
     /**
      * @var int $numberInstallment
@@ -20,36 +20,36 @@ final class Installment
     private $numberInstallment;
 
     /**
-     * @var float $addedValue
+     * @var float $interestValue
      */
-    private $addedValue;
+    private $interestValue;
 
     /**
-     * @var float $originalValue
+     * @var float $totalIterest
      */
-    private $originalValue;
+    private $totalInterest;
 
     /**
      * Installment constructor.
      *
-     * @param $valueCalculated
-     * @param $addedValue
+     * @param $valueInstallment
+     * @param $interestValue
      * @param $numberInstallment
      */
-    public function __construct($valueCalculated, $addedValue, $numberInstallment)
+    public function __construct($valueInstallment, $interestValue, $numberInstallment)
     {
-        $this->valueCalculated = $valueCalculated;
-        $this->addedValue = $addedValue;
+        $this->valueInstallment = $valueInstallment;
+        $this->interestValue = $interestValue;
         $this->numberInstallment = $numberInstallment;
-        $this->originalValue = $this->makeOriginalValue();
+        $this->totalInterest = $this->valueInstallment * $this->numberInstallment;
     }
 
     /**
      * @return float
      */
-    public function getValueCalculated()
+    public function getValueInstallment()
     {
-        return $this->valueCalculated;
+        return $this->valueInstallment;
     }
 
     /**
@@ -63,24 +63,16 @@ final class Installment
     /**
      * @return float
      */
-    public function getAddedValue()
+    public function getInterestValue()
     {
-        return $this->addedValue;
+        return $this->interestValue;
     }
 
     /**
      * @return float
      */
-    public function getOriginalValue()
+    public function getTotalInterest()
     {
-        return $this->originalValue;
-    }
-
-    /**
-     * @return float
-     */
-    private function makeOriginalValue()
-    {
-        return $this->getValueCalculated() * $this->getNumberInstallment();
+        return $this->totalInterest;
     }
 }

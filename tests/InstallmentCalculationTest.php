@@ -104,9 +104,9 @@ class InstallmentCalculationTest extends TestCase
      */
     public function testAssertEqualsValueCalculatedInstallments($valueCalculated, Installment $installment)
     {
-        $this->assertEquals($valueCalculated[0][0], $installment->getValueCalculated());
-        $this->assertEquals($valueCalculated[1][0], $installment->getAddedValue());
-        $this->assertEquals($valueCalculated[2][0], $installment->getOriginalValue());
+        $this->assertEquals($valueCalculated[0][0], $installment->getValueInstallment());
+        $this->assertEquals($valueCalculated[1][0], $installment->getInterestValue());
+        $this->assertEquals($valueCalculated[2][0], $installment->getTotalInterest());
     }
 
     /**

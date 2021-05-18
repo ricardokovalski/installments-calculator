@@ -49,7 +49,7 @@ final class InstallmentCalculation
             }
 
             $this->installmentCollection->appendInstallment(
-                new Installment($installmentValue, $this->getAddedValueByInstallmentNumber($installmentNumber), $installmentNumber)
+                new Installment($installmentValue, $this->getInterestValueAddInInstallmentNumber($installmentNumber), $installmentNumber)
             );
         }
 
@@ -77,7 +77,7 @@ final class InstallmentCalculation
      * @param $installmentNumber
      * @return mixed
      */
-    private function getAddedValueByInstallmentNumber($installmentNumber)
+    private function getInterestValueAddInInstallmentNumber($installmentNumber)
     {
         $interest = $this->calculationConfig->getInterest();
         return $interest->getInterestByInstallmentNumber($installmentNumber) - $interest->getTotalCapital();
