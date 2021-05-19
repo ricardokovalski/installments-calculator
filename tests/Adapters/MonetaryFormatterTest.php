@@ -3,11 +3,11 @@
 namespace RicardoKovalski\InstallmentsCalculator\Tests\Adapters;
 
 use PHPUnit\Framework\TestCase;
-use RicardoKovalski\InstallmentsCalculator\Adapters\Formatter;
-use RicardoKovalski\InstallmentsCalculator\Adapters\FormatterConfig;
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatter;
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatterConfig;
 use RicardoKovalski\InstallmentsCalculator\Enums\Locale;
 
-class FormatterTest extends TestCase
+class MonetaryFormatterTest extends TestCase
 {
     /**
      * @dataProvider providerFormatterDecimal
@@ -16,7 +16,7 @@ class FormatterTest extends TestCase
      */
     public function testAssertEqualsValueFormatterDecimal($valueFormatted, $valueOriginal)
     {
-        $decimalFormatter = Formatter::toDecimal(FormatterConfig::BRL(Locale::PT_BR));
+        $decimalFormatter = MonetaryFormatter::toDecimal(MonetaryFormatterConfig::BRL(Locale::PT_BR));
         $this->assertEquals($valueFormatted, $decimalFormatter->format($valueOriginal));
     }
 
@@ -43,7 +43,7 @@ class FormatterTest extends TestCase
      */
     public function testAssertEqualsValueFormattedIntlDecimal($valueFormatted, $valueOriginal)
     {
-        $decimalIntlFormatter = Formatter::toIntlDecimal(FormatterConfig::BRL(Locale::PT_BR));
+        $decimalIntlFormatter = MonetaryFormatter::toIntlDecimal(MonetaryFormatterConfig::BRL(Locale::PT_BR));
         $this->assertEquals($valueFormatted, $decimalIntlFormatter->format($valueOriginal));
     }
 
@@ -70,7 +70,7 @@ class FormatterTest extends TestCase
      */
     public function testAssertEqualsValueFormattedIntlCurrency($valueFormatted, $valueOriginal)
     {
-        $currencyIntlFormatter = Formatter::toIntlCurrency(FormatterConfig::USD(Locale::EN_US));
+        $currencyIntlFormatter = MonetaryFormatter::toIntlCurrency(MonetaryFormatterConfig::USD(Locale::EN_US));
         $this->assertEquals($valueFormatted, $currencyIntlFormatter->format($valueOriginal));
     }
 

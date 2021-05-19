@@ -3,11 +3,11 @@
 namespace RicardoKovalski\InstallmentsCalculator\Contracts;
 
 /**
- * Interface FormatterAdapter
+ * Interface MonetaryFormatterContract
  *
  * @package RicardoKovalski\InstallmentsCalculator\Contracts
  */
-interface FormatterAdapter
+interface MonetaryFormatterContract
 {
     /**
      * @param $value

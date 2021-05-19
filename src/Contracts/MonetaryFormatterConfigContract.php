@@ -3,11 +3,11 @@
 namespace RicardoKovalski\InstallmentsCalculator\Contracts;
 
 /**
- * Interface FormatterConfigAdapter
+ * Interface MonetaryFormatterConfigContract
  *
  * @package RicardoKovalski\InstallmentsCalculator\Contracts
  */
-interface FormatterConfigAdapter
+interface MonetaryFormatterConfigContract
 {
     /**
      * @param $isoCode

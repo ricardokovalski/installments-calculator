@@ -3,17 +3,17 @@
 namespace RicardoKovalski\InstallmentsCalculator\Adapters;
 
 use RicardoKovalski\CurrencyFormatter\Formatters\BaseFormatterConfig;
-use RicardoKovalski\InstallmentsCalculator\Contracts\FormatterConfigAdapter;
+use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterConfigContract;
 
 /**
- * Class BaseFormatterConfigAdapter
+ * Class MonetaryFormatterConfig
  *
  * @package RicardoKovalski\InstallmentsCalculator\Adapters
  *
- * @method static FormatterConfig BRL(string $locale)
- * @method static FormatterConfig USD(string $locale)
+ * @method static MonetaryFormatterConfig BRL(string $locale)
+ * @method static MonetaryFormatterConfig USD(string $locale)
  */
-final class FormatterConfig implements FormatterConfigAdapter
+final class MonetaryFormatterConfig implements MonetaryFormatterConfigContract
 {
     /**
      * @var BaseFormatterConfig $adapter
@@ -78,7 +78,7 @@ final class FormatterConfig implements FormatterConfigAdapter
     /**
      * @param $method
      * @param $arguments
-     * @return FormatterConfig
+     * @return MonetaryFormatterConfig
      */
     public static function __callStatic($method, $arguments)
     {

@@ -5,18 +5,18 @@ namespace RicardoKovalski\InstallmentsCalculator\Adapters;
 use RicardoKovalski\CurrencyFormatter\Formatters\Types\DecimalFormatter;
 use RicardoKovalski\CurrencyFormatter\Formatters\Types\IntlCurrencyFormatter;
 use RicardoKovalski\CurrencyFormatter\Formatters\Types\IntlDecimalFormatter;
-use RicardoKovalski\InstallmentsCalculator\Contracts\FormatterAdapter;
+use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterContract;
 
 /**
- * Class BaseFormatterAdapter
+ * Class MonetaryFormatter
  *
  * @package RicardoKovalski\InstallmentsCalculator\Adapters
  *
- * @method static Formatter toIntlCurrency(FormatterConfig $formatterConfig)
- * @method static Formatter toIntlDecimal(FormatterConfig $formatterConfig)
- * @method static Formatter toDecimal(FormatterConfig $formatterConfig)
+ * @method static MonetaryFormatter toIntlCurrency(MonetaryFormatterConfig $monetaryFormatterConfig)
+ * @method static MonetaryFormatter toIntlDecimal(MonetaryFormatterConfig $monetaryFormatterConfig)
+ * @method static MonetaryFormatter toDecimal(MonetaryFormatterConfig $monetaryFormatterConfig)
  */
-final class Formatter implements FormatterAdapter
+final class MonetaryFormatter implements MonetaryFormatterContract
 {
     const toIntlCurrency = 'toIntlCurrency';
     const toIntlDecimal = 'toIntlDecimal';
@@ -27,13 +27,14 @@ final class Formatter implements FormatterAdapter
     private $adapter;
 
     /**
-     * Formatter constructor.
-     * @param FormatterConfig $formatterConfig
+     * MonetaryFormatter constructor.
+     *
+     * @param MonetaryFormatterConfig $monetaryFormatterConfig
      * @param $method
      */
-    public function __construct(FormatterConfig $formatterConfig, $method)
+    public function __construct(MonetaryFormatterConfig $monetaryFormatterConfig, $method)
     {
-        $this->adapter = new $method($formatterConfig->getAdapter());
+        $this->adapter = new $method($monetaryFormatterConfig->getAdapter());
     }
 
     /**
@@ -48,7 +49,7 @@ final class Formatter implements FormatterAdapter
     /**
      * @param $method
      * @param $arguments
-     * @return Formatter
+     * @return MonetaryFormatter
      */
     public static function __callStatic($method, $arguments)
     {

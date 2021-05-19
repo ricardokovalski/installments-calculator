@@ -2,6 +2,9 @@
 
 namespace RicardoKovalski\InstallmentsCalculator;
 
+use Exception;
+use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterContract;
+
 /**
  * Class Installment
  *
@@ -74,5 +77,10 @@ final class Installment
     public function getTotalInterest()
     {
         return $this->totalInterest;
+    }
+
+    public function formatter(FormatterPattern $formatter)
+    {
+        return sprintf($formatter->getPattern(), $this->getNumberInstallment(), $formatter->getMonetaryFormatter()->format($this->getValueInstallment()));
     }
 }

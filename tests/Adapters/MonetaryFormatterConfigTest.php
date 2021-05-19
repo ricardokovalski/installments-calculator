@@ -3,20 +3,20 @@
 namespace RicardoKovalski\InstallmentsCalculator\Tests\Adapters;
 
 use PHPUnit\Framework\TestCase;
-use RicardoKovalski\InstallmentsCalculator\Adapters\FormatterConfig;
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatterConfig;
 use RicardoKovalski\InstallmentsCalculator\Enums\IsoCodes;
 use RicardoKovalski\InstallmentsCalculator\Enums\Locale;
 
-class FormatterConfigTest extends TestCase
+class MonetaryFormatterConfigTest extends TestCase
 {
     /**
-     * @var FormatterConfig
+     * @var MonetaryFormatterConfig
      */
     private $formatterConfig;
 
     public function setUp()
     {
-        $this->formatterConfig = FormatterConfig::BRL(Locale::PT_BR);
+        $this->formatterConfig = MonetaryFormatterConfig::BRL(Locale::PT_BR);
     }
 
     public function testAssertEqualsGetCurrencyIsoCode()
