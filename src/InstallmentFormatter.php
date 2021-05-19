@@ -5,13 +5,16 @@ namespace RicardoKovalski\InstallmentsCalculator;
 use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterContract;
 
 /**
- * Class FormatterPattern
+ * Class InstallmentFormatter
  *
  * @package RicardoKovalski\InstallmentsCalculator
  */
-class FormatterPattern
+class InstallmentFormatter
 {
-    private $pattern = '%s x %s';
+    const PATTERN_A = '%s x %s';
+    const PATTERN_B = '%s x %s (%s)';
+
+    private $pattern;
 
     /**
      * @var MonetaryFormatterContract
@@ -19,13 +22,14 @@ class FormatterPattern
     private $monetaryFormatter;
 
     /**
-     * FormatterPattern constructor.
+     * InstallmentFormatter constructor.
      *
      * @param MonetaryFormatterContract $monetaryFormatter
      */
     public function __construct(MonetaryFormatterContract $monetaryFormatter)
     {
         $this->monetaryFormatter = $monetaryFormatter;
+        $this->pattern = self::PATTERN_A;
     }
 
     /**
@@ -37,10 +41,30 @@ class FormatterPattern
     }
 
     /**
+     * @param $pattern
+     * @return $this
+     */
+    public function resetPattern($pattern)
+    {
+        $this->pattern = $pattern;
+        return $this;
+    }
+
+    /**
      * @return MonetaryFormatterContract
      */
     public function getMonetaryFormatter()
     {
         return $this->monetaryFormatter;
+    }
+
+    /**
+     * @param MonetaryFormatterContract $monetaryFormatter
+     * @return $this
+     */
+    public function resetMonetaryFormatter(MonetaryFormatterContract $monetaryFormatter)
+    {
+        $this->monetaryFormatter = $monetaryFormatter;
+        return $this;
     }
 }
