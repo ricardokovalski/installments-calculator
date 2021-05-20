@@ -75,9 +75,4 @@ final class Installment
     {
         return $this->totalInterest;
     }
-
-    public function formatter(InstallmentFormatter $formatter)
-    {
-        return sprintf($formatter->getPattern(), $this->getNumberInstallment(), $formatter->getMonetaryFormatter()->format($this->getValueInstallment()));
-    }
 }
