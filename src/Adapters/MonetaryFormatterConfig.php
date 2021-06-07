@@ -68,6 +68,24 @@ final class MonetaryFormatterConfig implements MonetaryFormatterConfigContract
     }
 
     /**
+     * @param $fractionDigits
+     * @return $this
+     */
+    public function resetFractionDigits($fractionDigits)
+    {
+        $this->adapter->resetFractionDigits($fractionDigits);
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFractionDigits()
+    {
+        return $this->adapter->getFractionDigits();
+    }
+
+    /**
      * @return BaseFormatterConfig
      */
     public function getAdapter()

@@ -30,4 +30,15 @@ interface MonetaryFormatterConfigContract
      * @return mixed
      */
     public function getLocale();
+
+    /**
+     * @param $fractionDigits
+     * @return mixed
+     */
+    public function resetFractionDigits($fractionDigits);
+
+    /**
+     * @return mixed
+     */
+    public function getFractionDigits();
 }
