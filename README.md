@@ -13,11 +13,11 @@
     <a href="https://github.com/ricardokovalski/installments-calculator/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="Read License"></a>
 </p>
 
-## Sobre
+<h2>Sobre</h2>
 
 ricardokovalski/installments-calculator é uma biblioteca PHP que serve para calcular juros de parcelamentos.
 
-## Instalação
+<h2>Instalação</h2>
 
 Instale este pacote como uma dependência usando [Composer](https://getcomposer.org).
 
@@ -25,7 +25,9 @@ Instale este pacote como uma dependência usando [Composer](https://getcomposer.
 composer require ricardokovalski/installments-calculator
 ```
 
-## Uso básico
+<h2>Uso básico</h2>
+
+<h3>InstallmentCalculationConfig</h3>
 
 Para obtermos uma coleção com as parcelas calculadas, inicialmente devemos
 instanciar um objeto InstallmentCalculationConfig. Esse objeto requer um tipo
@@ -112,9 +114,87 @@ $installmentCalculationConfig = new InstallmentCalculationConfig($interest);
 $installmentCalculationConfig->resetLimitInstallments(false);
 ```
 
+<h3>InstallmentCalculation</h3>
 
+Para obter uma coleção de parcelas calculadas.
 
-## Copyright and License
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+$installmentCalculationConfig->resetLimitValueInstallment(10.00);
+
+$installmentCalculation = new InstallmentCalculation($installmentCalculationConfig);
+$installmentCalculation->calculate();
+
+$collection = $installmentCalculation->getCollection();
+```
+
+<h3>Formatters</h3>
+
+<h4>MonetaryFormatterConfig</h4>
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatterConfig;
+use RicardoKovalski\InstallmentsCalculator\Enums\IsoCodes; 
+use RicardoKovalski\InstallmentsCalculator\Enums\Locale;
+
+$formatterConfig = MonetaryFormatterConfig::BRL(Locale::PT_BR);
+
+$formatterConfig->resetLocale(Locale::EN_US)
+    ->resetCurrencyIsoCode(IsoCodes::USD)
+    ->resetFractionDigits(3);
+```
+
+<h4>MonetaryFormatter</h4>
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatter;
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatterConfig;
+use RicardoKovalski\InstallmentsCalculator\Enums\Locale;
+
+$formatterConfig = MonetaryFormatterConfig::BRL(Locale::PT_BR);
+
+$decimalFormatter = MonetaryFormatter::toDecimal($formatterConfig);
+$intlCurrencyFormatter = MonetaryFormatter::toIntlCurrency($formatterConfig);
+$intlDecimalFormatter = MonetaryFormatter::toIntlDecimal($formatterConfig);
+```
+
+<h3>Exemplo completo</h3>
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatter;
+use RicardoKovalski\InstallmentsCalculator\Adapters\MonetaryFormatterConfig;
+use RicardoKovalski\InstallmentsCalculator\Enums\Locale;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+$installmentCalculationConfig->resetLimitValueInstallment(10.00);
+
+$installmentCalculation = new InstallmentCalculation($installmentCalculationConfig);
+$installmentCalculation->calculate();
+
+$collection = $installmentCalculation->getCollection();
+
+$formatterConfig = MonetaryFormatterConfig::BRL(Locale::PT_BR);
+$intlCurrencyFormatter = MonetaryFormatter::toIntlCurrency($formatterConfig);
+
+foreach ($collection as $installment) {
+    $intlCurrencyFormatter->format($installment->getValueCalculated());
+}
+```
+
+<h2>Copyright and License</h2>
 
 The ricardokovalski/installments-calculator library is copyright © [Ricardo Kovalski](https://github.com/ricardokovalski)
 and licensed for use under the terms of the
