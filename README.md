@@ -27,7 +27,92 @@ composer require ricardokovalski/installments-calculator
 
 ## Uso básico
 
-A definir
+Para obtermos uma coleção com as parcelas calculadas, inicialmente devemos
+instanciar um objeto InstallmentCalculationConfig. Esse objeto requer um tipo
+de juros em seu construtor.
+
+Com a classe InterestCalculation, podemos instanciar um tipo de juros qualquer,
+ou seja, Financial, Compound e Simple.
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+```
+
+Ainda no objeto InstallmentCalculationConfig, podemos modificar algumas configurações
+padrões, por exemplo:
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+
+$interestCompound = InterestCalculation::Compound(1.99);
+$interestCompound->appendTotalCapital(343.90);
+
+$installmentCalculationConfig->resetInterest($interestCompound);
+```
+
+No exemplo acima, resetamos o tipo de juros para Compound, sendo que inicialmente,
+InstallmentCalculationConfig havia sido instanciada com o tipo Financial.
+
+Além de resetar o tipo de juros, podemos definir o número máximo de pacelas. Por
+padrão, esse número máximo de parcelas é 12.
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+$installmentCalculationConfig->resetNumberMaxInstallments(6);
+```
+
+No exemplo acima, acabamos de resetar o número máximo de pacelas para 6.
+
+Outras opções que temos disponível é de limitar o parcelamento em uma 
+valor mínimo e se este estiver configurado para limitar, podemos definir o 
+valor limite.
+Por padrão, já está habilitado esse limite no valor de 5.00.
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+$installmentCalculationConfig->appendLimitValueInstallment(5.00);
+```
+
+No exemplo anterior, adicionamos mais 5.00 ao valor limite, ou seja, agora as parcelas
+serão calculadas até que a última parcela não seja inferior à 10.00.
+Caso queira que não se tenha esse limite configurado, basta desativar.
+
+```php
+use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
+use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
+
+$interest = InterestCalculation::Financial(2.99);
+$interest->appendTotalCapital(343.90);
+
+$installmentCalculationConfig = new InstallmentCalculationConfig($interest);
+$installmentCalculationConfig->resetLimitInstallments(false);
+```
+
+
 
 ## Copyright and License
 
