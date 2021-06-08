@@ -2,6 +2,6 @@
 
 namespace RicardoKovalski\InstallmentsCalculator\Enums;
 
-class IsoCodes extends \RicardoKovalski\CurrencyFormatter\Enums\IsoCodes
+class IsoCodes extends \RicardoKovalski\MoneyFormatter\Enums\IsoCodes
 {
 }
