@@ -24,12 +24,10 @@ class InstallmentCalculationTest extends TestCase
 
     public function testAssertEqualsNumberInstallmentsCalculated()
     {
-        $this->interest->appendTotalCapital(88.90);
-
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new InstallmentCalculation($this->template))->calculate();
+        $calculator = (new InstallmentCalculation($this->template))->appendTotalPurchase(88.90)->calculate();
 
         $this->assertCount(10, $calculator->getCollection()->getIterator());
 
@@ -42,25 +40,21 @@ class InstallmentCalculationTest extends TestCase
 
     public function testAssertEqualsNumberInstallmentsCalculatedWhenNotLimitingInstallments()
     {
-        $this->interest->appendTotalCapital(150.00);
-
         $this->template->resetLimitInstallments(false);
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new InstallmentCalculation($this->template))->calculate();
+        $calculator = (new InstallmentCalculation($this->template))->appendTotalPurchase(150.00)->calculate();
 
         $this->assertCount(12, $calculator->getCollection()->getIterator());
     }
 
     public function testAssertEqualsInstallments()
     {
-        $this->interest->appendTotalCapital(450.00);
-
         $this->template->resetLimitValueInstallment();
         $this->template->appendLimitValueInstallment(10.00);
 
-        $calculator = (new InstallmentCalculation($this->template))->calculate();
+        $calculator = (new InstallmentCalculation($this->template))->appendTotalPurchase(450.00)->calculate();
 
         $this->assertEquals(
             $this->createInstallments(),

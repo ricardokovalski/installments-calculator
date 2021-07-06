@@ -21,11 +21,11 @@ class InterestCalculationTest extends TestCase
         $this->interest = InterestCalculation::Financial(2.99);
     }
 
-    public function testAssertEqualsAppendTotalCapital()
+    /*public function testAssertEqualsAppendTotalCapital()
     {
         $this->interest->appendTotalCapital(299.70);
         $this->assertEquals(299.70, $this->interest->getTotalCapital());
-    }
+    }*/
 
     public function testAssertEqualsResetTotalCapital()
     {
@@ -33,11 +33,11 @@ class InterestCalculationTest extends TestCase
         $this->assertEquals(150, $this->interest->getTotalCapital());
     }
 
-    public function testAssertEqualsAppendInterestValue()
+    /*public function testAssertEqualsAppendInterestValue()
     {
         $this->interest->appendInterestValue(1.99);
         $this->assertEquals(4.98, $this->interest->getInterestValue());
-    }
+    }*/
 
     public function testAssertEqualsResetInterestValue()
     {
@@ -57,7 +57,7 @@ class InterestCalculationTest extends TestCase
      */
     public function testAssertEqualsInterestByInstallmentNumber($valueCalculated, $installmentNumber)
     {
-        $this->interest->appendTotalCapital(250);
+        $this->interest->resetTotalCapital(250);
         $this->assertEquals($valueCalculated, $this->interest->getInterestByInstallmentNumber($installmentNumber));
     }
 

@@ -41,10 +41,21 @@ class MonetaryFormatterConfigTest extends TestCase
         $this->assertEquals(Locale::EN_US, $this->formatterConfig->getLocale());
     }
 
+    public function testAssertEqualsGetFractionalDigits()
+    {
+        $this->assertEquals(2, $this->formatterConfig->getFractionDigits());
+    }
+
+    public function testAssertEqualsResetFractionalDigits()
+    {
+        $this->formatterConfig->resetFractionDigits(3);
+        $this->assertEquals(3, $this->formatterConfig->getFractionDigits());
+    }
+
     public function testAssertEqualsGetAdapter()
     {
         $this->assertInstanceOf(
-            \RicardoKovalski\CurrencyFormatter\Formatters\Contracts\FormatterConfig::class,
+            \RicardoKovalski\MoneyFormatter\Formatters\Contracts\FormatterConfig::class,
             $this->formatterConfig->getAdapter()
         );
     }
