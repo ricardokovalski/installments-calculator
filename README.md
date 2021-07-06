@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/ricardokovalski/installments-calculator"><img src="http://img.shields.io/badge/source-ricardokovalski/interest--calculation-blue.svg" alt="Source Code"></a>
+    <a href="https://github.com/ricardokovalski/installments-calculator"><img src="http://img.shields.io/badge/source-ricardokovalski/installment--calculator-blue.svg" alt="Source Code"></a>
     <a href="https://php.net"><img src="https://img.shields.io/badge/php-%3E=5.6-777bb3.svg" alt="PHP Programming Language"></a>
     <a href="https://github.com/ricardokovalski/installments-calculator/releases"><img src="https://img.shields.io/github/release/ricardokovalski/installments-calculator.svg" alt="Source Code"></a>
     <a href="https://github.com/ricardokovalski"><img src="http://img.shields.io/badge/author-@ricardokovalski-blue.svg" alt="Author"></a>
