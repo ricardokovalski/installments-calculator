@@ -2,7 +2,7 @@
 
 namespace RicardoKovalski\InstallmentsCalculator\Adapters;
 
-use RicardoKovalski\CurrencyFormatter\Formatters\BaseFormatterConfig;
+use RicardoKovalski\MoneyFormatter\Formatters\BaseFormatterConfig;
 use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterConfigContract;
 
 /**

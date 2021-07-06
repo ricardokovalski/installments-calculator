@@ -2,9 +2,9 @@
 
 namespace RicardoKovalski\InstallmentsCalculator\Adapters;
 
-use RicardoKovalski\CurrencyFormatter\Formatters\Types\DecimalFormatter;
-use RicardoKovalski\CurrencyFormatter\Formatters\Types\IntlCurrencyFormatter;
-use RicardoKovalski\CurrencyFormatter\Formatters\Types\IntlDecimalFormatter;
+use RicardoKovalski\MoneyFormatter\Formatters\Types\DecimalFormatter;
+use RicardoKovalski\MoneyFormatter\Formatters\Types\IntlCurrencyFormatter;
+use RicardoKovalski\MoneyFormatter\Formatters\Types\IntlDecimalFormatter;
 use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterContract;
 
 /**

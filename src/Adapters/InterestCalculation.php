@@ -32,26 +32,6 @@ final class InterestCalculation implements InterestAdapter
     }
 
     /**
-     * @param $interestValue
-     * @return $this
-     */
-    public function appendInterestValue($interestValue)
-    {
-        $this->interest->appendInterestValue($interestValue);
-        return $this;
-    }
-
-    /**
-     * @param $totalCapital
-     * @return $this
-     */
-    public function appendTotalCapital($totalCapital)
-    {
-        $this->interest->appendTotalCapital($totalCapital);
-        return $this;
-    }
-
-    /**
      * @param $totalCapital
      * @return $this
      */

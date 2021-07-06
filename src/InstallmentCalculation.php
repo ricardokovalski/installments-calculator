@@ -22,12 +22,28 @@ final class InstallmentCalculation
     private $installmentCollection;
 
     /**
+     * @var float
+     */
+    private $totalPurchase;
+
+    /**
      * CalculatorInstallments constructor.
      */
     public function __construct(CalculationConfig $installmentCalculationConfig)
     {
         $this->calculationConfig = $installmentCalculationConfig;
         $this->installmentCollection = new InstallmentCollection();
+        $this->totalPurchase = 0.00;
+    }
+
+    /**
+     * @param $totalPurchase
+     * @return $this
+     */
+    public function appendTotalPurchase($totalPurchase)
+    {
+        $this->totalPurchase += $totalPurchase;
+        return $this;
     }
 
     /**
@@ -40,6 +56,7 @@ final class InstallmentCalculation
         }
 
         $interest = $this->calculationConfig->getInterest();
+        $interest->resetTotalCapital($this->getTotalPurchase());
 
         foreach (range(1, $this->calculationConfig->getNumberMaxInstallments()) as $installmentNumber) {
             $installmentValue = $interest->getInterestByInstallmentNumber($installmentNumber) / $installmentNumber;
@@ -54,6 +71,14 @@ final class InstallmentCalculation
         }
 
         return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalPurchase()
+    {
+        return $this->totalPurchase;
     }
 
     /**

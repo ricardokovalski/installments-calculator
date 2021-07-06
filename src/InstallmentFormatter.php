@@ -5,7 +5,6 @@ namespace RicardoKovalski\InstallmentsCalculator;
 use InvalidArgumentException;
 use RicardoKovalski\InstallmentsCalculator\Contracts\MonetaryFormatterContract;
 use RicardoKovalski\InstallmentsCalculator\Enums\Patterns;
-use RicardoKovalski\InstallmentsCalculator\Exceptions\InvalidMonetaryFormatterException;
 
 /**
  * Class InstallmentFormatter
@@ -67,11 +66,7 @@ final class InstallmentFormatter
      */
     public function resetPattern($pattern)
     {
-        if (! $pattern or ! is_string($pattern)) {
-            throw new InvalidArgumentException('Invalid type pattern.');
-        }
-
-        if (! in_array($pattern, Patterns::all())) {
+        if (! $pattern or ! is_string($pattern) or ! in_array($pattern, Patterns::all())) {
             throw new InvalidArgumentException('Invalid type pattern.');
         }
 
