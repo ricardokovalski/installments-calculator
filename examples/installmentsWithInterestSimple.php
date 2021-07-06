@@ -6,10 +6,8 @@ use RicardoKovalski\InstallmentsCalculator\Adapters\InterestCalculation;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculation;
 use RicardoKovalski\InstallmentsCalculator\InstallmentCalculationConfig;
 
-$interest = InterestCalculation::Simple(1.99);
-$interest->appendTotalCapital(329.99);
-
-$installmentCalculation = new InstallmentCalculation(new InstallmentCalculationConfig($interest));
+$installmentCalculation = new InstallmentCalculation(new InstallmentCalculationConfig(InterestCalculation::Simple(1.99)));
+$installmentCalculation->appendTotalPurchase(329.99);
 $installmentCalculation->calculate();
 
 $collection = $installmentCalculation->getCollection();
