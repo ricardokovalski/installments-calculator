@@ -21,4 +21,4 @@ $intlDecimalFormatter = MonetaryFormatter::toIntlDecimal($formatterConfig);
 $installmentFormatter = new InstallmentFormatter($intlDecimalFormatter);
 
 $installmentFormatter->resetPattern(Patterns::PATTERN_B);
-$installmentFormatter->format(new Installment(350.00, 0,1));
+$installmentFormatter->format(new Installment(350.00, 0, 1));
