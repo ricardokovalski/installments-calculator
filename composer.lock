@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d95c99dbee6e9540fc9391c600f4bc8b",
+    "content-hash": "ded707601d005d9c73999677262bf7f3",
     "packages": [
         {
             "name": "moneyphp/money",
@@ -146,24 +146,75 @@
             "time": "2021-07-05T20:58:23+00:00"
         },
         {
-            "name": "ricardokovalski/money-formatter",
+            "name": "ricardokovalski/locale",
             "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ricardokovalski/money-formatter.git",
-                "reference": "86a86fb2ca6ca5840049c84d31b4012cd352452e"
+                "url": "https://github.com/ricardokovalski/locale.git",
+                "reference": "f35ec75be0b433529a28bb31727c2827367dd8f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ricardokovalski/money-formatter/zipball/86a86fb2ca6ca5840049c84d31b4012cd352452e",
-                "reference": "86a86fb2ca6ca5840049c84d31b4012cd352452e",
+                "url": "https://api.github.com/repos/ricardokovalski/locale/zipball/f35ec75be0b433529a28bb31727c2827367dd8f8",
+                "reference": "f35ec75be0b433529a28bb31727c2827367dd8f8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RicardoKovalski\\Locale\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ricardo Kovalski",
+                    "email": "ricardokovalskicruz@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A simple PHP Locale Value Object",
+            "keywords": [
+                "locale",
+                "value-object"
+            ],
+            "support": {
+                "issues": "https://github.com/ricardokovalski/locale/issues",
+                "source": "https://github.com/ricardokovalski/locale/tree/v1.0.0"
+            },
+            "time": "2021-08-04T23:54:20+00:00"
+        },
+        {
+            "name": "ricardokovalski/money-formatter",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ricardokovalski/money-formatter.git",
+                "reference": "b48d061aa5477b70df7de7d4230e4aeea9524020"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ricardokovalski/money-formatter/zipball/b48d061aa5477b70df7de7d4230e4aeea9524020",
+                "reference": "b48d061aa5477b70df7de7d4230e4aeea9524020",
                 "shasum": ""
             },
             "require": {
                 "ext-intl": "*",
                 "ext-json": "*",
                 "moneyphp/money": "^3.3",
-                "php": ">=5.6"
+                "php": ">=5.6",
+                "ricardokovalski/locale": "v1.0.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
@@ -202,9 +253,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ricardokovalski/money-formatter/issues",
-                "source": "https://github.com/ricardokovalski/money-formatter/tree/v1.0.0"
+                "source": "https://github.com/ricardokovalski/money-formatter/tree/v1.0.1"
             },
-            "time": "2021-07-05T21:06:30+00:00"
+            "time": "2021-08-05T00:25:37+00:00"
         }
     ],
     "packages-dev": [
@@ -291,21 +342,21 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "964adcdd3a28bf9ed5d9ac6450064e0d71ed7496"
+                "reference": "84674dd3a7575ba617f5a76d7e9e29a7d3891339"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/964adcdd3a28bf9ed5d9ac6450064e0d71ed7496",
-                "reference": "964adcdd3a28bf9ed5d9ac6450064e0d71ed7496",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/84674dd3a7575ba617f5a76d7e9e29a7d3891339",
+                "reference": "84674dd3a7575ba617f5a76d7e9e29a7d3891339",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0 || ^8.0",
-                "psr/log": "^1.0"
+                "psr/log": "^1 || ^2 || ^3"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.12.55",
@@ -335,7 +386,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/2.0.1"
+                "source": "https://github.com/composer/xdebug-handler/tree/2.0.2"
             },
             "funding": [
                 {
@@ -351,7 +402,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-05T19:37:51+00:00"
+            "time": "2021-07-31T17:03:58+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -549,16 +600,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.19.0",
+            "version": "v2.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "d5b8a9d852b292c2f8a035200fa6844b1f82300b"
+                "reference": "1fa4af92841f67362c053728989b262fba8eb1ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/d5b8a9d852b292c2f8a035200fa6844b1f82300b",
-                "reference": "d5b8a9d852b292c2f8a035200fa6844b1f82300b",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/1fa4af92841f67362c053728989b262fba8eb1ec",
+                "reference": "1fa4af92841f67362c053728989b262fba8eb1ec",
                 "shasum": ""
             },
             "require": {
@@ -646,7 +697,7 @@
             "description": "A tool to automatically fix PHP code style",
             "support": {
                 "issues": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues",
-                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.19.0"
+                "source": "https://github.com/FriendsOfPHP/PHP-CS-Fixer/tree/v2.19.1"
             },
             "funding": [
                 {
@@ -654,7 +705,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-05-03T21:43:24+00:00"
+            "time": "2021-08-02T17:52:09+00:00"
         },
         {
             "name": "myclabs/deep-copy",
