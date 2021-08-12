@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ded707601d005d9c73999677262bf7f3",
+    "content-hash": "973b5de84d36ac6cf8d924f0a3e894bb",
     "packages": [
         {
             "name": "moneyphp/money",
@@ -147,16 +147,16 @@
         },
         {
             "name": "ricardokovalski/locale",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ricardokovalski/locale.git",
-                "reference": "f35ec75be0b433529a28bb31727c2827367dd8f8"
+                "reference": "c779f680c78a62a5a2d4ead9568d36c3427f16e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ricardokovalski/locale/zipball/f35ec75be0b433529a28bb31727c2827367dd8f8",
-                "reference": "f35ec75be0b433529a28bb31727c2827367dd8f8",
+                "url": "https://api.github.com/repos/ricardokovalski/locale/zipball/c779f680c78a62a5a2d4ead9568d36c3427f16e5",
+                "reference": "c779f680c78a62a5a2d4ead9568d36c3427f16e5",
                 "shasum": ""
             },
             "require": {
@@ -191,22 +191,22 @@
             ],
             "support": {
                 "issues": "https://github.com/ricardokovalski/locale/issues",
-                "source": "https://github.com/ricardokovalski/locale/tree/v1.0.0"
+                "source": "https://github.com/ricardokovalski/locale/tree/v1.0.1"
             },
-            "time": "2021-08-04T23:54:20+00:00"
+            "time": "2021-08-05T00:41:19+00:00"
         },
         {
             "name": "ricardokovalski/money-formatter",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ricardokovalski/money-formatter.git",
-                "reference": "b48d061aa5477b70df7de7d4230e4aeea9524020"
+                "reference": "5a6add36327967f0557af2b8ab3f491a4080b1ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ricardokovalski/money-formatter/zipball/b48d061aa5477b70df7de7d4230e4aeea9524020",
-                "reference": "b48d061aa5477b70df7de7d4230e4aeea9524020",
+                "url": "https://api.github.com/repos/ricardokovalski/money-formatter/zipball/5a6add36327967f0557af2b8ab3f491a4080b1ac",
+                "reference": "5a6add36327967f0557af2b8ab3f491a4080b1ac",
                 "shasum": ""
             },
             "require": {
@@ -214,7 +214,7 @@
                 "ext-json": "*",
                 "moneyphp/money": "^3.3",
                 "php": ">=5.6",
-                "ricardokovalski/locale": "v1.0.0"
+                "ricardokovalski/locale": "v1.0.1"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
@@ -253,9 +253,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ricardokovalski/money-formatter/issues",
-                "source": "https://github.com/ricardokovalski/money-formatter/tree/v1.0.1"
+                "source": "https://github.com/ricardokovalski/money-formatter/tree/v1.0.2"
             },
-            "time": "2021-08-05T00:25:37+00:00"
+            "time": "2021-08-05T00:52:03+00:00"
         }
     ],
     "packages-dev": [
@@ -3102,9 +3102,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "alpha",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.6",
